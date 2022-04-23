@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark bg-dark ">
+    <a class="navbar-brand" href="/">
+        <img src="/assets/img/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+        {{"app.title" | translate}}
+    </a>
+    <a class="nav-link" routerLink="/product" routerLinkActive="active">{{"app.food" | translate}}</a>
+    <a class="nav-link" href="/service">{{"app.service" | translate}}</a>
+    <a class="nav-link" href="/contact">{{"app.information" | translate}}</a>
+    <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [(ngModel)]="textSearch" placeholder="">         
+    </span>
+    <a class="nav-link" routerLink="/login" routerLinkActive="active">{{"app.login" | translate}}</a>
+    <!-- <p-dropdown [(ngModel)]="selectedLanguage" [options]="languages" (onChange)="changeDropdownLanguage()">
+        <ng-template pTemplate="language" let-language>
+            {{language.name | translate}}
+        </ng-template>
+        <ng-template let-selectedItem pTemplate="selectedItem">
+            {{selectedItem.name | translate}}
+        </ng-template>
+    </p-dropdown> -->
+</nav>

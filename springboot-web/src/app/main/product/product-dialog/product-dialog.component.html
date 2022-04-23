@@ -1,0 +1,48 @@
+<form #myForm="ngForm" (ngSubmit)="clickButtonHandle(myForm)">
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+        <input type="text" name="productCode" pInputText ngModel placeholder="Product Code">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">1</span>
+        <input type="text" name="productName" pInputText ngModel placeholder="Product Name">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="price" pInputText ngModel placeholder="Price">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="discountNumber" pInputText ngModel placeholder="Discount Number">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="discountPercent" pInputText ngModel placeholder="Discount Percent">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="description" pInputText ngModel placeholder="Description">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="producer" pInputText ngModel placeholder="Producer">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="category" pInputText ngModel placeholder="Category">
+    </div>
+
+    <div class="p-inputgroup form-group">
+        <span class="p-inputgroup-addon">2</span>
+        <input type="text" name="url" pInputText ngModel placeholder="URL">
+    </div>
+
+    <button pButton type="submit" label="Add" class="p-button-success"></button>
+</form>

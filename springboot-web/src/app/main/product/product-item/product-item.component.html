@@ -1,0 +1,9 @@
+<p-card class="" [style]="{width: '200px'}" styleClass="p-card-shadow">
+    <ng-template pTemplate="header">
+        <img alt="{{product.productName}}" src="{{product.url}}">
+    </ng-template>
+    {{product.productName}}
+    <ng-template pTemplate="footer">
+        {{product.price}}
+    </ng-template>
+</p-card>

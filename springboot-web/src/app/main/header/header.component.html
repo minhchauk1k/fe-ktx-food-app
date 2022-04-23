@@ -1,0 +1,7 @@
+<div class="container">
+    <p-tabMenu [model]="items" [activeItem]="activeItem" >
+        <ng-template pTemplate="item" let-item let-i="index">
+            {{this.translateService.instant(item.label)}}
+        </ng-template>
+    </p-tabMenu>
+</div>
