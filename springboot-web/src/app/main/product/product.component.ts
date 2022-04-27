@@ -38,7 +38,7 @@ export class ProductComponent implements OnInit {
   public getProducts(): void {
     this.productService.getAllProducts().subscribe((respone: Product[]) => {
       this.productsList = respone;
-      this.productsList.pop();
+      // this.productsList.pop();
     });
   }
 
