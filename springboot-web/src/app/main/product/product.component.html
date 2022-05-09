@@ -24,7 +24,7 @@
         <ng-template let-product pTemplate="listItem">
             <div class="col-12">
                 <div class="product-list-item">
-                    <img [src]="product.url" [alt]="product.name" />
+                    <img [src]="product.urlAvatar" [alt]="product.name" />
                     <div class="product-list-detail">
                         <div class="product-name">{{product.name}}</div>
                         <div class="product-description">{{product.description}}</div>
@@ -51,7 +51,7 @@
                         <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
                     </div>
                     <div class="product-grid-item-content">
-                        <img [src]="product.url" [alt]="product.name" />
+                        <img [src]="product.urlAvatar" [alt]="product.name" />
                         <div class="product-name">{{product.name}}</div>
                         <div class="product-description">{{product.description}}</div>
                         <!-- <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating> -->

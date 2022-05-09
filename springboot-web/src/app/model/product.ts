@@ -7,11 +7,11 @@ export interface Product {
     discountPercent: number;
     description: string;
     producer: string;
+    category: string;
     createUser: string;
+    createDate: Date;
     updateUser: string;
     updateDate: Date;
-    category: string;
-    createDate: Date;
     isDeleted: boolean;
-    url: string;
+    urlAvatar: string;
 }

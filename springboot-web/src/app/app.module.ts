@@ -16,12 +16,15 @@ import { FormsModule } from '@angular/forms';
 import { OrderListModule } from 'primeng/orderlist';
 import { DropdownModule } from 'primeng/dropdown';
 import { CardModule } from 'primeng/card';
+import {TieredMenuModule} from 'primeng/tieredmenu';
+
 import { ProductComponent } from './main/product/product.component';
 import { HeaderComponent } from './main/header/header.component';
 import { ProductDialogComponent } from './main/product/product-dialog/product-dialog.component';
 import { MenuHeaderComponent } from './main/menu-header/menu-header.component';
 import { LoginComponent } from './main/login/login.component';
 import { ProductItemComponent } from './main/product/product-item/product-item.component';
+import { DashboardComponent } from './main/dashboard/dashboard.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -35,7 +38,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProductDialogComponent,
     MenuHeaderComponent,
     LoginComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -57,9 +61,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     OrderListModule,
     DropdownModule,
-    CardModule
+    CardModule,
+    TieredMenuModule,
   ],
-  providers: [],
+  providers: [LoginComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
