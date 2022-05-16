@@ -1,26 +1,37 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Product } from "../model/product";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductService {
     private apiServerURL = environment.apiServerURL;
-    constructor(private http: HttpClient) {}
+    private _headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    public getAllProducts(): Observable<Product[]> {
+    constructor(private http: HttpClient) { }
+
+    private createAuthorization(): any {
+        this._headers = new HttpHeaders().set('Content-Type', 'application/json');
+        this._headers = this._headers.append("Authorization", 'Bearer ' + localStorage.getItem('access_token'));
+
+        const httpOptions = { 
+            headers: this._headers
+        }
+        return httpOptions;
+    }
+
+    public getProducts(): Observable<any> {
         return this.http.get<any>(`${this.apiServerURL}/product/all`);
     }
 
-    public addProduct(product: Product): Observable<Product> {
-        return this.http.post<Product>(`${this.apiServerURL}/product/add`, product);
+    public addProduct(product: any): Observable<any> {
+        return this.http.post<any>(`${this.apiServerURL}/product/add`, product, this.createAuthorization());
     }
 
-    public updateProduct(product: Product): Observable<Product> {
-        return this.http.put<Product>(`${this.apiServerURL}/product/update`, product);
+    public updateProduct(product: any): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/product/update`, product, this.createAuthorization());
     }
 
     public deleteProduct(id: number): Observable<void> {

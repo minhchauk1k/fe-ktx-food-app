@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Product } from 'src/app/model/product';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -24,7 +23,7 @@ export class ProductDialogComponent implements OnInit {
   public clickButtonHandle(myForm: NgForm): void {
     switch (this.state) {
       case this.ADD:
-        this.productService.addProduct(myForm.value).subscribe((response: Product) => {
+        this.productService.addProduct(myForm.value).subscribe((response: any) => {
           if (response.id) {
             document.getElementById('product-dialog')?.click();
             alert("Đăng ký thành công!");

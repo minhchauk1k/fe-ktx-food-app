@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginComponent } from './main/login/login.component';
+import { CommonService } from './service/common.service';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +7,9 @@ import { LoginComponent } from './main/login/login.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(
-    public login: LoginComponent
-  ) { }
   title = 'springboot-web';
+
+  constructor(
+    public common: CommonService
+  ) {}
 }

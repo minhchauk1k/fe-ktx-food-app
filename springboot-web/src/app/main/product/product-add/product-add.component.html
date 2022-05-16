@@ -1,0 +1,69 @@
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+    <div class="p-float-label">
+        <input id="productCode" type="text" pInputText formControlName="productCode">
+        <label for="productCode">Mã sản phẩm</label>
+    </div>
+
+    <div class="p-float-label">
+        <input id="productName" type="text" pInputText formControlName="productName">
+        <label for="productName">Tên sản phẩm</label>
+    </div>
+
+    <div class="p-float-label">
+        <p-inputNumber formControlName="price" mode="currency" currency="VND" [min]="0"></p-inputNumber>
+        <label for="price">Giá bán</label>
+    </div>
+
+    <div>
+        <label for="isDiscount">Có áp dụng giảm giá hay không?</label>
+        <p-selectButton [options]="displayOptions" formControlName="isDiscount" optionLabel="label" optionValue="value">
+        </p-selectButton>
+    </div>
+
+    <div *ngIf="checkoutForm.get('isDiscount')?.value">
+
+        <div class="p-float-label">
+            <p-calendar formControlName="discountFromDate" dateFormat="dd/mm/yy"></p-calendar>
+            <label for="discountFromDate">Ngày bắt đầu</label>
+        </div>
+
+        <div class="p-float-label">
+            <p-calendar formControlName="discountToDate" dateFormat="dd/mm/yy"></p-calendar>
+            <label for="discountToDate">Ngày ngày kết thúc</label>
+        </div>
+
+        <div class="p-float-label">
+            <p-inputNumber formControlName="discountPercent" mode="decimal" [showButtons]="true" [step]="0.25" [min]="0"
+                [max]="100" [minFractionDigits]="2" suffix="%"></p-inputNumber>
+            <label for="discountPercent">Giảm giá theo %</label>
+        </div>
+
+        <div class="p-float-label">
+            <p-inputNumber formControlName="discountNumber" mode="currency" currency="VND" [min]="0"></p-inputNumber>
+            <label for="discountNumber">Giảm trên giá sản phẩm</label>
+        </div>
+    </div>
+
+    <div class="p-float-label">
+        <input id="urlAvatar" type="text" pInputText formControlName="urlAvatar">
+        <label for="urlAvatar">Link của hình ảnh</label>
+    </div>
+
+    <div class="p-float-label">
+        <input id="description" type="text" pInputText formControlName="description">
+        <label for="description">Mô tả sản phẩm</label>
+    </div>
+
+    <div class="p-float-label">
+        <input id="category" type="text" pInputText formControlName="category">
+        <label for="category">Nhóm sản phẩm</label>
+    </div>
+
+    <div class="p-float-label">
+        <input id="type" type="text" pInputText formControlName="type">
+        <label for="type">Phân loại sản phẩm</label>
+    </div>
+
+    <p-button type="submit" label="Thêm sản phẩm"></p-button>
+</form>

@@ -1,0 +1,12 @@
+:host ::ng-deep {
+    .p-datepicker table td {
+        //adjust the padding
+        padding: 0;
+    }
+
+    .p-datepicker table td > span { 
+        //adjust the width and height
+        height: 30px;
+        width: 30px;
+    }
+}

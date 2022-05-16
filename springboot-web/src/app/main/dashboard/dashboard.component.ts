@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +10,9 @@ import { MenuItem } from 'primeng/api';
 export class DashboardComponent implements OnInit {
   public items: MenuItem[] = [];
 
-  constructor() { }
+  constructor(
+    private common: CommonService
+    ) { }
 
   ngOnInit(): void {
     this.items = [
@@ -24,6 +27,7 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Quản lý sản phẩm', icon: 'pi pi-fw pi-shopping-bag',
         items: [
+          { label: 'Thêm món ăn', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product/add'] },
           { label: 'Danh sách món ăn', icon: 'pi pi-fw pi-search', routerLink: ['/product'] },
           { label: 'Danh sách dịch vụ', icon: 'pi pi-fw pi-search' },
           { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
@@ -46,11 +50,10 @@ export class DashboardComponent implements OnInit {
       }
       ,
       {
-        label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
-        items: [
-          { label: 'Danh sách cài đặt', icon: 'pi pi-fw pi-search' },
-          { label: 'Refresh', icon: 'pi pi-fw pi-refresh' }
-        ]
+        label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out', 
+        command: () => {
+          this.common.userLogout();
+        }
       }
     ];
   }

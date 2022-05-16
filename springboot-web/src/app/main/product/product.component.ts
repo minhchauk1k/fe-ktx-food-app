@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table'
-import { Product } from 'src/app/model/product';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -14,13 +13,13 @@ export class ProductComponent implements OnInit {
   public UPDATE = 'UPDATE';
   public DELETE = 'DELETE';
 
-  public productsList: Product[] = [];
+  public productsList: any[] = [];
   public state: string = '';
   public isShowDialog: boolean = false;
   public sortOrder: number = 1;
   public sortField: string = '';
   public sortOptions: SelectItem[];
-  public sortKey :any;
+  public sortKey: any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(
     private productService: ProductService
@@ -36,9 +35,8 @@ export class ProductComponent implements OnInit {
   }
 
   public getProducts(): void {
-    this.productService.getAllProducts().subscribe((respone: Product[]) => {
-      this.productsList = respone;
-      // this.productsList.pop();
+    this.productService.getProducts().subscribe(response => {
+      this.productsList = response
     });
   }
 

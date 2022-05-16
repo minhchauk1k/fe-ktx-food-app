@@ -12,11 +12,15 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderListModule } from 'primeng/orderlist';
 import { DropdownModule } from 'primeng/dropdown';
 import { CardModule } from 'primeng/card';
-import {TieredMenuModule} from 'primeng/tieredmenu';
+import { TieredMenuModule } from 'primeng/tieredmenu';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CheckboxModule } from 'primeng/checkbox';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { CalendarModule } from 'primeng/calendar';
 
 import { ProductComponent } from './main/product/product.component';
 import { HeaderComponent } from './main/header/header.component';
@@ -25,6 +29,7 @@ import { MenuHeaderComponent } from './main/menu-header/menu-header.component';
 import { LoginComponent } from './main/login/login.component';
 import { ProductItemComponent } from './main/product/product-item/product-item.component';
 import { DashboardComponent } from './main/dashboard/dashboard.component';
+import { ProductAddComponent } from './main/product/product-add/product-add.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -39,7 +44,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MenuHeaderComponent,
     LoginComponent,
     ProductItemComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProductAddComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +69,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     DropdownModule,
     CardModule,
     TieredMenuModule,
+    ReactiveFormsModule,
+    InputNumberModule,
+    CheckboxModule,
+    SelectButtonModule,
+    CalendarModule
   ],
   providers: [LoginComponent],
   bootstrap: [AppComponent]
