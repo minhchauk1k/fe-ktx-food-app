@@ -9,7 +9,10 @@ import { ProductService } from 'src/app/service/product.service';
 })
 export class ProductAddComponent implements OnInit {
 
-  public displayOptions: any;
+  public isDiscountList: any[] = [];
+  public typeList: any[] = [];
+  public categoryList: any[] = [];
+  public urlAvatarDisplay: any;
 
   public checkoutForm = this.formBuilder.group({
     productCode: '',
@@ -30,19 +33,35 @@ export class ProductAddComponent implements OnInit {
     private productSevice: ProductService,
     private formBuilder: FormBuilder
   ) {
-    this.displayOptions = [{ label: 'Có', value: true }, { label: 'Không', value: false }];
+    this.urlAvatarDisplay = '/assets/img/no-image.jpg';
+    this.isDiscountList = [{ label: 'Có', value: true }, { label: 'Không', value: false }];
+    this.typeList = [{ label: 'Đồ ăn', value: 'FOOD' }, { label: 'Dịch vụ', value: 'SERVICE' }]
   }
 
   ngOnInit(): void {
+    this.getCategoryList();
+  }
+
+  getCategoryList() {
+    this.productSevice.getProducts().subscribe(response => {
+      let nameList = new Set(response.map((item: any) => item.category));
+      nameList.forEach(item => {
+        this.categoryList.push({ label: item, value: item })
+      });
+    });
   }
 
   onSubmit(): void {
     // Process checkout data here
     // this.items = this.cartService.clearCart();
-    this.productSevice.addProduct(JSON.stringify(this.checkoutForm.value)).subscribe(response => {
+    this.productSevice.addProduct(this.checkoutForm.value).subscribe(response => {
       alert('add');
     });
     // this.checkoutForm.reset();
+  }
+
+  setUrlAvatar(event:any){
+    this.urlAvatarDisplay = event.target.value;
   }
 
 }

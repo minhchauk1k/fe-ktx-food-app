@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { Table } from 'primeng/table'
+import { CommonService } from 'src/app/service/common.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -13,16 +13,22 @@ export class ProductComponent implements OnInit {
   public UPDATE = 'UPDATE';
   public DELETE = 'DELETE';
 
+  public TAGNAME = 'ALL'
+
   public productsList: any[] = [];
-  public state: string = '';
-  public isShowDialog: boolean = false;
+  public productsListBk: any[] = [];
+  public listMenu: any;
+
   public sortOrder: number = 1;
-  public sortField: string = '';
   public sortOptions: SelectItem[];
+  public sortField: string = '';
   public sortKey: any;
-  @ViewChild('dt') dt: Table | undefined;
+
+  // @ViewChild('dv', { static: true }) dv: any;
+
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private commonService: CommonService
   ) {
     this.sortOptions = [
       { label: 'Giá Cao đến Thấp', value: '!price' },
@@ -34,32 +40,39 @@ export class ProductComponent implements OnInit {
     this.getProducts();
   }
 
-  public getProducts(): void {
+  getProducts(): void {
     this.productService.getProducts().subscribe(response => {
-      this.productsList = response
+      this.productsList = response;
+      // create back-up data
+      this.productsListBk = response;
+      this.createListMenu();
     });
   }
 
-  public clickButtonHandle(event: any): void {
-    switch (event) {
-      case this.ADD:
-        this.state = this.ADD;
-        this.isShowDialog = true;
-        break;
-      case this.UPDATE:
-        this.state = this.UPDATE;
-        this.isShowDialog = true;
-        break;
-      case this.DELETE:
-        this.state = this.DELETE;
-        this.isShowDialog = true;
-        break;
-    }
+  createListMenu() {
+    this.listMenu = new Set(this.productsList.map(item => item.category));
   }
 
-  public getHeaderDialog(): string {
-    return 'Đây là header';
-  }
+  // public clickButtonHandle(event: any): void {
+  //   switch (event) {
+  //     case this.ADD:
+  //       this.state = this.ADD;
+  //       this.isShowDialog = true;
+  //       break;
+  //     case this.UPDATE:
+  //       this.state = this.UPDATE;
+  //       this.isShowDialog = true;
+  //       break;
+  //     case this.DELETE:
+  //       this.state = this.DELETE;
+  //       this.isShowDialog = true;
+  //       break;
+  //   }
+  // }
+
+  // public getHeaderDialog(): string {
+  //   return 'Đây là header';
+  // }
 
   onSortChange(event: any) {
     let value = event.value;
@@ -74,7 +87,35 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  applyFilterGlobal($event: any, stringVal: any) {
-    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  onSearch(event: any) {
+    let value = this.commonService.fixTiengViet(event.target.value);
+    if (value != '') {
+      this.productsList = this.getProductsByName(value);
+    } else {
+      this.productsList = this.productsListBk;
+    }
+  }
+
+  getProductsByName(value: string): any[] {
+    let result = this.productsListBk.filter(item => {
+      return this.commonService.fixTiengViet(item.productName).search(value) != -1;
+    });
+    return result;
+  }
+
+  getProductsByCategory(value: string): any[] {
+    let result = this.productsListBk.filter(item => {
+      return this.commonService.fixTiengViet(item.category).search(value) != -1;
+    });
+    return result;
+  }
+
+  getTagName(event: any) {
+    let value = this.commonService.fixTiengViet(event);
+    if (event == 'ALL') {
+      this.productsList = this.productsListBk;
+    } else if (event != '') {
+      this.productsList = this.getProductsByCategory(value);
+    }
   }
 }

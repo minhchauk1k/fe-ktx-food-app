@@ -21,6 +21,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ImageModule } from 'primeng/image';
 
 import { ProductComponent } from './main/product/product.component';
 import { HeaderComponent } from './main/header/header.component';
@@ -30,6 +32,8 @@ import { LoginComponent } from './main/login/login.component';
 import { ProductItemComponent } from './main/product/product-item/product-item.component';
 import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { ProductAddComponent } from './main/product/product-add/product-add.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProductMenuCategoryComponent } from './main/product/product-menu-category/product-menu-category.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -45,7 +49,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     ProductItemComponent,
     DashboardComponent,
-    ProductAddComponent
+    ProductAddComponent,
+    ProductMenuCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +78,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     InputNumberModule,
     CheckboxModule,
     SelectButtonModule,
-    CalendarModule
+    CalendarModule,
+    NgbModule,
+    InputTextareaModule,
+    ImageModule
   ],
   providers: [LoginComponent],
   bootstrap: [AppComponent]

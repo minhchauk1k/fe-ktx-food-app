@@ -24,13 +24,13 @@ export class DashboardComponent implements OnInit {
           { label: 'Xem danh sách', icon: 'pi pi-fw pi-search', }
         ]
       },
+      { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
       {
         label: 'Quản lý sản phẩm', icon: 'pi pi-fw pi-shopping-bag',
         items: [
-          { label: 'Thêm món ăn', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product/add'] },
+          { label: 'Thêm sản phẩm', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product/add'] },
           { label: 'Danh sách món ăn', icon: 'pi pi-fw pi-search', routerLink: ['/product'] },
           { label: 'Danh sách dịch vụ', icon: 'pi pi-fw pi-search' },
-          { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
           { label: 'Refresh', icon: 'pi pi-fw pi-refresh' }
         ]
       },

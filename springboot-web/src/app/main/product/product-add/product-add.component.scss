@@ -4,9 +4,24 @@
         padding: 0;
     }
 
-    .p-datepicker table td > span { 
-        //adjust the width and height
-        height: 30px;
-        width: 30px;
+    // .discountClass{
+    //     background-color: grey;
+    // }
+
+    // .p-datepicker table td>span {
+    //     //adjust the width and height
+    //     height: 30px;
+    //     width: 20px;
+    // }
+
+    .p-calendar,
+    .p-dropdown,
+    .p-inputnumber,
+    .p-selectButton {
+        width: 100%;
+    }
+
+    .my-padding-top {
+        padding-top: 16px;
     }
 }
