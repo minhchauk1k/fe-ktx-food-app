@@ -47,7 +47,8 @@ export class CommonService {
                 this._isLogin.next(true);
 
                 if (roles.length && roles.find(val => val == 'ROLE_ADMIN')) {
-                    this.router.navigate(["/dashboard"]);
+                    this.router.navigate(["/"]);
+                    // this.router.navigate(["/dashboard"]);
                     this._isAdmin.next(true);
                 } else {
                     this.router.navigate(["/"]);

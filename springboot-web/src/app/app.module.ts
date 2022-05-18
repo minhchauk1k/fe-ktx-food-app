@@ -23,6 +23,12 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ImageModule } from 'primeng/image';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import {TableModule} from 'primeng/table';
 
 import { ProductComponent } from './main/product/product.component';
 import { HeaderComponent } from './main/header/header.component';
@@ -30,10 +36,13 @@ import { ProductDialogComponent } from './main/product/product-dialog/product-di
 import { MenuHeaderComponent } from './main/menu-header/menu-header.component';
 import { LoginComponent } from './main/login/login.component';
 import { ProductItemComponent } from './main/product/product-item/product-item.component';
-import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { ProductAddComponent } from './main/product/product-add/product-add.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductMenuCategoryComponent } from './main/product/product-menu-category/product-menu-category.component';
+import { MenuDashboardComponent } from './main/menu-dashboard/menu-dashboard.component';
+import { ServiceComponent } from './main/service/service.component';
+import { AboutComponent } from './main/about/about.component';
+import { ProductMenuCartComponent } from './main/product/product-menu-cart/product-menu-cart.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -48,9 +57,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     MenuHeaderComponent,
     LoginComponent,
     ProductItemComponent,
-    DashboardComponent,
+    MenuDashboardComponent,
     ProductAddComponent,
-    ProductMenuCategoryComponent
+    ProductMenuCategoryComponent,
+    ServiceComponent,
+    AboutComponent,
+    ProductMenuCartComponent
   ],
   imports: [
     BrowserModule,
@@ -81,9 +93,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     CalendarModule,
     NgbModule,
     InputTextareaModule,
-    ImageModule
+    ImageModule,
+    RadioButtonModule,
+    ToastModule,
+    ConfirmDialogModule,
+    TableModule
   ],
-  providers: [LoginComponent],
+  providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

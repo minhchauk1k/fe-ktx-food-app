@@ -1,3 +1,24 @@
-<input type="text" pInputText [(ngModel)]="username"/>
-<input type="password" pInputText [(ngModel)]="password"/>
-<p-button label="Login" (onClick)="login()"></p-button>
+<div class="container flex justify-content-center">
+    <div class="col-4">
+        <div class="row ">
+            <div class="col">
+                <label for="productCode">Tên đăng nhập hoặc Email</label>
+                <input class="w-100" type="text" pInputText [(ngModel)]="username" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="productCode">Mật khẩu</label>
+                <input class="w-100" type="password" pInputText [(ngModel)]="password" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p-button class="pr-2" label="Đăng nhập" (onClick)="login()"></p-button>
+                <p-button label="Đăng ký"></p-button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { SelectItem, ConfirmationService, MessageService } from 'primeng/api';
 import { CartService } from 'src/app/service/cart.service';
 import { CommonService } from 'src/app/service/common.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  selector: 'app-service',
+  templateUrl: './service.component.html',
+  styleUrls: ['./service.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ServiceComponent implements OnInit {
   public ADD = 'ADD';
   public UPDATE = 'UPDATE';
   public ORDER = 'ORDER';
@@ -48,7 +48,7 @@ export class ProductComponent implements OnInit {
 
   private getProducts(): void {
     this.productService.getProducts().subscribe(response => {
-      this.productsList = this.productService.getProductFoodNotDelete(response);
+      this.productsList = this.productService.getProductServiceNotDelete(response);
       // create back-up data
       this.productsListBk = this.productsList;
       this.createListMenu();
@@ -80,7 +80,7 @@ export class ProductComponent implements OnInit {
           message: 'Bạn có muốn xóa sản phẩm này hay không?',
           accept: () => {
             this.productService.deleteProduct(product.id).subscribe(response => {
-              this.messageService.add({ severity: 'success', summary: 'Xóa sản phẩm thành công', life: 1500 });
+              this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm sản phẩm thành công' });
               this.getProducts();
             });
           }
