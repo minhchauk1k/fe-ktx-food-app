@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MenuHeaderComponent } from './menu-header.component';
+import { CheckOutComponent } from './check-out.component';
 
-describe('MenuHeaderComponent', () => {
-  let component: MenuHeaderComponent;
-  let fixture: ComponentFixture<MenuHeaderComponent>;
+describe('CheckOutComponent', () => {
+  let component: CheckOutComponent;
+  let fixture: ComponentFixture<CheckOutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MenuHeaderComponent ]
+      declarations: [ CheckOutComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MenuHeaderComponent);
+    fixture = TestBed.createComponent(CheckOutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

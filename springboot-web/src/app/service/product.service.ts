@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
@@ -10,18 +10,25 @@ export class ProductService {
     private apiServerURL = environment.apiServerURL;
     private FOOD = 'FOOD';
     private SERVICE = 'SERVICE';
-    private _headers = new HttpHeaders().set('Content-Type', 'application/json');
+    private BEARER = 'Bearer ';
+    private _headers = new HttpHeaders();
 
     constructor(private http: HttpClient) { }
 
     private createAuthorization(): any {
         this._headers = new HttpHeaders().set('Content-Type', 'application/json');
-        this._headers = this._headers.append("Authorization", 'Bearer ' + localStorage.getItem('access_token'));
+        this._headers = this._headers.append("Authorization", this.BEARER + localStorage.getItem('access_token'));
 
         const httpOptions = {
             headers: this._headers
         }
         return httpOptions;
+    }
+
+    public getProductsByTypeAndIsDelete(param: any): Observable<any> {
+        const type = param.type;
+        const isDelete = param.delete;
+        return this.http.get<any>(`${this.apiServerURL}/product/all/${type}/${isDelete}`);
     }
 
     public getProducts(): Observable<any> {
@@ -44,27 +51,4 @@ export class ProductService {
         return this.http.delete<void>(`${this.apiServerURL}/product/delete/${id}`, this.createAuthorization());
     }
 
-    public getProductFood(data: any[]) {
-        return data.filter((val: any) => {
-            return val.type == this.FOOD;
-        });
-    }
-
-    public getProductFoodNotDelete(data: any[]) {
-        return data.filter((val: any) => {
-            return val.type == this.FOOD && val.deleted == false;
-        });
-    }
-
-    public getProductService(data: any[]) {
-        return data.filter((val: any) => {
-            return val.type == this.SERVICE;
-        });
-    }
-
-    public getProductServiceNotDelete(data: any[]) {
-        return data.filter((val: any) => {
-            return val.type == this.SERVICE && val.deleted == false;
-        });
-    }
 }

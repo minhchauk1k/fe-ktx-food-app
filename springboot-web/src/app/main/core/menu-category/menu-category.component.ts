@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api/menuitem';
 
 @Component({
-  selector: 'app-product-menu-category',
-  templateUrl: './product-menu-category.component.html',
-  styleUrls: ['./product-menu-category.component.css']
+  selector: 'app-menu-category',
+  templateUrl: './menu-category.component.html',
+  styleUrls: ['./menu-category.component.css']
 })
-export class ProductMenuCategoryComponent implements OnInit {
+export class MenuCategoryComponent implements OnInit {
   public items: MenuItem[] = [];
 
   @Input() listMenu: any;

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { MenuDashboardComponent } from './main/menu-dashboard/menu-dashboard.component';
 import { LoginComponent } from './main/login/login.component';
-import { ProductAddComponent } from './main/product/product-add/product-add.component';
 import { ProductComponent } from './main/product/product.component';
 import { ServiceComponent } from './main/service/service.component';
 import { AboutComponent } from './main/about/about.component';
+import { ProductAddComponent } from './main/core/product-add/product-add.component';
+import { CheckOutComponent } from './main/core/check-out/check-out.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '', pathMatch: 'full' },
@@ -16,7 +15,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent},
   { path: 'product/add', component: ProductAddComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: MenuDashboardComponent },
+  { path: 'checkout', component: CheckOutComponent },
   // { path: '**', component: PageNotFoundComponent }
 ];
 

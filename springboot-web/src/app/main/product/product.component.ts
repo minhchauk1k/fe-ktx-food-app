@@ -12,9 +12,13 @@ import { ProductService } from 'src/app/service/product.service';
 export class ProductComponent implements OnInit {
   public ADD = 'ADD';
   public UPDATE = 'UPDATE';
-  public ORDER = 'ORDER';
   public DELETE = 'DELETE';
   public TAGNAME = 'ALL'
+  public ORDER = 'ORDER';
+  public NUMBER = 'NUMBER';
+  public PERCENT = 'PERCENT';
+  private FOOD = 'FOOD';
+  private SERVICE = 'SERVICE';
 
   public productsList: any[] = [];
   public productsListBk: any[] = [];
@@ -47,23 +51,46 @@ export class ProductComponent implements OnInit {
   }
 
   private getProducts(): void {
-    this.productService.getProducts().subscribe(response => {
-      this.productsList = this.productService.getProductFoodNotDelete(response);
-      // create back-up data
+    const param = {
+      type: this.FOOD,
+      delete: false
+    }
+
+    this.productService.getProductsByTypeAndIsDelete(param).subscribe(response => {
+      this.productsList = response;
+      this.createFinalPrice();
+      // create backup data
       this.productsListBk = this.productsList;
       this.createListMenu();
     });
   }
 
+  private createFinalPrice() {
+    this.productsList.forEach((val: any) => {
+      if (val.discount) {
+        switch (val.discountType) {
+          case this.NUMBER:
+            val.finalPrice = val.price - val.discountNumber;
+            break;
+          case this.PERCENT:
+            val.finalPrice = val.price - val.discountPercent * val.price / 100;
+            break;
+        }
+      } else {
+        val.finalPrice = val.price;
+      }
+    });
+  }
+
   private createListMenu() {
-    this.listMenu = new Set(this.productsList.map(item => item.category));
+    this.listMenu = new Set(this.productsList.map((item: any) => item.category));
   }
 
   public clickButtonHandle(event: any, product: any): void {
     switch (event) {
       case this.ORDER:
         this.cartService.addItem(
-          { id: product.id, name: product.productName, price: product.price, qty: 1 }
+          { id: product.id, code: product.productCode, name: product.productName, price: product.finalPrice, qty: 1 }
         );
         break;
 
@@ -125,12 +152,27 @@ export class ProductComponent implements OnInit {
     return result;
   }
 
+  private getProductsByDiscount(): any[] {
+    let result = this.productsListBk.filter(item => {
+      return item.discount == true;
+    });
+    return result;
+  }
+
   public getTagName(event: any) {
     let value = this.commonService.fixTiengViet(event);
-    if (event == 'ALL') {
-      this.productsList = this.productsListBk;
-    } else if (event != '') {
-      this.productsList = this.getProductsByCategory(value);
+    switch (event) {
+      case 'ALL':
+        this.productsList = this.productsListBk;
+        break;
+
+      case 'DISCOUNT':
+        this.productsList = this.getProductsByDiscount();
+        break;
+
+      default:
+        this.productsList = this.getProductsByCategory(value);
+        break;
     }
   }
 

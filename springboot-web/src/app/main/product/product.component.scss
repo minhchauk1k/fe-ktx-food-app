@@ -1,5 +1,11 @@
 :host ::ng-deep {
 
+    .my-p-button {
+        max-width: 110px;
+        min-width: 110px;
+        align-self: flex-end;
+    }
+
     .product-category-icon {
         vertical-align: middle;
         margin-right: .5rem;

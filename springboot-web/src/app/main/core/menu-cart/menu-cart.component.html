@@ -10,7 +10,13 @@
         <tr>
             <td> {{ item.name }}</td>
             <td> {{ item.price | number:'4.0'}} {{' VNĐ'}}</td>
-            <td> {{ item.qty }}</td>
+            <td>
+                <button (click)="minusCheck(item)" pButton type="button" icon="pi pi-minus"
+                    class="p-button-sm p-button-rounded my-qty-tbn"></button>
+                {{item.qty}}
+                <button (click)="plusCheck(item)" pButton type="button" icon="pi pi-plus"
+                    class="p-button-sm p-button-rounded my-qty-tbn"></button>
+            </td>
         </tr>
     </ng-template>
     <ng-template pTemplate="footer">
@@ -26,4 +32,4 @@
     (click)="cartService.clearItems()"></button>
 
 <button *ngIf="getTotalQty() > 0" pButton type="button" label="Thanh toán" class="p-button-success p-button-sm"
-    (click)="true"></button>
+    (click)="checkOut()"></button>

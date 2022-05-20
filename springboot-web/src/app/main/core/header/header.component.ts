@@ -26,7 +26,8 @@ export class HeaderComponent implements OnInit {
       { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product']},
       { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service']},
       { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about']},
-      { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login']}
+      { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login']},
+      { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/orders']}
     ];
 
     // this.items = [

@@ -31,18 +31,17 @@ import { ConfirmationService } from 'primeng/api';
 import {TableModule} from 'primeng/table';
 
 import { ProductComponent } from './main/product/product.component';
-import { HeaderComponent } from './main/header/header.component';
-import { ProductDialogComponent } from './main/product/product-dialog/product-dialog.component';
-import { MenuHeaderComponent } from './main/menu-header/menu-header.component';
 import { LoginComponent } from './main/login/login.component';
-import { ProductItemComponent } from './main/product/product-item/product-item.component';
-import { ProductAddComponent } from './main/product/product-add/product-add.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ProductMenuCategoryComponent } from './main/product/product-menu-category/product-menu-category.component';
-import { MenuDashboardComponent } from './main/menu-dashboard/menu-dashboard.component';
 import { ServiceComponent } from './main/service/service.component';
 import { AboutComponent } from './main/about/about.component';
-import { ProductMenuCartComponent } from './main/product/product-menu-cart/product-menu-cart.component';
+import { MenuCartComponent } from './main/core/menu-cart/menu-cart.component';
+import { HeaderComponent } from './main/core/header/header.component';
+import { ProductAddComponent } from './main/core/product-add/product-add.component';
+import { MenuCategoryComponent } from './main/core/menu-category/menu-category.component';
+import { MenuDashboardComponent } from './main/core/menu-dashboard/menu-dashboard.component';
+import { CheckOutComponent } from './main/core/check-out/check-out.component';
+import { OrderComponent } from './main/order/order.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -53,16 +52,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     ProductComponent,
     HeaderComponent,
-    ProductDialogComponent,
-    MenuHeaderComponent,
     LoginComponent,
-    ProductItemComponent,
     MenuDashboardComponent,
     ProductAddComponent,
-    ProductMenuCategoryComponent,
+    MenuCategoryComponent,
     ServiceComponent,
     AboutComponent,
-    ProductMenuCartComponent
+    MenuCartComponent,
+    CheckOutComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

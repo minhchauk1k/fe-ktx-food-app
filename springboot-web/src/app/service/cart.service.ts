@@ -8,14 +8,42 @@ export class CartService {
     constructor() { }
 
     public addItem(item: any) {
-        this.itemsList.push(item);
+        let myFlag = false;
+        // increase if exist
+        this.itemsList.forEach(val => {
+            if (val.id == item.id) {
+                val.qty += 1;
+                myFlag = true;
+                return;
+            }
+        });
+
+        // add new if not exist
+        if (myFlag == false) {
+            this.itemsList.push(item);
+        }
     }
 
-    public clearItems(){
+    public clearItems() {
         this.itemsList = [];
     }
 
-    public getItemsList(){
+    public getItemsList() {
         return this.itemsList;
+    }
+
+    public clearItemById(id: string) {
+        this.itemsList = this.itemsList.filter(val => {
+            return val.id != id;
+        });
+    }
+
+    public changeQtyById(id: string, value: number) {
+        this.itemsList.forEach(val => {
+            if (val.id == id) {
+                val = value;
+                return;
+            }
+        });
     }
 }

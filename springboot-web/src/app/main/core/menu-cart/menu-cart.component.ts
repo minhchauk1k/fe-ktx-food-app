@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from 'src/app/service/cart.service';
 
 @Component({
-  selector: 'app-product-menu-cart',
-  templateUrl: './product-menu-cart.component.html',
-  styleUrls: ['./product-menu-cart.component.css']
+  selector: 'app-menu-cart',
+  templateUrl: './menu-cart.component.html',
+  styleUrls: ['./menu-cart.component.scss']
 })
-export class ProductMenuCartComponent implements OnInit {
+export class MenuCartComponent implements OnInit {
   public columns: any[] = [];
 
   constructor(
-    public cartService: CartService
+    public cartService: CartService,
+    private router: Router
   ) {
     this.columns = [
       { field: 'name', header: 'Tên sản phẩm' },
@@ -25,7 +27,7 @@ export class ProductMenuCartComponent implements OnInit {
   getTotalMoney() {
     let sum = 0;
     this.cartService.getItemsList().forEach(val => {
-      sum += val.price;
+      sum += val.price * val.qty;
     });
     return sum;
   }
@@ -36,5 +38,21 @@ export class ProductMenuCartComponent implements OnInit {
       sum += val.qty;
     });
     return sum;
+  }
+
+  minusCheck(item: any) {
+    item.qty -= 1;
+    if (item.qty == 0) {
+      this.cartService.clearItemById(item.id);
+    }
+  }
+
+  plusCheck(item: any) {
+    item.qty += 1;
+  }
+
+  checkOut() {
+    this.router.navigate(["/checkout"]);
+    console.log(this.cartService.getItemsList());
   }
 }

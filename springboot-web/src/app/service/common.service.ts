@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Observable, BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { CartService } from "./cart.service";
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,8 @@ export class CommonService {
     private apiServerURL = environment.apiServerURL;
     constructor(
         private http: HttpClient,
-        private router: Router
+        private router: Router,
+        private cartService: CartService
     ) { }
 
     public getIsAdmin(): boolean {
@@ -64,6 +66,7 @@ export class CommonService {
         // this.isAdmin = this._isAdmin.asObservable();
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        this.cartService.clearItems();
         this.router.navigate(["/"]);
     }
 

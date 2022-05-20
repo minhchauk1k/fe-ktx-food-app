@@ -12,9 +12,13 @@ import { ProductService } from 'src/app/service/product.service';
 export class ServiceComponent implements OnInit {
   public ADD = 'ADD';
   public UPDATE = 'UPDATE';
-  public ORDER = 'ORDER';
   public DELETE = 'DELETE';
+  public ORDER = 'ORDER';
   public TAGNAME = 'ALL'
+  public NUMBER = 'NUMBER';
+  public PERCENT = 'PERCENT';
+  private FOOD = 'FOOD';
+  private SERVICE = 'SERVICE';
 
   public productsList: any[] = [];
   public productsListBk: any[] = [];
@@ -44,14 +48,38 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
+
   }
 
   private getProducts(): void {
-    this.productService.getProducts().subscribe(response => {
-      this.productsList = this.productService.getProductServiceNotDelete(response);
+    const param = {
+      type: this.SERVICE,
+      delete: false
+    }
+
+    this.productService.getProductsByTypeAndIsDelete(param).subscribe(response => {
+      this.productsList = response;
+      this.createFinalPrice();
       // create back-up data
       this.productsListBk = this.productsList;
       this.createListMenu();
+    });
+  }
+
+  private createFinalPrice() {
+    this.productsList.forEach((val: any) => {
+      if (val.discount) {
+        switch (val.discountType) {
+          case this.NUMBER:
+            val.finalPrice = val.price - val.discountNumber;
+            break;
+          case this.PERCENT:
+            val.finalPrice = val.price - val.discountPercent * val.price / 100;
+            break;
+        }
+      } else {
+        val.finalPrice = val.price;
+      }
     });
   }
 
@@ -63,7 +91,7 @@ export class ServiceComponent implements OnInit {
     switch (event) {
       case this.ORDER:
         this.cartService.addItem(
-          { id: product.id, name: product.productName, price: product.price, qty: 1 }
+          { id: product.id, code: product.productCode, name: product.productName, price: product.finalPrice, qty: 1 }
         );
         break;
 

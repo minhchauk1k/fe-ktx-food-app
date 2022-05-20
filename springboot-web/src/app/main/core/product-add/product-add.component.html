@@ -1,11 +1,11 @@
 <div class="container">
     <div class="row">
         <div class="col-3" *ngIf="!isDialog">
-            <app-dashboard></app-dashboard>
+            <app-menu-dashboard></app-menu-dashboard>
         </div>
 
         <div [ngClass]="{'col-9': !isDialog, 'col-12': isDialog}">
-            <h2>Thông tin của sản phẩm</h2>
+            <h2 *ngIf="!isDialog">Thông tin của sản phẩm</h2>
             <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
                 <!-- row 1 -->
                 <div class="row">
@@ -114,7 +114,7 @@
                 <div class="row">
                     <div class="col">
                         <label for="description">Mô tả sản phẩm</label>
-                        <textarea class="w-100" formControlName="description" [rows]="3" pInputTextarea
+                        <textarea class="w-100" formControlName="description" [rows]="2" pInputTextarea
                             [autoResize]="false"></textarea>
                     </div>
                 </div>

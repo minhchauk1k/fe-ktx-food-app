@@ -1,10 +1,10 @@
 <div class="container-xxl">
     <div class="row">
         <div class="col-2">
-            <app-dashboard *ngIf="commonService.isAdmin | async"></app-dashboard>
+            <app-menu-dashboard *ngIf="commonService.isAdmin | async"></app-menu-dashboard>
             <h5>Thực đơn của quán</h5>
-            <app-product-menu-category *ngIf="listMenu" [listMenu]="listMenu" (newItemEvent)="getTagName($event)">
-            </app-product-menu-category>
+            <app-menu-category *ngIf="listMenu" [listMenu]="listMenu" (newItemEvent)="getTagName($event)">
+            </app-menu-category>
         </div>
 
         <div class="col-6">
@@ -34,24 +34,21 @@
                             <div class="product-list-action">
                                 <span *ngIf="product.discount" class="product-old-price pr-2">{{product.price |
                                     number:'4.0'}} VNĐ</span>
-                                <span *ngIf="product.discount" class="product-price pr-2">{{product.price -
-                                    product.discountNumber - (product.discountPercent * product.price / 100) |
+                                <span *ngIf="product.discount" class="product-price pr-2">{{product.finalPrice |
                                     number:'4.0'}}
                                     VNĐ</span>
-                                <span *ngIf="!product.discount" class="product-price pr-2">{{product.price |
+                                <span *ngIf="!product.discount" class="product-price pr-2">{{product.finalPrice |
                                     number:'4.0'}} VNĐ</span>
                                 <button pButton type="button" icon="pi pi-shopping-cart" label="Đặt món"
-                                    class="p-button-success p-button-sm"
+                                    class="p-button-success p-button-sm my-p-button"
                                     [disabled]="product.inventoryStatus == 'OUTOFSTOCK'"
                                     (click)="clickButtonHandle(ORDER, product)"></button>
-                                <div *ngIf="commonService.isAdmin | async">
-                                    <button pButton type="button" icon="pi pi-pencil" label="Sửa"
-                                        class="p-button-info p-button-sm"
-                                        (click)="clickButtonHandle(UPDATE, product)"></button>
-                                    <button pButton type="button" icon="pi pi-times" label="Xóa"
-                                        class="p-button-danger p-button-sm"
-                                        (click)="clickButtonHandle(DELETE, product)"></button>
-                                </div>
+                                <button *ngIf="commonService.isAdmin | async" pButton type="button" icon="pi pi-pencil"
+                                    label="Sửa" class="p-button-info p-button-sm my-p-button"
+                                    (click)="clickButtonHandle(UPDATE, product)"></button>
+                                <button *ngIf="commonService.isAdmin | async" pButton type="button" icon="pi pi-times"
+                                    label="Xóa" class="p-button-danger p-button-sm my-p-button"
+                                    (click)="clickButtonHandle(DELETE, product)"></button>
                                 <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
                             </div>
                         </div>
@@ -61,12 +58,13 @@
         </div>
         <div class="col-4">
             <h5>Đơn hàng của bạn</h5>
-            <app-product-menu-cart></app-product-menu-cart>
-        </div>   
+            <app-menu-cart></app-menu-cart>
+        </div>
     </div>
 </div>
 
-<p-dialog [modal]="true" [draggable]="false" [(visible)]="isShowDialog" (onHide)="clearDataInput()">
+<p-dialog header="Thông tin của sản phẩm" [modal]="true" [draggable]="false" [(visible)]="isShowDialog"
+    (onHide)="clearDataInput()">
     <app-product-add *ngIf="productInput" [isDialog]="true" [productInput]="productInput"
         [stateOfDialog]="stateOfDialog"></app-product-add>
 </p-dialog>
