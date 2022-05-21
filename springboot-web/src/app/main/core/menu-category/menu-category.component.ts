@@ -10,27 +10,21 @@ export class MenuCategoryComponent implements OnInit {
   public items: MenuItem[] = [];
 
   @Input() listMenu: any;
-  @Output() newItemEvent = new EventEmitter<string>();
+  @Output() getTagName = new EventEmitter<string>();
 
-  constructor() {
-    this.items.push({
-      label: 'Tất cả', icon: 'pi pi-fw pi-tag', command: () => {
-        this.onClickTag('ALL');
-      }
-    });
-  }
+  constructor() {}
 
   ngOnInit(): void {
-    this.listMenu.forEach((element: any) => {
+    this.listMenu.forEach((val: any) => {
       this.items.push({
-        label: element, icon: 'pi pi-fw pi-tag', command: () => {
-          this.onClickTag(element);
+        label: val.categoryValue, icon: 'pi pi-fw pi-tag', command: () => {
+          this.onClickTag(val.categoryKey);
         }
       });
     });
   }
 
   onClickTag(value: string) {
-    this.newItemEvent.emit(value);
+    this.getTagName.emit(value);
   }
 }

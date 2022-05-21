@@ -6,6 +6,8 @@ import { ServiceComponent } from './main/service/service.component';
 import { AboutComponent } from './main/about/about.component';
 import { ProductAddComponent } from './main/core/product-add/product-add.component';
 import { CheckOutComponent } from './main/core/check-out/check-out.component';
+import { OrderComponent } from './main/order/order.component';
+import { AdminComponent } from './main/admin/admin.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '', pathMatch: 'full' },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'product/add', component: ProductAddComponent},
   { path: 'login', component: LoginComponent },
   { path: 'checkout', component: CheckOutComponent },
+  { path: 'order', component: OrderComponent },
+  { path: 'admin', component: AdminComponent },
   // { path: '**', component: PageNotFoundComponent }
 ];
 

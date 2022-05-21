@@ -17,8 +17,10 @@ export class ProductComponent implements OnInit {
   public ORDER = 'ORDER';
   public NUMBER = 'NUMBER';
   public PERCENT = 'PERCENT';
-  private FOOD = 'FOOD';
-  private SERVICE = 'SERVICE';
+  public FOOD = 'FOOD';
+  public SERVICE = 'SERVICE';
+  public ALL = 'ALL';
+  public DISCOUNT = 'DISCOUNT';
 
   public productsList: any[] = [];
   public productsListBk: any[] = [];
@@ -33,6 +35,8 @@ export class ProductComponent implements OnInit {
   public isShowDialog = false;
   public stateOfDialog: any;
 
+  public urlAvatarDisplay = '';
+
   constructor(
     public commonService: CommonService,
     private productService: ProductService,
@@ -40,6 +44,7 @@ export class ProductComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {
+    this.urlAvatarDisplay = '/assets/img/no-image.jpg';
     this.sortOptions = [
       { label: 'Giá Cao đến Thấp', value: '!price' },
       { label: 'Giá Thấp đến Cao', value: 'price' }
@@ -48,6 +53,7 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
+    this.getCategorys();
   }
 
   private getProducts(): void {
@@ -58,39 +64,22 @@ export class ProductComponent implements OnInit {
 
     this.productService.getProductsByTypeAndIsDelete(param).subscribe(response => {
       this.productsList = response;
-      this.createFinalPrice();
       // create backup data
       this.productsListBk = this.productsList;
-      this.createListMenu();
     });
   }
 
-  private createFinalPrice() {
-    this.productsList.forEach((val: any) => {
-      if (val.discount) {
-        switch (val.discountType) {
-          case this.NUMBER:
-            val.finalPrice = val.price - val.discountNumber;
-            break;
-          case this.PERCENT:
-            val.finalPrice = val.price - val.discountPercent * val.price / 100;
-            break;
-        }
-      } else {
-        val.finalPrice = val.price;
-      }
+  private getCategorys() {
+    this.productService.getCategorysFood().subscribe(response => {
+      this.listMenu = response;
     });
-  }
-
-  private createListMenu() {
-    this.listMenu = new Set(this.productsList.map((item: any) => item.category));
   }
 
   public clickButtonHandle(event: any, product: any): void {
     switch (event) {
       case this.ORDER:
         this.cartService.addItem(
-          { id: product.id, code: product.productCode, name: product.productName, price: product.finalPrice, qty: 1 }
+          { product: product, name: product.productName, price: product.finalPrice, qty: 1 }
         );
         break;
 
@@ -162,11 +151,11 @@ export class ProductComponent implements OnInit {
   public getTagName(event: any) {
     let value = this.commonService.fixTiengViet(event);
     switch (event) {
-      case 'ALL':
+      case this.ALL:
         this.productsList = this.productsListBk;
         break;
 
-      case 'DISCOUNT':
+      case this.DISCOUNT:
         this.productsList = this.getProductsByDiscount();
         break;
 
@@ -176,7 +165,10 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  public clearDataInput() {
+  public afterExecuted() {
     this.productInput = null;
+    this.isShowDialog = false;
+    this.getProducts();
+    this.getCategorys();
   }
 }

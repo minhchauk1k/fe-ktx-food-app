@@ -42,6 +42,7 @@ import { MenuCategoryComponent } from './main/core/menu-category/menu-category.c
 import { MenuDashboardComponent } from './main/core/menu-dashboard/menu-dashboard.component';
 import { CheckOutComponent } from './main/core/check-out/check-out.component';
 import { OrderComponent } from './main/order/order.component';
+import { AdminComponent } from './main/admin/admin.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -60,7 +61,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AboutComponent,
     MenuCartComponent,
     CheckOutComponent,
-    OrderComponent
+    OrderComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

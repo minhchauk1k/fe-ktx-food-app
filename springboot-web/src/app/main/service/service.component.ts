@@ -13,12 +13,14 @@ export class ServiceComponent implements OnInit {
   public ADD = 'ADD';
   public UPDATE = 'UPDATE';
   public DELETE = 'DELETE';
-  public ORDER = 'ORDER';
   public TAGNAME = 'ALL'
+  public ORDER = 'ORDER';
   public NUMBER = 'NUMBER';
   public PERCENT = 'PERCENT';
-  private FOOD = 'FOOD';
-  private SERVICE = 'SERVICE';
+  public FOOD = 'FOOD';
+  public SERVICE = 'SERVICE';
+  public ALL = 'ALL';
+  public DISCOUNT = 'DISCOUNT';
 
   public productsList: any[] = [];
   public productsListBk: any[] = [];
@@ -33,6 +35,8 @@ export class ServiceComponent implements OnInit {
   public isShowDialog = false;
   public stateOfDialog: any;
 
+  public urlAvatarDisplay = '';
+
   constructor(
     public commonService: CommonService,
     private productService: ProductService,
@@ -40,6 +44,7 @@ export class ServiceComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {
+    this.urlAvatarDisplay = '/assets/img/no-image.jpg';
     this.sortOptions = [
       { label: 'Giá Cao đến Thấp', value: '!price' },
       { label: 'Giá Thấp đến Cao', value: 'price' }
@@ -48,7 +53,7 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
-
+    this.getCategorys();
   }
 
   private getProducts(): void {
@@ -59,39 +64,22 @@ export class ServiceComponent implements OnInit {
 
     this.productService.getProductsByTypeAndIsDelete(param).subscribe(response => {
       this.productsList = response;
-      this.createFinalPrice();
       // create back-up data
       this.productsListBk = this.productsList;
-      this.createListMenu();
     });
   }
 
-  private createFinalPrice() {
-    this.productsList.forEach((val: any) => {
-      if (val.discount) {
-        switch (val.discountType) {
-          case this.NUMBER:
-            val.finalPrice = val.price - val.discountNumber;
-            break;
-          case this.PERCENT:
-            val.finalPrice = val.price - val.discountPercent * val.price / 100;
-            break;
-        }
-      } else {
-        val.finalPrice = val.price;
-      }
+  private getCategorys() {
+    this.productService.getCategorysService().subscribe(response => {
+      this.listMenu = response;
     });
-  }
-
-  private createListMenu() {
-    this.listMenu = new Set(this.productsList.map(item => item.category));
   }
 
   public clickButtonHandle(event: any, product: any): void {
     switch (event) {
       case this.ORDER:
         this.cartService.addItem(
-          { id: product.id, code: product.productCode, name: product.productName, price: product.finalPrice, qty: 1 }
+          { product: product, name: product.productName, price: product.finalPrice, qty: 1 }
         );
         break;
 
@@ -153,16 +141,34 @@ export class ServiceComponent implements OnInit {
     return result;
   }
 
+  private getProductsByDiscount(): any[] {
+    let result = this.productsListBk.filter(item => {
+      return item.discount == true;
+    });
+    return result;
+  }
+
   public getTagName(event: any) {
     let value = this.commonService.fixTiengViet(event);
-    if (event == 'ALL') {
-      this.productsList = this.productsListBk;
-    } else if (event != '') {
-      this.productsList = this.getProductsByCategory(value);
+    switch (event) {
+      case this.ALL:
+        this.productsList = this.productsListBk;
+        break;
+
+      case this.DISCOUNT:
+        this.productsList = this.getProductsByDiscount();
+        break;
+
+      default:
+        this.productsList = this.getProductsByCategory(value);
+        break;
     }
   }
 
-  public clearDataInput() {
+  public afterExecuted() {
     this.productInput = null;
+    this.isShowDialog = false;
+    this.getProducts();
+    this.getCategorys();
   }
 }

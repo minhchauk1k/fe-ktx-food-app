@@ -51,4 +51,11 @@ export class ProductService {
         return this.http.delete<void>(`${this.apiServerURL}/product/delete/${id}`, this.createAuthorization());
     }
 
+    public getCategorysFood(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.FOOD}`);
+    }
+
+    public getCategorysService(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.SERVICE}`);
+    }
 }

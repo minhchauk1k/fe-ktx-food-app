@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ProductService } from 'src/app/service/product.service';
@@ -46,6 +46,7 @@ export class ProductAddComponent implements OnInit {
   @Input() isDialog: any;
   @Input() productInput: any;
   @Input() stateOfDialog: any;
+  @Output() afterExecuted = new EventEmitter<string>();
 
   constructor(
     private productSevice: ProductService,
@@ -78,16 +79,37 @@ export class ProductAddComponent implements OnInit {
     });
   }
 
+  private setValueEntity() {
+    const value = this.checkoutForm.value;
+    this.productInput.productName = value.productName;
+    this.productInput.price = value.price;
+    this.productInput.discount = value.discount;
+    this.productInput.discountFromDate = value.discountFromDate;
+    this.productInput.discountToDate = value.discountToDate;
+    this.productInput.discountType = value.discountType;
+    this.productInput.discountNumber = value.discountNumber;
+    this.productInput.discountPercent = value.discountPercent;
+    this.productInput.urlAvatar = value.urlAvatar;
+    this.productInput.category = value.category;
+    this.productInput.description = value.description;
+    this.productInput.type = value.type;
+  }
+
   onSubmit(): void {
+    const value = this.checkoutForm.value;
+    
     switch (this.stateOfDialog) {
       case this.UPDATE:
-        this.productSevice.updateProduct(this.checkoutForm.value).subscribe(response => {
+        this.setValueEntity();
+        this.productSevice.updateProduct(value).subscribe(response => {
+          console.log(response)
           this.messageService.add({ severity: 'success', summary: 'Cập nhật sản phẩm thành công', life: 1500 });
           this.resetForm();
+          this.afterExecuted.emit(this.UPDATE);
         })
         break;
       default:
-        this.productSevice.addProduct(this.checkoutForm.value).subscribe(response => {
+        this.productSevice.addProduct(value).subscribe(response => {
           this.messageService.add({ severity: 'success', summary: 'Thêm sản phẩm thành công', life: 1500 });
           this.resetForm();
         });

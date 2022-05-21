@@ -1,15 +1,14 @@
 <div class="container-xxl">
     <div class="row">
         <div class="col-2">
-            <app-menu-dashboard *ngIf="commonService.isAdmin | async"></app-menu-dashboard>
             <h5>Thực đơn của quán</h5>
-            <app-menu-category *ngIf="listMenu" [listMenu]="listMenu" (newItemEvent)="getTagName($event)">
+            <app-menu-category *ngIf="listMenu" [listMenu]="listMenu" (getTagName)="getTagName($event)">
             </app-menu-category>
         </div>
 
         <div class="col-6">
             <p-dataView #dv [value]="productsList" [paginator]="false" [sortField]="sortField" [sortOrder]="sortOrder"
-                layout="list" [showFirstLastIcon]="true">
+                layout="list" [showFirstLastIcon]="true" [emptyMessage]="'Hiện không có sản phẩm nào'">
                 <ng-template pTemplate="header">
                     <div class="flex flex-column md:flex-row md:justify-content-between">
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sắp xếp theo giá"
@@ -23,7 +22,9 @@
                 <ng-template let-product pTemplate="listItem">
                     <div class="col-12">
                         <div class="product-list-item">
-                            <img [src]="product.urlAvatar" [alt]="product.productName" />
+                            <img *ngIf="product.urlAvatar != ''" [src]="product.urlAvatar"
+                                [alt]="product.productName" />
+                            <img *ngIf="product.urlAvatar == ''" [src]="urlAvatarDisplay" [alt]="product.productName" />
                             <div class="product-list-detail">
                                 <div class="product-name">{{product.productName}}</div>
                                 <div class="product-description">{{product.description}}</div>
@@ -63,10 +64,9 @@
     </div>
 </div>
 
-<p-dialog header="Thông tin của sản phẩm" [modal]="true" [draggable]="false" [(visible)]="isShowDialog"
-    (onHide)="clearDataInput()">
+<p-dialog header="Thông tin của sản phẩm" [modal]="true" [draggable]="false" [(visible)]="isShowDialog">
     <app-product-add *ngIf="productInput" [isDialog]="true" [productInput]="productInput"
-        [stateOfDialog]="stateOfDialog"></app-product-add>
+        [stateOfDialog]="stateOfDialog" (afterExecuted)="afterExecuted()"></app-product-add>
 </p-dialog>
 
 <p-confirmDialog header="Cảnh báo" icon="pi pi-exclamation-triangle"></p-confirmDialog>
