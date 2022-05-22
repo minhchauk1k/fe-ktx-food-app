@@ -28,7 +28,11 @@ export class ProductService {
     public getProductsByTypeAndIsDelete(param: any): Observable<any> {
         const type = param.type;
         const isDelete = param.delete;
-        return this.http.get<any>(`${this.apiServerURL}/product/all/${type}/${isDelete}`);
+        return this.http.get<any>(`${this.apiServerURL}/product/all/type=${type}&isDelete=${isDelete}`);
+    }
+
+    public getProductsByIsDelete(isDelete: boolean): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/product/all/isDelete=${isDelete}`);
     }
 
     public getProducts(): Observable<any> {
@@ -49,13 +53,5 @@ export class ProductService {
 
     public deleteProduct(id: number): Observable<any> {
         return this.http.delete<void>(`${this.apiServerURL}/product/delete/${id}`, this.createAuthorization());
-    }
-
-    public getCategorysFood(): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.FOOD}`);
-    }
-
-    public getCategorysService(): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.SERVICE}`);
     }
 }

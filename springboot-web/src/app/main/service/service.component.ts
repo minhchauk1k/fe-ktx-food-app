@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem, ConfirmationService, MessageService } from 'primeng/api';
 import { CartService } from 'src/app/service/cart.service';
+import { CategoryService } from 'src/app/service/category.service';
 import { CommonService } from 'src/app/service/common.service';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -42,7 +43,8 @@ export class ServiceComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService
   ) {
     this.urlAvatarDisplay = '/assets/img/no-image.jpg';
     this.sortOptions = [
@@ -70,7 +72,7 @@ export class ServiceComponent implements OnInit {
   }
 
   private getCategorys() {
-    this.productService.getCategorysService().subscribe(response => {
+    this.categoryService.getCategorysService().subscribe(response => {
       this.listMenu = response;
     });
   }
@@ -79,7 +81,7 @@ export class ServiceComponent implements OnInit {
     switch (event) {
       case this.ORDER:
         this.cartService.addItem(
-          { product: product, name: product.productName, price: product.finalPrice, qty: 1 }
+          { id: product.id, product: product, name: product.productName, price: product.finalPrice, qty: 1 }
         );
         break;
 

@@ -1,4 +1,4 @@
-<p-table [value]="cartService.getItemsList()">
+<p-table styleClass="p-datatable-sm" [value]="cartService.getItemsList()">
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of columns">

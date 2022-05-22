@@ -102,7 +102,6 @@ export class ProductAddComponent implements OnInit {
       case this.UPDATE:
         this.setValueEntity();
         this.productSevice.updateProduct(value).subscribe(response => {
-          console.log(response)
           this.messageService.add({ severity: 'success', summary: 'Cập nhật sản phẩm thành công', life: 1500 });
           this.resetForm();
           this.afterExecuted.emit(this.UPDATE);

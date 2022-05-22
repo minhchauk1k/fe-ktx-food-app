@@ -28,7 +28,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import {TableModule} from 'primeng/table';
+import { TableModule } from 'primeng/table';
+import { ChartModule } from 'primeng/chart';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -43,6 +44,15 @@ import { MenuDashboardComponent } from './main/core/menu-dashboard/menu-dashboar
 import { CheckOutComponent } from './main/core/check-out/check-out.component';
 import { OrderComponent } from './main/order/order.component';
 import { AdminComponent } from './main/admin/admin.component';
+import { ChartViewOrderComponent } from './main/admin/chart-view-order/chart-view-order.component';
+import { ChartViewProductComponent } from './main/admin/chart-view-product/chart-view-product.component';
+import { ChartViewSalesComponent } from './main/admin/chart-view-sales/chart-view-sales.component';
+import { ProductListComponent } from './main/product/product-list/product-list.component';
+import { ServiceListComponent } from './main/service/service-list/service-list.component';
+import { UserListComponent } from './main/admin/user-list/user-list.component';
+import { RoleListComponent } from './main/admin/role-list/role-list.component';
+import { OrderListComponent } from './main/admin/order-list/order-list.component';
+import { OrderManagementComponent } from './main/admin/order-list/order-management/order-management.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -62,7 +72,16 @@ export function HttpLoaderFactory(http: HttpClient) {
     MenuCartComponent,
     CheckOutComponent,
     OrderComponent,
-    AdminComponent
+    AdminComponent,
+    ChartViewOrderComponent,
+    ChartViewProductComponent,
+    ChartViewSalesComponent,
+    ProductListComponent,
+    ServiceListComponent,
+    UserListComponent,
+    RoleListComponent,
+    OrderListComponent,
+    OrderManagementComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +116,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     RadioButtonModule,
     ToastModule,
     ConfirmDialogModule,
-    TableModule
+    TableModule,
+    ChartModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]

@@ -14,6 +14,8 @@ export class CheckOutComponent implements OnInit {
   public MONEY = 'MONEY';
   public MOMO = 'MOMO'
   public ANONYMOUS = 'ANONYMOUS';
+  public WAITFORPAY = 'WAITFORPAY';
+  public PAID = 'PAID';
 
   public paymentList: any[] = [];
   public columns: any[] = [];
@@ -62,6 +64,8 @@ export class CheckOutComponent implements OnInit {
     value.details = this.createDetailsList();
     value.totalAmount = this.getTotalMoney();
     value.totalQty = this.getTotalQty();
+    value.paid = value.payType == this.MONEY ? true : false;
+    value.orderStatus = value.payType == this.MONEY ? this.PAID : this.WAITFORPAY;
 
     this.orderService.addOrder(value).subscribe(response => {
       this.messageService.add({ severity: 'success', summary: 'Đặt hàng thành công', life: 1500 });

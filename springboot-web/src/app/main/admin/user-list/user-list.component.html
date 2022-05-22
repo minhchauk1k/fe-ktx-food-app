@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <app-menu-dashboard></app-menu-dashboard>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <h5>Danh sách người dùng</h5>
+                    <div class="d-flex">
+                        <button pButton type="button" label="Thêm người dùng" class="p-button-sm"></button>
+                        <button *ngIf="selectedUser" pButton type="button" label="Xem chi tiết" class="p-button-sm"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <p-table [value]="usersList" selectionMode="single" [(selection)]="selectedUser"
+                    styleClass="p-datatable-sm" [resizableColumns]="true" scrollHeight="500px">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>STT</th>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <div>{{ rowIndex + 1 }}</div>
+                            </td>
+                            <td *ngFor="let col of columns">
+                                <div *ngIf="col.field != 'roles'">
+                                    {{rowData[col.field]}}
+                                </div>
+
+                                <div *ngIf="col.field == 'roles'">
+                                    <div *ngFor="let val of rowData['roles']">
+                                        {{val.roleName}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>

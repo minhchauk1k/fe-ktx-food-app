@@ -28,4 +28,20 @@ export class OrderService {
     public addOrder(order: any): Observable<any> {
         return this.http.post<any>(`${this.apiServerURL}/order/add`, order, this.createAuthorization());
     }
+
+    public getOrders(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/all`, this.createAuthorization());
+    }
+
+    public changeStatusOrder(id: number, status: string): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/order/update/id=${id}&status=${status}`, null, this.createAuthorization());
+    }
+
+    public getOrdersJustPaid(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/all/just/paid`, this.createAuthorization());
+    }
+
+    public getOrdersJustRepaired(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/all/just/repaired`, this.createAuthorization());
+    }
 }

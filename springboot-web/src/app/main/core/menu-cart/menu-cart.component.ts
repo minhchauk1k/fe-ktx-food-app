@@ -53,6 +53,5 @@ export class MenuCartComponent implements OnInit {
 
   checkOut() {
     this.router.navigate(["/checkout"]);
-    console.log(this.cartService.getItemsList());
   }
 }
