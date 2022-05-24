@@ -1,7 +1,15 @@
 :host ::ng-deep {
 
-    .my-scroll {
-        overflow: scroll;
+    .p-dataview-header {
+        position: sticky;
+        top: 57px;
+        z-index: 1;
+    }
+
+    .my-sticky {
+        position: sticky;
+        top: 66px;
+        z-index: 1;
     }
 
     .product-category-icon {
@@ -34,6 +42,7 @@
 
         img {
             width: 80px;
+            height: 80px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
             margin-right: 2rem;
         }
@@ -85,7 +94,9 @@
         }
 
         img {
-            width: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
             margin: 0.5rem 0;
         }
@@ -103,7 +114,7 @@
 
     .card {
         // margin: 1rem 1rem;
-        padding: 1.5rem;
+        padding: 1rem;
         box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
         border-radius: 4px;
         // margin-bottom: 0rem;

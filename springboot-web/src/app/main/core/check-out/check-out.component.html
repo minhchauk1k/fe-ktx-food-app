@@ -64,14 +64,14 @@
                 <ng-template pTemplate="body" let-item>
                     <tr>
                         <td> {{ item.name }}</td>
-                        <td> {{ item.price | number:'4.0'}} {{' VNĐ'}}</td>
+                        <td> {{ item.price | vnd}}</td>
                         <td> {{ item.qty }} </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <tr *ngIf="getTotalMoney() > 0">
                         <td>Thành tiền:</td>
-                        <td>{{getTotalMoney() | number:'4.0'}} {{' VNĐ'}}</td>
+                        <td>{{getTotalMoney() | vnd}}</td>
                         <td>{{getTotalQty()}}</td>
                     </tr>
                 </ng-template>

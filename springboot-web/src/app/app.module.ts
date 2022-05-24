@@ -30,8 +30,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
-import {ScrollTopModule} from 'primeng/scrolltop';
+import { ScrollTopModule } from 'primeng/scrolltop';
 import { ChipModule } from 'primeng/chip';
+import {SlideMenuModule} from 'primeng/slidemenu';
+import {PanelMenuModule} from 'primeng/panelmenu';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -130,9 +132,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     TableModule,
     ChartModule,
     ScrollTopModule,
-    ChipModule
+    ChipModule,
+    SlideMenuModule,
+    PanelMenuModule
   ],
-  providers: [MessageService, ConfirmationService, DecimalPipe],
+  providers: [
+    MessageService,
+    ConfirmationService,
+    DecimalPipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

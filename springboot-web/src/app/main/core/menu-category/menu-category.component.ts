@@ -4,7 +4,7 @@ import { MenuItem } from 'primeng/api/menuitem';
 @Component({
   selector: 'app-menu-category',
   templateUrl: './menu-category.component.html',
-  styleUrls: ['./menu-category.component.css']
+  styleUrls: ['./menu-category.component.scss']
 })
 export class MenuCategoryComponent implements OnInit {
   public items: MenuItem[] = [];

@@ -5,137 +5,151 @@
         </div>
 
         <div [ngClass]="{'col-9': !isDialog, 'col-12': isDialog}">
-            <h2 *ngIf="!isDialog">Thông tin của sản phẩm</h2>
-            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-                <!-- row 1 -->
-                <div class="row">
-                    <div class="col">
-                        <label for="productCode">Mã sản phẩm</label>
-                        <input class="w-100" id="productCode" type="text" pInputText formControlName="productCode">
-                    </div>
+            <div [ngClass]="{'wrapper': !isDialog, '': isDialog}">
+                <div class="col">
+                    <h5 *ngIf="!isDialog">Thông tin của sản phẩm</h5>
 
-                    <div class="col">
-                        <label for="productName">Tên sản phẩm</label>
-                        <input class="w-100" id="productName" type="text" pInputText formControlName="productName">
-                    </div>
-                </div>
-
-                <!-- row 2 -->
-                <div class="row">
-                    <div class="col">
-                        <label for="price">Giá bán</label>
-                        <p-inputNumber class="w-100" formControlName="price" mode="currency" currency="VND" [min]="0">
-                        </p-inputNumber>
-                    </div>
-
-                    <div class="col">
-                        <label for="isDiscount">Có muốn áp dụng giảm giá không?</label>
-                        <p-selectButton class="w-100" [options]="isDiscountList" formControlName="discount"
-                            optionLabel="label" optionValue="value">
-                        </p-selectButton>
-                    </div>
-                </div>
-
-                <div *ngIf="checkoutForm.get('discount')?.value" class="discountClass">
-                    <!-- row 3 -->
                     <div class="row">
-                        <div class="col">
-                            <label for="discountFromDate">Ngày bắt đầu giảm giá</label>
-                            <p-calendar class="w-100" formControlName="discountFromDate" dateFormat="dd/mm/yy">
-                            </p-calendar>
-                        </div>
+                        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                            <!-- row 1 -->
+                            <div class="row">
+                                <div class="col">
+                                    <label for="productCode">Mã sản phẩm</label>
+                                    <input class="w-100" id="productCode" type="text" pInputText
+                                        formControlName="productCode">
+                                </div>
 
-                        <div class="col">
-                            <label for="discountToDate">Ngày ngày kết thúc giảm giá</label>
-                            <p-calendar class="w-100" formControlName="discountToDate" dateFormat="dd/mm/yy">
-                            </p-calendar>
-                        </div>
-                    </div>
+                                <div class="col">
+                                    <label for="productName">Tên sản phẩm</label>
+                                    <input class="w-100" id="productName" type="text" pInputText
+                                        formControlName="productName">
+                                </div>
+                            </div>
 
-                    <!-- row 4 -->
-                    <div class="row">
-                        <div class="col">
-                            <label for="isDiscount">Loại hình giảm giá?</label>
-                            <p-selectButton class="w-100" [options]="isDiscountTypeList" formControlName="discountType"
-                                optionLabel="label" optionValue="value">
-                            </p-selectButton>
+                            <!-- row 2 -->
+                            <div class="row">
+                                <div class="col">
+                                    <label for="price">Giá bán</label>
+                                    <p-inputNumber class="w-100" formControlName="price" mode="currency" currency="VND"
+                                        [min]="0">
+                                    </p-inputNumber>
+                                </div>
 
-                        </div>
+                                <div class="col">
+                                    <label for="isDiscount">Có muốn áp dụng giảm giá không?</label>
+                                    <p-selectButton class="w-100" [options]="isDiscountList" formControlName="discount"
+                                        optionLabel="label" optionValue="value">
+                                    </p-selectButton>
+                                </div>
+                            </div>
 
-                        <div class="col" *ngIf="checkoutForm.get('discountType')?.value == PERCENT">
-                            <label for="discountPercent">Giảm theo %</label>
-                            <p-inputNumber class="w-100" formControlName="discountPercent" mode="decimal"
-                                [showButtons]="true" [step]="0.25" [min]="0" [max]="100" [minFractionDigits]="2"
-                                suffix="%"></p-inputNumber>
-                        </div>
+                            <div *ngIf="checkoutForm.get('discount')?.value" class="discountClass">
+                                <!-- row 3 -->
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="discountFromDate">Ngày bắt đầu giảm giá</label>
+                                        <p-calendar class="w-100" formControlName="discountFromDate"
+                                            dateFormat="dd/mm/yy">
+                                        </p-calendar>
+                                    </div>
 
-                        <div class="col" *ngIf="checkoutForm.get('discountType')?.value == NUMBER">
-                            <label for="discountNumber">Giảm theo giá gốc</label>
-                            <p-inputNumber class="w-100" formControlName="discountNumber" mode="currency" currency="VND"
-                                [min]="0">
-                            </p-inputNumber>
-                        </div>
+                                    <div class="col">
+                                        <label for="discountToDate">Ngày ngày kết thúc giảm giá</label>
+                                        <p-calendar class="w-100" formControlName="discountToDate"
+                                            dateFormat="dd/mm/yy">
+                                        </p-calendar>
+                                    </div>
+                                </div>
+
+                                <!-- row 4 -->
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="isDiscount">Loại hình giảm giá?</label>
+                                        <p-selectButton class="w-100" [options]="isDiscountTypeList"
+                                            formControlName="discountType" optionLabel="label" optionValue="value">
+                                        </p-selectButton>
+
+                                    </div>
+
+                                    <div class="col" *ngIf="checkoutForm.get('discountType')?.value == PERCENT">
+                                        <label for="discountPercent">Giảm theo %</label>
+                                        <p-inputNumber class="w-100" formControlName="discountPercent" mode="decimal"
+                                            [showButtons]="true" [step]="0.25" [min]="0" [max]="100"
+                                            [minFractionDigits]="2" suffix="%"></p-inputNumber>
+                                    </div>
+
+                                    <div class="col" *ngIf="checkoutForm.get('discountType')?.value == NUMBER">
+                                        <label for="discountNumber">Giảm theo giá gốc</label>
+                                        <p-inputNumber class="w-100" formControlName="discountNumber" mode="currency"
+                                            currency="VND" [min]="0">
+                                        </p-inputNumber>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- row 5 -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="w-100">
+                                        <label for="urlAvatar">Link của hình ảnh</label>
+                                        <input class="w-100" type="text" (change)="setUrlAvatar($event)" pInputText
+                                            formControlName="urlAvatar">
+                                    </div>
+
+                                    <div class="w-100 my-padding-top">
+                                        <label for="category">Nhóm sản phẩm</label>
+                                        <!-- trường hợp thêm mới -->
+                                        <p-dropdown *ngIf="!isDialog" class="w-100" [options]="categoryList"
+                                            formControlName="category" optionLabel="label" optionValue="value"
+                                            [filter]="true" [editable]="true" placeholder="Chọn nhóm sản phẩm">
+                                        </p-dropdown>
+                                        <!-- trường hợp update -->
+                                        <p-dropdown *ngIf="isDialog" class="w-100" [options]="categoryList"
+                                            formControlName="category" optionLabel="label" optionValue="value"
+                                            [filter]="true" placeholder="Chọn nhóm sản phẩm">
+                                        </p-dropdown>
+                                    </div>
+
+                                    <div class="w-100 my-padding-top">
+                                        <label for="type">Phân loại sản phẩm</label>
+                                        <p-dropdown class="w-100" [options]="typeList" formControlName="type"
+                                            optionLabel="label" optionValue="value" placeholder="Chọn loại sản phẩm">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <label class="w-100" for="img">Ảnh xem trước của sản phẩm</label>
+                                    <p-image [src]="urlAvatarDisplay" alt="Image" width="200" [preview]="true">
+                                    </p-image>
+                                </div>
+                            </div>
+
+                            <!-- row 6 -->
+                            <div class="row">
+                                <div class="col">
+                                    <label for="description">Mô tả sản phẩm</label>
+                                    <textarea class="w-100" formControlName="description" [rows]="2" pInputTextarea
+                                        [autoResize]="false"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- row 7 -->
+                            <div class="row">
+                                <div class="col">
+                                    <button pButton type="submit" *ngIf="stateOfDialog == UPDATE"
+                                        [disabled]="checkoutForm.invalid" label="Cập nhật sản phẩm"></button>
+                                    <button pButton type="submit" *ngIf="stateOfDialog != UPDATE"
+                                        [disabled]="checkoutForm.invalid" label="Thêm sản phẩm"
+                                        class="p-button-success"></button>
+                                </div>
+                                <div class="col">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <!-- row 5 -->
-                <div class="row">
-                    <div class="col">
-                        <div class="w-100">
-                            <label for="urlAvatar">Link của hình ảnh</label>
-                            <input class="w-100" type="text" (change)="setUrlAvatar($event)" pInputText
-                                formControlName="urlAvatar">
-                        </div>
-
-                        <div class="w-100 my-padding-top">
-                            <label for="category">Nhóm sản phẩm</label>
-                            <!-- trường hợp thêm mới -->
-                            <p-dropdown *ngIf="!isDialog" class="w-100" [options]="categoryList"
-                                formControlName="category" optionLabel="label" optionValue="value" [filter]="true"
-                                [editable]="true" placeholder="Chọn nhóm sản phẩm">
-                            </p-dropdown>
-                            <!-- trường hợp update -->
-                            <p-dropdown *ngIf="isDialog" class="w-100" [options]="categoryList"
-                                formControlName="category" optionLabel="label" optionValue="value" [filter]="true"
-                                placeholder="Chọn nhóm sản phẩm">
-                            </p-dropdown>
-                        </div>
-
-                        <div class="w-100 my-padding-top">
-                            <label for="type">Phân loại sản phẩm</label>
-                            <p-dropdown class="w-100" [options]="typeList" formControlName="type" optionLabel="label"
-                                optionValue="value" placeholder="Chọn loại sản phẩm">
-                            </p-dropdown>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <label class="w-100" for="img">Ảnh xem trước của sản phẩm</label>
-                        <p-image [src]="urlAvatarDisplay" alt="Image" width="200" [preview]="true"></p-image>
-                    </div>
-                </div>
-
-                <!-- row 6 -->
-                <div class="row">
-                    <div class="col">
-                        <label for="description">Mô tả sản phẩm</label>
-                        <textarea class="w-100" formControlName="description" [rows]="2" pInputTextarea
-                            [autoResize]="false"></textarea>
-                    </div>
-                </div>
-
-                <!-- row 7 -->
-                <div class="row">
-                    <div class="col">
-                        <button pButton type="submit" *ngIf="stateOfDialog == UPDATE" [disabled]="checkoutForm.invalid"
-                            label="Cập nhật sản phẩm"></button>
-                        <button pButton type="submit" *ngIf="stateOfDialog != UPDATE" [disabled]="checkoutForm.invalid"
-                            label="Thêm sản phẩm" class="p-button-success"></button>
-                    </div>
-                    <div class="col">
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

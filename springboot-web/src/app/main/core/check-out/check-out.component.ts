@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CartService } from 'src/app/service/cart.service';
+import { CommonService } from 'src/app/service/common.service';
 import { OrderService } from 'src/app/service/order.service';
 
 @Component({
@@ -24,8 +25,8 @@ export class CheckOutComponent implements OnInit {
 
   public checkoutForm = this.formBuilder.group({
     userDisplayName: '',
-    phoneNumber: null,
-    address: '',
+    phoneNumber: [null, Validators.required],
+    address: [null, Validators.required],
     note: '',
     payType: this.MONEY,
     createUser: this.ANONYMOUS,
@@ -33,10 +34,11 @@ export class CheckOutComponent implements OnInit {
   });
 
   constructor(
-    private formBuilder: FormBuilder,
     public cartService: CartService,
+    private formBuilder: FormBuilder,
     private orderService: OrderService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private commonService: CommonService
   ) {
     this.paymentList = [
       { label: 'Bằng tiền mặt', value: this.MONEY },
@@ -76,10 +78,13 @@ export class CheckOutComponent implements OnInit {
       value.orderStatus = value.payType == this.MONEY ? this.WAITFORPAY : this.PAID;
 
 
-      this.orderService.addOrder(value).subscribe(response => {
-        this.messageService.add({ severity: 'success', summary: 'Đặt hàng thành công', life: 1500 });
-        this.checkoutForm.reset();
-        this.cartService.clearItems();
+      this.orderService.addOrder(value).subscribe({
+        next: response => {
+          this.messageService.add({ severity: 'success', summary: 'Đặt hàng thành công', life: 1500 });
+          this.checkoutForm.reset();
+          this.cartService.clearItems();
+        },
+        error: this.commonService.erorrHandle()
       });
     }
     this.showConfirm = false;

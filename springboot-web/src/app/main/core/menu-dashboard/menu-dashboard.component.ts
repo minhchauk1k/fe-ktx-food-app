@@ -5,7 +5,7 @@ import { CommonService } from 'src/app/service/common.service';
 @Component({
   selector: 'app-menu-dashboard',
   templateUrl: './menu-dashboard.component.html',
-  styleUrls: ['./menu-dashboard.component.css']
+  styleUrls: ['./menu-dashboard.component.scss']
 })
 export class MenuDashboardComponent implements OnInit {
   public items: MenuItem[] = [];

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
+import { CommonService } from 'src/app/service/common.service';
 
 
 @Component({
@@ -14,7 +15,8 @@ export class HeaderComponent implements OnInit {
   public activeItem!: MenuItem;
 
   constructor(
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private commonService: CommonService
   ) {
     translateService.use('vi');
     // this.items.map(item => item.label = this.translateService.instant(item.label));
@@ -22,13 +24,18 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [
-      { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/']},
-      { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product']},
-      { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service']},
-      { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about']},
-      { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login']},
-      { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order']},
-      { label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin']}
+      { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+      { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
+      { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
+      { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
+      { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] },
+      // { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] },
+      { label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin'] },
+      { label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
+        command: () => {
+          this.commonService.userLogout();
+        }
+      }
     ];
 
     // this.items = [

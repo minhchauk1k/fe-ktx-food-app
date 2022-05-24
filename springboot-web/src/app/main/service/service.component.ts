@@ -29,12 +29,10 @@ export class ServiceComponent implements OnInit {
   public productInput: any;
   public selectedProduct: any;
 
-  public sortOrder: number = 1;
   public sortOptions: SelectItem[];
-  public sortField: string = '';
-  public sortKey: any;
+  public sortKey = 1;
 
-  public showDeleteConfirm = false;
+  public isShowConfirm = false;
   public isShowDialog = false;
   public stateOfDialog: any;
 
@@ -44,14 +42,13 @@ export class ServiceComponent implements OnInit {
     public commonService: CommonService,
     private productService: ProductService,
     private cartService: CartService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private categoryService: CategoryService
   ) {
     this.urlDefault = '/assets/img/no-image.jpg';
     this.sortOptions = [
-      { label: 'Giá Cao đến Thấp', value: '!price' },
-      { label: 'Giá Thấp đến Cao', value: 'price' }
+      { label: 'Giá Cao đến Thấp', value: 1 },
+      { label: 'Giá Thấp đến Cao', value: -1 }
     ];
   }
 
@@ -68,7 +65,8 @@ export class ServiceComponent implements OnInit {
 
     this.productService.getProductsByTypeAndIsDelete(param).subscribe(response => {
       this.productsList = response;
-      // create back-up data
+      this.sortProductList();
+      // create backup data
       this.productsListBk = this.productsList;
     });
   }
@@ -96,9 +94,19 @@ export class ServiceComponent implements OnInit {
         break;
 
       case this.DELETE:
-        this.showDeleteConfirm = true;
+        this.isShowConfirm = true;
         this.selectedProduct = product;
         break;
+    }
+  }
+
+  public sortProductList(): void {
+    if (this.sortKey == 1) {
+      // giảm dần
+      this.productsList.sort((a, b) => b.finalPrice - a.finalPrice);
+    } else {
+      // tăng dần
+      this.productsList.sort((a, b) => a.finalPrice - b.finalPrice);
     }
   }
 
@@ -109,20 +117,7 @@ export class ServiceComponent implements OnInit {
         this.getProducts();
       });
     }
-    this.showDeleteConfirm = false;
-  }
-
-  public onSortChange(event: any) {
-    let value = event.value;
-
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
-    }
-    else {
-      this.sortOrder = 1;
-      this.sortField = value;
-    }
+    this.isShowConfirm = false;
   }
 
   public onSearch(event: any) {
@@ -170,6 +165,7 @@ export class ServiceComponent implements OnInit {
         this.productsList = this.getProductsByCategory(value);
         break;
     }
+    this.sortProductList();
   }
 
   public afterExecuted() {
