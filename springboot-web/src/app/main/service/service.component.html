@@ -9,6 +9,7 @@
         <div class="col-6">
             <p-dataView #dv [value]="productsList" [paginator]="false" [sortField]="sortField" [sortOrder]="sortOrder"
                 layout="list" [showFirstLastIcon]="true" [emptyMessage]="'Hiện không có sản phẩm nào'">
+                <!-- header -->
                 <ng-template pTemplate="header">
                     <div class="flex flex-column md:flex-row md:justify-content-between">
                         <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sắp xếp theo giá"
@@ -17,40 +18,105 @@
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Tìm món" (input)="onSearch($event)">
                         </span>
+                        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
                     </div>
                 </ng-template>
+
+                <!-- cài đặt hiển thị dạng list -->
                 <ng-template let-product pTemplate="listItem">
                     <div class="col-12">
                         <div class="product-list-item">
-                            <img *ngIf="product.urlAvatar != ''" [src]="product.urlAvatar"
+                            <!-- ảnh sản phẩm  -->
+                            <img [src]="product.urlAvatar == '' ? urlDefault: product.urlAvatar"
                                 [alt]="product.productName" />
-                            <img *ngIf="product.urlAvatar == ''" [src]="urlAvatarDisplay" [alt]="product.productName" />
+
+                            <!-- phần thông tin sản phẩm -->
                             <div class="product-list-detail">
                                 <div class="product-name">{{product.productName}}</div>
                                 <div class="product-description">{{product.description}}</div>
-                                <!-- <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating> -->
-                                <i class="pi pi-tag product-category-icon"></i>
-                                <span class="product-category">{{product.category}}</span>
+                                <!-- phần tag name  -->
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category">{{product.category}}</span>
+                                </div>
                             </div>
+
+                            <!-- phần thông hành động với sản phẩm -->
                             <div class="product-list-action">
-                                <span *ngIf="product.discount" class="product-old-price pr-2">{{product.price |
-                                    number:'4.0'}} VNĐ</span>
-                                <span *ngIf="product.discount" class="product-price pr-2">{{product.finalPrice |
-                                    number:'4.0'}}
-                                    VNĐ</span>
-                                <span *ngIf="!product.discount" class="product-price pr-2">{{product.finalPrice |
-                                    number:'4.0'}} VNĐ</span>
+                                <!-- giá sản phẩm -->
+                                <div class="d-flex flex-column">
+                                    <span class="product-old-price pr-2" *ngIf="product.discount">{{product.price |
+                                        vnd}}</span>
+                                    <span class="product-price pr-2">{{product.finalPrice | vnd}}</span>
+                                </div>
+
+                                <!-- button mua  -->
                                 <button pButton type="button" icon="pi pi-shopping-cart" label="Đặt món"
-                                    class="p-button-success p-button-sm my-p-button"
+                                    class="p-button-success p-button-sm"
                                     [disabled]="product.inventoryStatus == 'OUTOFSTOCK'"
-                                    (click)="clickButtonHandle(ORDER, product)"></button>
-                                <button *ngIf="commonService.isAdmin | async" pButton type="button" icon="pi pi-pencil"
-                                    label="Sửa" class="p-button-info p-button-sm my-p-button"
-                                    (click)="clickButtonHandle(UPDATE, product)"></button>
-                                <button *ngIf="commonService.isAdmin | async" pButton type="button" icon="pi pi-times"
-                                    label="Xóa" class="p-button-danger p-button-sm my-p-button"
-                                    (click)="clickButtonHandle(DELETE, product)"></button>
+                                    (click)="buttonHandle(ORDER, product)"></button>
+
+                                <!-- button sửa xóa  -->
+                                <div class="d-flex flex-column" *ngIf="commonService.isAdmin | async">
+                                    <button pButton type="button" icon="pi pi-pencil" class="p-button-sm" label="Sửa"
+                                        (click)="buttonHandle(UPDATE, product)"></button>
+                                    <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm"
+                                        label="Xóa" (click)="buttonHandle(DELETE, product)"></button>
+                                </div>
+
                                 <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- cài đặt hiển thị dạng grid -->
+                <ng-template let-product pTemplate="gridItem">
+                    <div class="col-12 md:col-6">
+                        <div class="product-grid-item card">
+
+                            <div class="product-grid-item-top">
+                                <!-- phần tag name  -->
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"></i>
+                                    <span class="product-category">{{product.category}}</span>
+                                </div>
+                                <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+                            </div>
+
+                            <div class="product-grid-item-content">
+                                <!-- ảnh sản phẩm  -->
+                                <img [src]="product.urlAvatar == '' ? urlDefault: product.urlAvatar"
+                                    [alt]="product.productName" />
+
+                                <div class="product-name">{{product.productName}}</div>
+                                <div class="product-description">{{product.description}}</div>
+                            </div>
+
+                            <div class="product-grid-item-bottom">
+                                <!-- giá sản phẩm -->
+                                <div class="d-flex flex-column">
+                                    <span class="product-old-price" *ngIf="product.discount">{{product.price |
+                                        vnd}}</span>
+                                    <span class="product-price">{{product.finalPrice | vnd}}</span>
+                                </div>
+
+                                <!-- các button -->
+                                <div class="d-flex">
+                                    <!-- button mua  -->
+                                    <button pButton type="button" icon="pi pi-shopping-cart"
+                                        class="p-button-sm p-button-success" (click)="buttonHandle(ORDER, product)"
+                                        [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></button>
+
+                                    <!-- button sửa xóa  -->
+                                    <div class="d-flex" *ngIf="commonService.isAdmin | async">
+                                        <button pButton type="button" icon="pi pi-pencil" class="p-button-sm"
+                                            (click)="buttonHandle(UPDATE, product)"></button>
+                                        <button pButton type="button" icon="pi pi-times"
+                                            class="p-button-danger p-button-sm"
+                                            (click)="buttonHandle(DELETE, product)"></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -69,4 +135,4 @@
         [stateOfDialog]="stateOfDialog" (afterExecuted)="afterExecuted()"></app-product-add>
 </p-dialog>
 
-<p-confirmDialog header="Cảnh báo" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<app-custom-confirm-dialog *ngIf="showDeleteConfirm" (result)="resultIsDelete($event)"></app-custom-confirm-dialog>

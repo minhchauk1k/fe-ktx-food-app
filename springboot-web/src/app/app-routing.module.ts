@@ -14,6 +14,8 @@ import { UserListComponent } from './main/admin/user-list/user-list.component';
 import { OrderListComponent } from './main/admin/order-list/order-list.component';
 import { RoleListComponent } from './main/admin/role-list/role-list.component';
 import { OrderManagementComponent } from './main/admin/order-list/order-management/order-management.component';
+import { OrderDeliveryComponent } from './main/admin/order-list/order-delivery/order-delivery.component';
+import { OrderDeliveryLotComponent } from './main/admin/order-list/order-delivery-lot/order-delivery-lot.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '', pathMatch: 'full' },
@@ -31,6 +33,8 @@ const routes: Routes = [
   { path: 'user-list', component:  UserListComponent},
   { path: 'order-list', component:  OrderListComponent},
   { path: 'order-management', component:  OrderManagementComponent},
+  { path: 'order-delivery', component:  OrderDeliveryComponent},
+  { path: 'order-delivery-lot', component:  OrderDeliveryLotComponent},
   { path: 'role-list', component:  RoleListComponent},
   // { path: '**', component: PageNotFoundComponent }
 ];

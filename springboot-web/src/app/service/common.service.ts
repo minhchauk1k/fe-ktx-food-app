@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { CartService } from "./cart.service";
+import { MessageService } from "primeng/api";
 
 @Injectable({
     providedIn: 'root'
@@ -20,22 +21,24 @@ export class CommonService {
     constructor(
         private http: HttpClient,
         private router: Router,
-        private cartService: CartService
+        private cartService: CartService,
+        private messageService: MessageService
     ) { }
 
-    public getIsAdmin(): boolean {
-        let result = false;
-        this.isAdmin.subscribe(val => result = val);
-        return result;
+    public erorrHandle(): any {
+        return (error: any) => {
+            if (error.status == 403) {
+                this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
+                this.router.navigate(["/login"]);
+            } else {
+                this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi', detail: 'Vui lòng liên hệ quản trị viên!', life: 5000 });
+            }
+        }
     }
 
-    public getIsLogin(): boolean {
-        let result = false;
-        this.isLogin.subscribe(val => result = val);
-        return result;
-    }
-
-    public userLogin(username: string, password: string) {
+    public userLogin(data: { username: string, password: string }) {
+        const username: string = data.username;
+        const password: string = data.password;
         this.login(username, password).subscribe(response => {
             if (response.accessToken) {
                 const access_token = response.accessToken;
@@ -61,8 +64,6 @@ export class CommonService {
     public userLogout() {
         this._isLogin.next(false);
         this._isAdmin.next(false);
-        // this.isLogin = this._isLogin.asObservable();
-        // this.isAdmin = this._isAdmin.asObservable();
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         this.cartService.clearItems();

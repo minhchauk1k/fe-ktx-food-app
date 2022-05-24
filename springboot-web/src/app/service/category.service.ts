@@ -25,6 +25,10 @@ export class CategoryService {
 
     constructor(private http: HttpClient) { }
 
+    public getCategorys(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/categorys`);
+    }
+
     public getCategorysFood(): Observable<any> {
         return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.FOOD}`);
     }

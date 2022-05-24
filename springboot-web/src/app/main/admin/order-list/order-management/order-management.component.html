@@ -10,113 +10,159 @@
                 </div>
             </div>
 
+            <!-- table trên  -->
             <div class="row">
-                <p-table [value]="ordersList" dataKey="orderCode" styleClass="p-datatable-sm" [resizableColumns]="true"
-                    scrollHeight="200px">
-
+                <p-table [columns]="columnsName" [value]="ordersList" dataKey="orderCode"
+                    styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true" scrollHeight="200px">
+                    <!-- caption -->
                     <ng-template pTemplate="caption">
                         Đơn khách đã đặt
                     </ng-template>
 
-                    <ng-template pTemplate="header">
+                    <!-- header -->
+                    <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th>STT</th>
-                            <th>Chi tiết</th>
-                            <th *ngFor="let col of columnsOrder">
-                                {{col.header}}
-
-                                <!-- <div *ngIf="col.field != 'orderStatus'">
+                            <ng-container *ngFor="let col of columns">
+                                <th [ngClass]="col.headerClass">
                                     {{col.header}}
-                                </div>
-
-                                <div pSortableColumn="orderStatus" *ngIf="col.field == 'orderStatus'">
-                                    {{col.header}}
-                                    <p-sortIcon field="orderStatus"></p-sortIcon>
-                                </div> -->
-                            </th>
+                                </th>
+                            </ng-container>
                         </tr>
                     </ng-template>
 
-                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded">
+                    <!-- body -->
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex"
+                        let-expanded="expanded">
                         <tr>
-                            <td>
-                                <div>{{ rowIndex + 1 }}</div>
-                            </td>
-                            
-                            <td>
-                                <button type="button" pButton pRipple [pRowToggler]="rowData"
-                                    class="p-button-text p-button-rounded p-button-plain p-button-sm"
-                                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                            </td>
+                            <ng-container *ngFor="let col of columns">
+                                <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                    {{ rowIndex + 1 }}
+                                </td>
 
-                            <td *ngFor="let col of columnsOrder">
-                                <div *ngIf="col.field != 'myCustom'">
+                                <td [ngClass]="col.class" *ngIf="col.field == 'showDetails'">
+                                    <button type="button" pButton pRipple [pRowToggler]="rowData"
+                                        class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                </td>
+
+                                <td [ngClass]="col.class"
+                                    *ngIf="col.field != 'index' && col.field != 'showDetails'  && col.field != 'button'">
                                     {{rowData[col.field]}}
-                                </div>
+                                </td>
 
-                                <div *ngIf="col.field == 'myCustom'">
-                                    <button type="button" pButton label="Đang chuẩn bị" class="p-button-sm p-button-success"
-                                    (click)="changeStatusOrder(rowData, ORDER)"></button>
-                                </div>
-                            </td>
+                                <td [ngClass]="col.class" *ngIf="col.field == 'button'">
+                                    <button type="button" pButton label="Đang chuẩn bị"
+                                        class="p-button-sm p-button-success"
+                                        (click)="changeStatusOrder(rowData, ORDER)"></button>
+                                </td>
+                            </ng-container>
                         </tr>
                     </ng-template>
 
                     <!-- phần setting mở rộng row -->
                     <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
                         <tr>
+                            <td></td>
                             <td colspan="5">
                                 <div>
-                                    <p-table [value]="rowData.details" dataKey="id" styleClass="p-datatable-sm">
+                                    <p-table [value]="rowData.details" dataKey="id"
+                                        styleClass="p-datatable-striped p-datatable-sm">
                                         <ng-template pTemplate="body" let-detail>
-                                            <tr>
-                                                <td>Sản phẩm:</td>
-                                                <td style="font-weight: 800;">{{detail.product.productName}}</td>
-                                                <td>Số lượng:</td>
-                                                <td style="font-weight: 800;">{{detail.qty}}</td>
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
-                                </div>
-                            </td>
+                        <tr>
+                            <td>Sản phẩm:</td>
+                            <td style="font-weight: 800;">{{detail.product.productName}}</td>
+                            <td>Số lượng:</td>
+                            <td style="font-weight: 800;">{{detail.qty}}</td>
                         </tr>
                     </ng-template>
                 </p-table>
             </div>
+            </td>
+            </tr>
+            </ng-template>
+            <!-- phần setting mở rộng row -->
+            </p-table>
+        </div>
 
-            <div class="row">
-                <p-table [value]="ordersListWait" styleClass="p-datatable-sm" [resizableColumns]="true"
-                scrollHeight="200px">
-                    <ng-template pTemplate="caption">
-                        Đơn đang chuẩn bị
-                    </ng-template>
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>STT</th>
-                            <th *ngFor="let col of columnsOrderWait">
+        <!-- table dưới  -->
+        <div class="row">
+            <p-table [columns]="columnsName" [value]="ordersListWait" dataKey="orderCode"
+                styleClass="p-datatable-sm p-datatable-striped" [resizableColumns]="true" scrollHeight="200px">
+                <!-- caption -->
+                <ng-template pTemplate="caption">
+                    Đơn đang chuẩn bị
+                </ng-template>
+
+                <!-- header -->
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <ng-container *ngFor="let col of columns">
+                            <th [ngClass]="col.headerClass">
                                 {{col.header}}
                             </th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                        <tr [pSelectableRow]="rowData">
-                            <td>
-                                <div>{{ rowIndex + 1 }}</div>
-                            </td>
-                            <td *ngFor="let col of columnsOrderWait">
-                                <div *ngIf="col.field != 'myCustom'">
-                                    {{rowData[col.field]}}
-                                </div>
+                        </ng-container>
+                    </tr>
+                </ng-template>
 
-                                <div *ngIf="col.field == 'myCustom'">
-                                    <button type="button" pButton label="Hủy chuẩn bị" class="p-button-sm p-button-danger"
-                                    (click)="changeStatusOrder(rowData, PREPARING)"></button>
-                                </div>
+                <!-- body -->
+                <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex"
+                    let-expanded="expanded">
+                    <tr>
+                        <ng-container *ngFor="let col of columns">
+                            <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                {{ rowIndex + 1 }}
                             </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
+
+                            <td [ngClass]="col.class" *ngIf="col.field == 'showDetails'">
+                                <button type="button" pButton pRipple [pRowToggler]="rowData"
+                                    class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                            </td>
+
+                            <td [ngClass]="col.class"
+                                *ngIf="col.field != 'index' && col.field != 'showDetails'  && col.field != 'button'">
+                                {{rowData[col.field]}}
+                            </td>
+
+                            <td [ngClass]="col.class" *ngIf="col.field == 'button'">
+                                <button type="button" pButton label="Hủy chuẩn bị" class="p-button-sm p-button-danger"
+                                    (click)="changeStatusOrder(rowData, PREPARING)"></button>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+
+                <!-- phần setting mở rộng row -->
+                <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                    <tr>
+                        <td></td>
+                        <td colspan="5">
+                            <div>
+                                <p-table [value]="rowData.details" dataKey="id"
+                                    styleClass="p-datatable-striped p-datatable-sm">
+                                    <ng-template pTemplate="body" let-detail>
+                    <tr>
+                        <td>Sản phẩm:</td>
+                        <td style="font-weight: 800;">{{detail.product.productName}}</td>
+                        <td>Số lượng:</td>
+                        <td style="font-weight: 800;">{{detail.qty}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        </td>
+        </tr>
+        </ng-template>
+        <!-- phần setting mở rộng row -->
+        </p-table>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button *ngIf="ordersListWait.length" pButton type="button" label="Giao hàng" (click)="deliveryOrders()"></button>
+        </div>
+        <div class="col">
         </div>
     </div>
+</div>
+</div>
 </div>

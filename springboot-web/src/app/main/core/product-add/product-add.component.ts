@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { CategoryService } from 'src/app/service/category.service';
+import { CommonService } from 'src/app/service/common.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -17,6 +19,8 @@ export class ProductAddComponent implements OnInit {
   public PERCENT = 'PERCENT';
   private FOOD = 'FOOD';
   private SERVICE = 'SERVICE';
+  private ALL = 'ALL';
+  private DISCOUNT = 'DISCOUNT';
 
   public isDiscountList: any[] = [];
   public isDiscountTypeList: any[] = [];
@@ -31,16 +35,14 @@ export class ProductAddComponent implements OnInit {
     discountFromDate: '',
     discountToDate: '',
     price: [null, Validators.required],
-    discount: false,
+    discount: [false, Validators.required],
     discountPercent: null,
     discountNumber: null,
     urlAvatar: '',
     description: '',
-    category: '',
-    type: '',
+    category: ['', Validators.required],
+    type: ['', Validators.required],
     discountType: this.NUMBER,
-    createUser: null,
-    createDate: null
   });
 
   @Input() isDialog: any;
@@ -51,7 +53,9 @@ export class ProductAddComponent implements OnInit {
   constructor(
     private productSevice: ProductService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService,
+    private commonService: CommonService
   ) {
     this.urlAvatarDisplay = '/assets/img/no-image.jpg';
     this.isDiscountList = [{ label: 'Có', value: true }, { label: 'Không', value: false }];
@@ -70,12 +74,26 @@ export class ProductAddComponent implements OnInit {
     }
   }
 
-  getCategoryList() {
-    this.productSevice.getProducts().subscribe(response => {
-      let nameList = new Set(response.map((item: any) => item.category));
-      nameList.forEach(item => {
-        this.categoryList.push({ label: item, value: item })
-      });
+  private getCategoryList(): void {
+    this.categoryService.getCategorys().subscribe({
+      next: response => {
+        // lấy ra tên của response
+        let nameFromResponse: any[] = [];
+        response.forEach((val: any) => {
+          if (val.categoryKey != this.ALL && val.categoryKey != this.DISCOUNT) {
+            nameFromResponse.push(val.categoryValue);
+          }
+        })
+
+        // tạo set duy nhất
+        let nameList = new Set(nameFromResponse.sort());
+
+        // gán value cho categoryList
+        nameList.forEach(item => {
+          this.categoryList.push({ label: item, value: item })
+        });
+      },
+      error: this.commonService.erorrHandle()
     });
   }
 
@@ -97,7 +115,7 @@ export class ProductAddComponent implements OnInit {
 
   onSubmit(): void {
     const value = this.checkoutForm.value;
-    
+
     switch (this.stateOfDialog) {
       case this.UPDATE:
         this.setValueEntity();
@@ -118,7 +136,12 @@ export class ProductAddComponent implements OnInit {
 
   resetForm() {
     this.checkoutForm.reset();
+    this.checkoutForm.patchValue({
+      discount: false,
+      discountType: this.NUMBER
+    });
     this.urlAvatarDisplay = '/assets/img/no-image.jpg';
+    this.categoryList = [];
     this.getCategoryList();
   }
 
@@ -129,5 +152,4 @@ export class ProductAddComponent implements OnInit {
   setUrlAvatar(event: any) {
     this.urlAvatarDisplay = event.target.value;
   }
-
 }

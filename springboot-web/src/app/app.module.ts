@@ -30,6 +30,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
+import {ScrollTopModule} from 'primeng/scrolltop';
+import { ChipModule } from 'primeng/chip';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -53,6 +55,11 @@ import { UserListComponent } from './main/admin/user-list/user-list.component';
 import { RoleListComponent } from './main/admin/role-list/role-list.component';
 import { OrderListComponent } from './main/admin/order-list/order-list.component';
 import { OrderManagementComponent } from './main/admin/order-list/order-management/order-management.component';
+import { OrderDeliveryComponent } from './main/admin/order-list/order-delivery/order-delivery.component';
+import { OrderDeliveryLotComponent } from './main/admin/order-list/order-delivery-lot/order-delivery-lot.component';
+import { VndPipe } from './pipe/vnd.pipe';
+import { DecimalPipe } from '@angular/common';
+import { CustomConfirmDialogComponent } from './main/core/custom-confirm-dialog/custom-confirm-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -81,7 +88,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserListComponent,
     RoleListComponent,
     OrderListComponent,
-    OrderManagementComponent
+    OrderManagementComponent,
+    OrderDeliveryComponent,
+    OrderDeliveryLotComponent,
+    VndPipe,
+    CustomConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -117,9 +128,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     ToastModule,
     ConfirmDialogModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    ScrollTopModule,
+    ChipModule
   ],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService, DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

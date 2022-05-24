@@ -27,16 +27,18 @@ export class ServiceComponent implements OnInit {
   public productsListBk: any[] = [];
   public listMenu: any;
   public productInput: any;
+  public selectedProduct: any;
 
   public sortOrder: number = 1;
   public sortOptions: SelectItem[];
   public sortField: string = '';
   public sortKey: any;
 
+  public showDeleteConfirm = false;
   public isShowDialog = false;
   public stateOfDialog: any;
 
-  public urlAvatarDisplay = '';
+  public urlDefault = '';
 
   constructor(
     public commonService: CommonService,
@@ -46,7 +48,7 @@ export class ServiceComponent implements OnInit {
     private messageService: MessageService,
     private categoryService: CategoryService
   ) {
-    this.urlAvatarDisplay = '/assets/img/no-image.jpg';
+    this.urlDefault = '/assets/img/no-image.jpg';
     this.sortOptions = [
       { label: 'Giá Cao đến Thấp', value: '!price' },
       { label: 'Giá Thấp đến Cao', value: 'price' }
@@ -77,7 +79,7 @@ export class ServiceComponent implements OnInit {
     });
   }
 
-  public clickButtonHandle(event: any, product: any): void {
+  public buttonHandle(event: any, product: any): void {
     switch (event) {
       case this.ORDER:
         this.cartService.addItem(
@@ -94,17 +96,20 @@ export class ServiceComponent implements OnInit {
         break;
 
       case this.DELETE:
-        this.confirmationService.confirm({
-          message: 'Bạn có muốn xóa sản phẩm này hay không?',
-          accept: () => {
-            this.productService.deleteProduct(product.id).subscribe(response => {
-              this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm sản phẩm thành công' });
-              this.getProducts();
-            });
-          }
-        });
+        this.showDeleteConfirm = true;
+        this.selectedProduct = product;
         break;
     }
+  }
+
+  public resultIsDelete(data: boolean) {
+    if (data) {
+      this.productService.deleteProduct(this.selectedProduct.id).subscribe(response => {
+        this.messageService.add({ severity: 'success', detail: 'Xóa sản phẩm thành công', summary: 'Thành công', life: 1500 });
+        this.getProducts();
+      });
+    }
+    this.showDeleteConfirm = false;
   }
 
   public onSortChange(event: any) {

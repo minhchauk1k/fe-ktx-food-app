@@ -1,46 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CommonService } from 'src/app/service/common.service';
 import { OrderService } from 'src/app/service/order.service';
 
 @Component({
   selector: 'app-order-management',
   templateUrl: './order-management.component.html',
-  styleUrls: ['./order-management.component.css']
+  styleUrls: ['./order-management.component.scss']
 })
 export class OrderManagementComponent implements OnInit {
   public ORDER = 'ORDER';
   public PREPARING = 'PREPARING';
   public WAITFORPAY = 'WAITFORPAY';
   public PAID = 'PAID';
+  public LOT_CONTROL = 'LOT_CONTROL';
+  public YES = 'YES';
 
   public ordersList: any[] = [];
   public ordersListWait: any[] = [];
   public ordersListDelivery: any[] = [];
-  public columnsOrder: any[] = [];
-  public columnsOrderWait: any[] = [];
+  public columnsName: any[] = [];
   public statusOrderList: any[] = []
 
-  public selectedOrder: any;
-  public selectedOrderWait: any;
+  public isLotControl: boolean = false;
 
   constructor(
     private orderService: OrderService,
     private messageService: MessageService,
-    private router: Router,
+    private commonService: CommonService
   ) {
-    this.columnsOrder = [
-      { field: 'orderCode', header: 'Mã đơn hàng' },
-      { field: 'address', header: 'Địa chỉ giao hàng' },
-      { field: 'orderStatus', header: 'Trạng thái' },
-      { field: 'myCustom', header: 'Xử lý' },
-    ];
-
-    this.columnsOrderWait = [
-      { field: 'orderCode', header: 'Mã đơn hàng' },
-      { field: 'address', header: 'Địa chỉ giao hàng' },
-      { field: 'orderStatus', header: 'Trạng thái' },
-      { field: 'myCustom', header: 'Xử lý' },
+    this.columnsName = [
+      { field: 'index', header: 'STT', headerClass: 'text-center', class: 'text-center' },
+      { field: 'showDetails', header: 'Chi tiết', headerClass: 'text-center', class: 'text-center' },
+      { field: 'orderCode', header: 'Mã đơn hàng', headerClass: 'text-center', class: '' },
+      { field: 'address', header: 'Địa chỉ giao hàng', headerClass: 'text-center my-270', class: 'my-270 text-truncate' },
+      { field: 'phoneNumber', header: 'Số điện thoại', headerClass: 'text-center', class: 'text-center' },
+      { field: 'orderStatus', header: 'Trạng thái', headerClass: 'text-center', class: 'text-center' },
+      { field: 'button', header: 'Xử lý', headerClass: 'text-center', class: 'text-center' },
     ];
 
     this.statusOrderList = [
@@ -50,13 +47,23 @@ export class OrderManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // setInterval(() => {
-    //   this.getOrdersJustPaid();
-    //   this.getOrdersJustRepaired();
-    // }, 1000);
+    // tạo request mỗi 1 phút
+    setInterval(() => {
+      this.getOrdersJustPaid();
+    }, 1000 * 60);
 
     this.getOrdersJustPaid();
     this.getOrdersJustRepaired();
+    this.getIsLotControl();
+  }
+
+  private getIsLotControl(): void {
+    this.commonService.getParameter(this.LOT_CONTROL).subscribe({
+      next: response => {
+        this.isLotControl = response == this.YES ? true : false;
+      },
+      error: this.commonService.erorrHandle()
+    });
   }
 
   private getOrdersJustPaid(): void {
@@ -64,14 +71,7 @@ export class OrderManagementComponent implements OnInit {
       next: response => {
         this.ordersList = response;
       },
-      error: error => {
-        if (error.status == 403) {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
-          this.router.navigate(["/login"]);
-        } else {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi', detail: 'Vui lòng liên hệ quản trị viên', life: 5000 });
-        }
-      }
+      error: this.commonService.erorrHandle()
     });
   }
 
@@ -80,14 +80,7 @@ export class OrderManagementComponent implements OnInit {
       next: response => {
         this.ordersListWait = response;
       },
-      error: error => {
-        if (error.status == 403) {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
-          this.router.navigate(["/login"]);
-        } else {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi', detail: 'Vui lòng liên hệ quản trị viên', life: 5000 });
-        }
-      }
+      error: this.commonService.erorrHandle()
     });
   }
 
@@ -113,7 +106,8 @@ export class OrderManagementComponent implements OnInit {
             });
             // add vào bảng mới
             this.ordersListWait.push(response);
-            this.messageService.add({ severity: 'success', summary: 'Thành công', detail: order.orderCode + ' đang được chuẩn bị' });
+            this.ordersListWait.sort((a, b) => a.orderCode - b.orderCode);
+            this.messageService.add({ severity: 'info', summary: 'Thông báo', detail: order.orderCode + ' đang được chuẩn bị' });
             break;
 
           case this.PREPARING:
@@ -123,21 +117,33 @@ export class OrderManagementComponent implements OnInit {
             });
             // add vào bảng mới
             this.ordersList.push(response);
+            this.ordersList.sort((a, b) => a.orderCode - b.orderCode);
             this.messageService.add({ severity: 'warn', summary: 'Thông báo', detail: order.orderCode + ' bị hủy chuẩn bị' });
             break;
         }
       },
-      error: error => {
-        if (error.status == 403) {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
-          this.router.navigate(["/login"]);
-        } else {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi', detail: 'Vui lòng liên hệ quản trị viên!', life: 5000 });
-        }
-      }
+      error: this.commonService.erorrHandle()
     });
   }
 
+  public deliveryOrders() {
+    this.ordersListDelivery = this.ordersListWait;
 
+    let idList: any[] = [];
+    this.ordersListDelivery.forEach(val => {
+      idList.push(val.id);
+    });
+
+    this.orderService.deliveryOrders(idList).subscribe({
+      next: response => {
+        if (this.isLotControl) {
+          console.log(response)
+        }
+        this.ordersListWait = [];
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đơn hàng đang được giao' });
+      },
+      error: this.commonService.erorrHandle()
+    });
+  }
 
 }

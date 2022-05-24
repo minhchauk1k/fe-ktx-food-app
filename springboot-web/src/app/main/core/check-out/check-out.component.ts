@@ -20,6 +20,8 @@ export class CheckOutComponent implements OnInit {
   public paymentList: any[] = [];
   public columns: any[] = [];
 
+  public showConfirm = false;
+
   public checkoutForm = this.formBuilder.group({
     userDisplayName: '',
     phoneNumber: null,
@@ -60,18 +62,27 @@ export class CheckOutComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    let value = this.checkoutForm.value;
-    value.details = this.createDetailsList();
-    value.totalAmount = this.getTotalMoney();
-    value.totalQty = this.getTotalQty();
-    value.paid = value.payType == this.MONEY ? true : false;
-    value.orderStatus = value.payType == this.MONEY ? this.PAID : this.WAITFORPAY;
+    this.showConfirm = true;
 
-    this.orderService.addOrder(value).subscribe(response => {
-      this.messageService.add({ severity: 'success', summary: 'Đặt hàng thành công', life: 1500 });
-      this.checkoutForm.reset();
-      this.cartService.clearItems();
-    })
+  }
+
+  public resulthandle(data: boolean) {
+    if (data) {
+      let value = this.checkoutForm.value;
+      value.details = this.createDetailsList();
+      value.totalAmount = this.getTotalMoney();
+      value.totalQty = this.getTotalQty();
+      value.paid = value.payType == this.MONEY ? false : true;
+      value.orderStatus = value.payType == this.MONEY ? this.WAITFORPAY : this.PAID;
+
+
+      this.orderService.addOrder(value).subscribe(response => {
+        this.messageService.add({ severity: 'success', summary: 'Đặt hàng thành công', life: 1500 });
+        this.checkoutForm.reset();
+        this.cartService.clearItems();
+      });
+    }
+    this.showConfirm = false;
   }
 
   public getTotalMoney(): number {

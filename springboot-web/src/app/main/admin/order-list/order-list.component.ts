@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CommonService } from 'src/app/service/common.service';
 import { OrderService } from 'src/app/service/order.service';
 
 @Component({
@@ -15,8 +16,7 @@ export class OrderListComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private messageService: MessageService,
-    private router: Router,
+    private commonService: CommonService,
   ) {
     this.columns = [
       { field: 'orderCode', header: 'Mã đơn hàng' },
@@ -25,7 +25,7 @@ export class OrderListComponent implements OnInit {
       // { field: 'totalQty', header: 'Tổng số lượng' },
       // { field: 'paid', header: 'Thanh toán' },
       { field: 'orderStatus', header: 'Trạng thái' },
-      { field: 'compleated', header: 'Hoàn tất' },
+      { field: 'completed', header: 'Hoàn tất' },
     ];
   }
 
@@ -38,12 +38,7 @@ export class OrderListComponent implements OnInit {
       next: response => {
         this.ordersList = response;
       },
-      error: error => {
-        if (error.status == 403) {
-          this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
-          this.router.navigate(["/login"]);
-        }
-      }
+      error: this.commonService.erorrHandle()
     });
   }
 

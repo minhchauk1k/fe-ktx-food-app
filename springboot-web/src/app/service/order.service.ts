@@ -34,7 +34,7 @@ export class OrderService {
     }
 
     public changeStatusOrder(id: number, status: string): Observable<any> {
-        return this.http.put<any>(`${this.apiServerURL}/order/update/id=${id}&status=${status}`, null, this.createAuthorization());
+        return this.http.put<any>(`${this.apiServerURL}/order/update/status/id=${id}&status=${status}`, null, this.createAuthorization());
     }
 
     public getOrdersJustPaid(): Observable<any> {
@@ -44,4 +44,25 @@ export class OrderService {
     public getOrdersJustRepaired(): Observable<any> {
         return this.http.get<any>(`${this.apiServerURL}/order/all/just/repaired`, this.createAuthorization());
     }
+
+    public getOrdersJustDelivered(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/all/just/delivered`, this.createAuthorization());
+    }
+
+    public deliveryOrders(idList: any[]): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/order/update/delivery`, idList, this.createAuthorization());
+    }
+
+    public completeOrders(idList: any[]): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/order/update/complete`, idList, this.createAuthorization());
+    }
+
+    public getOrderLots(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/lot/all`, this.createAuthorization());
+    }
+
+    public getLotsInCompleted(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/lot/all/incompleted`, this.createAuthorization());
+    }
+    
 }

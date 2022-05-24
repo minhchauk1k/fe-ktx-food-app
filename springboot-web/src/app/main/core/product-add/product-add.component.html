@@ -11,8 +11,7 @@
                 <div class="row">
                     <div class="col">
                         <label for="productCode">Mã sản phẩm</label>
-                        <input class="w-100" id="productCode" type="text"
-                            pInputText formControlName="productCode">
+                        <input class="w-100" id="productCode" type="text" pInputText formControlName="productCode">
                     </div>
 
                     <div class="col">
@@ -90,16 +89,22 @@
 
                         <div class="w-100 my-padding-top">
                             <label for="category">Nhóm sản phẩm</label>
-                            <p-dropdown class="w-100" [options]="categoryList" formControlName="category"
-                                optionLabel="label" optionValue="value" [filter]="true" [editable]="true"
-                                [required]="true" placeholder="Chọn nhóm sản phẩm">
+                            <!-- trường hợp thêm mới -->
+                            <p-dropdown *ngIf="!isDialog" class="w-100" [options]="categoryList"
+                                formControlName="category" optionLabel="label" optionValue="value" [filter]="true"
+                                [editable]="true" placeholder="Chọn nhóm sản phẩm">
+                            </p-dropdown>
+                            <!-- trường hợp update -->
+                            <p-dropdown *ngIf="isDialog" class="w-100" [options]="categoryList"
+                                formControlName="category" optionLabel="label" optionValue="value" [filter]="true"
+                                placeholder="Chọn nhóm sản phẩm">
                             </p-dropdown>
                         </div>
 
                         <div class="w-100 my-padding-top">
                             <label for="type">Phân loại sản phẩm</label>
                             <p-dropdown class="w-100" [options]="typeList" formControlName="type" optionLabel="label"
-                                optionValue="value" [required]="true" placeholder="Chọn loại sản phẩm">
+                                optionValue="value" placeholder="Chọn loại sản phẩm">
                             </p-dropdown>
                         </div>
                     </div>

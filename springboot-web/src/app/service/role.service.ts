@@ -25,4 +25,7 @@ export class RoleService {
 
     constructor(private http: HttpClient) { }
 
+    public getRoles(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/role/all`, this.createAuthorization());
+    }
 }

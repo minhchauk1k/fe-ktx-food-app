@@ -16,11 +16,13 @@ export class MenuDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [
+      // { label: 'Trang tổng quan', icon: 'pi pi-fw pi-key', routerLink: ['/admin'] },
       {
         label: 'Người dùng', icon: 'pi pi-fw pi-user',
         items: [
+          { label: 'Thêm người dùng', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product-add'] },
           { label: 'Danh sách người dùng', icon: 'pi pi-fw pi-search', routerLink: ['/user-list'] },
-          { label: 'Danh sách phân quyền', icon: 'pi pi-fw pi-id-card', routerLink: ['/role-list'] },
+          { label: 'Danh sách phân quyền', icon: 'pi pi-fw pi-user', routerLink: ['/role-list'] },
         ]
       },
       { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
@@ -28,15 +30,19 @@ export class MenuDashboardComponent implements OnInit {
         label: 'Sản phẩm', icon: 'pi pi-fw pi-shopping-bag',
         items: [
           { label: 'Thêm sản phẩm', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product-add'] },
-          { label: 'Danh sách món ăn', icon: 'pi pi-fw pi-search', routerLink: ['/product-list'] },
-          { label: 'Danh sách dịch vụ', icon: 'pi pi-fw pi-search', routerLink: ['/service-list'] },
+          { label: 'Danh sách món ăn', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/product-list'] },
+          { label: 'Danh sách dịch vụ', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/service-list'] },
         ]
       },
       {
         label: 'Đơn hàng', icon: 'pi pi-fw pi-shopping-cart',
         items: [
           { label: 'Danh sách đơn hàng', icon: 'pi pi-fw pi-search', routerLink: ['/order-list'] },
-          { label: 'Quản lý đơn hàng', icon: 'pi pi-fw pi-sync', routerLink: ['/order-management'] },
+          { label: 'Đang chuẩn bị', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management'] },
+          { label: 'Đang vận chuyển', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery'] },
+          { label: 'Đang vận chuyển (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery-lot'] },
+          { label: 'Đã hoàn thành', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
+          { label: 'Đã hủy', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
         ]
       },
       {

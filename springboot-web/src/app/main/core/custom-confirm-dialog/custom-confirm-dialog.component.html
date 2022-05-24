@@ -1,0 +1,18 @@
+<p-dialog [header]="headerDisplay" [modal]="true" [draggable]="false" [(visible)]="isShowDialog" class="my-dialog"
+    [style]="{'max-width':'450px'}">
+    <ng-template pTemplate="content">
+        <div class="d-flex flex-row align-items-center">
+            <i class="pi pi-exclamation-triangle my-icon pr-4"></i>
+            <span>{{messageDisplay}}</span>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <div class="d-flex flex-row justify-content-end">
+            <button class="p-button-sm p-button-danger" pButton [label]="buttonNo" type="button"
+                icon="pi pi-times" (click)="buttonClick(false)"></button>
+            <button class="p-button-sm p-button-success" pButton [label]="buttonYes" type="button" icon="pi pi-check"
+                [autofocus]="true" (click)="buttonClick(true)"></button>
+        </div>
+    </ng-template>
+</p-dialog>

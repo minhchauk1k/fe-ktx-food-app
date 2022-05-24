@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/service/common.service';
 
 @Component({
@@ -7,17 +8,21 @@ import { CommonService } from 'src/app/service/common.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public username: string = '';
-  public password: string = '';
+
+  public checkoutForm = this.formBuilder.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  });
 
   constructor(
-    private common: CommonService
+    private common: CommonService,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit(): void {
   }
 
-  login(){
-    this.common.userLogin(this.username, this.password);
+  onSubmit(){
+    this.common.userLogin(this.checkoutForm.value);
   }
 }
