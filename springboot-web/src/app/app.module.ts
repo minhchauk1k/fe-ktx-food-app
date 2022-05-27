@@ -34,6 +34,11 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { ChipModule } from 'primeng/chip';
 import {SlideMenuModule} from 'primeng/slidemenu';
 import {PanelMenuModule} from 'primeng/panelmenu';
+import {InputMaskModule} from 'primeng/inputmask';
+import {TreeTableModule} from 'primeng/treetable';
+import {PasswordModule} from 'primeng/password';
+import {OrganizationChartModule} from 'primeng/organizationchart';
+
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -62,6 +67,8 @@ import { OrderDeliveryLotComponent } from './main/admin/order-list/order-deliver
 import { VndPipe } from './pipe/vnd.pipe';
 import { DecimalPipe } from '@angular/common';
 import { CustomConfirmDialogComponent } from './main/core/custom-confirm-dialog/custom-confirm-dialog.component';
+import { UserAddComponent } from './main/core/user-add/user-add.component';
+import { AddressAddComponent } from './main/core/address-add/address-add.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -94,7 +101,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrderDeliveryComponent,
     OrderDeliveryLotComponent,
     VndPipe,
-    CustomConfirmDialogComponent
+    CustomConfirmDialogComponent,
+    UserAddComponent,
+    AddressAddComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +143,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     ScrollTopModule,
     ChipModule,
     SlideMenuModule,
-    PanelMenuModule
+    PanelMenuModule,
+    InputMaskModule,
+    TreeTableModule,
+    PasswordModule,
+    OrganizationChartModule
   ],
   providers: [
     MessageService,

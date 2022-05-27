@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, BehaviorSubject } from "rxjs";
@@ -6,6 +6,7 @@ import { environment } from "src/environments/environment";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { CartService } from "./cart.service";
 import { MessageService } from "primeng/api";
+import { UserService } from "./user.service";
 
 @Injectable({
     providedIn: 'root'
@@ -14,15 +15,18 @@ export class CommonService {
     private SERECT_KEY = "SERECT_KEY";
     private _isLogin = new BehaviorSubject<boolean>(false);
     private _isAdmin = new BehaviorSubject<boolean>(false);
+    private _user = new BehaviorSubject<any>(null);
     public isLogin = this._isLogin.asObservable();
     public isAdmin = this._isAdmin.asObservable();
+    public user = this._user.asObservable();
 
     private apiServerURL = environment.apiServerURL;
     constructor(
         private http: HttpClient,
         private router: Router,
         private cartService: CartService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private userService: UserService,
     ) { }
 
     public erorrHandle(): any {
@@ -36,15 +40,17 @@ export class CommonService {
         }
     }
 
-    public userLogin(data: { username: string, password: string }) {
-        const username: string = data.username;
+    public userLogin(data: { userName: string, password: string }) {
+        const userName: string = data.userName;
         const password: string = data.password;
-        this.login(username, password).subscribe(response => {
+        this.login(userName, password).subscribe(response => {
             if (response.accessToken) {
                 const access_token = response.accessToken;
                 const refresh_token = response.refreshToken;
                 localStorage.setItem('access_token', access_token);
                 localStorage.setItem('refresh_token', refresh_token);
+
+                this.getUserInfo();
 
                 const helper = new JwtHelperService();
                 const decodedToken = helper.decodeToken(access_token);
@@ -61,18 +67,28 @@ export class CommonService {
         });
     }
 
+    private getUserInfo() {
+        this.userService.getMyInfo().subscribe({
+            next: response => {
+                this._user.next(response);
+            },
+            error: this.erorrHandle()
+        });
+    }
+
     public userLogout() {
         this._isLogin.next(false);
         this._isAdmin.next(false);
+        this._user.next(null);
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         this.cartService.clearItems();
         this.router.navigate(["/"]);
     }
 
-    private login(username: string, password: string): Observable<any> {
+    private login(userName: string, password: string): Observable<any> {
         const params = new URLSearchParams();
-        params.set('username', username);
+        params.set('userName', userName);
         params.set('password', password);
         const options = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } };
 

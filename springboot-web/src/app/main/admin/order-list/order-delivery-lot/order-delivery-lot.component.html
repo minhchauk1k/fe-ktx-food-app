@@ -15,6 +15,9 @@
                     <p-dropdown [options]="lotsList" [showClear]="true" [(ngModel)]="selectedLot" optionLabel="lotCode"
                         optionValue="details" [filter]="true" placeholder="Chọn Lô cần xử lý"
                         (onChange)="selectOrderLot()" class="p-inputtext-sm">
+                        <ng-template pTemplate="empty">
+                            Không có dữ liệu
+                        </ng-template>
                     </p-dropdown>
                 </div>
                 <div class="col-6">

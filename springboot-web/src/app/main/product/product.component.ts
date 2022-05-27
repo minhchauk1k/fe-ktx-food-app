@@ -54,7 +54,7 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
-    this.getCategorys();
+    this.getCategories();
   }
 
   private getProducts(): void {
@@ -71,8 +71,8 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  private getCategorys() {
-    this.categoryService.getCategorysFood().subscribe(response => {
+  private getCategories() {
+    this.categoryService.getCategoriesFood().subscribe(response => {
       this.listMenu = response;
     });
   }
@@ -172,6 +172,6 @@ export class ProductComponent implements OnInit {
     this.productInput = null;
     this.isShowDialog = false;
     this.getProducts();
-    this.getCategorys();
+    this.getCategories();
   }
 }

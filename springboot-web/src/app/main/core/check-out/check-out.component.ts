@@ -17,16 +17,20 @@ export class CheckOutComponent implements OnInit {
   public ANONYMOUS = 'ANONYMOUS';
   public WAITFORPAY = 'WAITFORPAY';
   public PAID = 'PAID';
+  public CHECKOUT = 'CHECKOUT';
 
   public paymentList: any[] = [];
   public columns: any[] = [];
 
   public showConfirm = false;
+  isLogin = false;
+  user: any;
 
   public checkoutForm = this.formBuilder.group({
     userDisplayName: '',
-    phoneNumber: [null, Validators.required],
-    address: [null, Validators.required],
+    // phoneNumber: ['', [Validators.required,]],
+    phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9 ]*$'), Validators.minLength(10), Validators.maxLength(13)]],
+    address: ['', [Validators.required]],
     note: '',
     payType: this.MONEY,
     createUser: this.ANONYMOUS,
@@ -53,6 +57,38 @@ export class CheckOutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    this.commonService.isLogin.subscribe({
+      next: response => {
+        this.isLogin = response;
+        if (response) {
+          this.getUserInfo()
+        }
+      },
+      error: this.commonService.erorrHandle()
+    })
+  }
+
+  getUserInfo() {
+    this.commonService.user.subscribe({
+      next: response => {
+        this.user = response;
+        this.setInitFormValue();
+      },
+      error: this.commonService.erorrHandle()
+    });
+  }
+
+  setInitFormValue() {
+    this.checkoutForm.patchValue({
+      userDisplayName: this.user ? this.user.displayName : '',
+      phoneNumber: this.user ? this.user.phoneNumber : '',
+      address: this.user ? this.user.address : '',
+      createUser: this.user ? this.user.userName : '',
+    });
   }
 
   private createDetailsList() {
@@ -65,7 +101,6 @@ export class CheckOutComponent implements OnInit {
 
   public onSubmit(): void {
     this.showConfirm = true;
-
   }
 
   public resulthandle(data: boolean) {
@@ -106,4 +141,20 @@ export class CheckOutComponent implements OnInit {
     return sum;
   }
 
+  // public checkNumber(event: any): void {
+  //   // nhập từ 0 -> 9
+  //   if (!(event.keyCode >= 48 && event.keyCode <= 57)) {
+  //     event.preventDefault();
+  //   }
+  // }
+
+  public checkNumber(event: any): void {
+    //only number will be add
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
 }

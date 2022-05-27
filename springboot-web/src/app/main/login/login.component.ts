@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonService } from 'src/app/service/common.service';
 
 @Component({
@@ -10,19 +11,24 @@ import { CommonService } from 'src/app/service/common.service';
 export class LoginComponent implements OnInit {
 
   public checkoutForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
   });
 
   constructor(
-    private common: CommonService,
+    private commonService: CommonService,
     private formBuilder: FormBuilder,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
   }
 
-  onSubmit(){
-    this.common.userLogin(this.checkoutForm.value);
+  onSubmit() {
+    this.commonService.userLogin(this.checkoutForm.value);
+  }
+  
+  signIn() {
+    this.router.navigate(['/sign-in']);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/service/cart.service';
 
@@ -10,6 +10,7 @@ import { CartService } from 'src/app/service/cart.service';
 export class MenuCartComponent implements OnInit {
   public columnsName: any[] = [];
 
+  @Input() controlName: any
   constructor(
     public cartService: CartService,
     private router: Router
@@ -53,5 +54,14 @@ export class MenuCartComponent implements OnInit {
 
   checkOut() {
     this.router.navigate(["/checkout"]);
+  }
+
+  buyAgain() {
+    this.router.navigate(["/product"]);
+  }
+
+  clearItem() {
+    this.cartService.clearItems();
+    this.router.navigate(["/product"]);
   }
 }

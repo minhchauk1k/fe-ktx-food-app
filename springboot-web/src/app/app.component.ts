@@ -15,7 +15,7 @@ export class AppComponent {
     // cái thanh cuộn nó chèn vào màn hình
     document.getElementsByTagName('html')[0].style.setProperty('overflow-y','overlay');
     document.getElementsByTagName('html')[0].style.setProperty('overflow-x','hidden');
-    document.getElementsByTagName('html')[0].style.setProperty('min-width','1366px');
+    document.getElementsByTagName('html')[0].style.setProperty('min-width','1280px');
 
     // set màu cho body
     document.getElementsByTagName('body')[0].style.setProperty('background-color','#f2f2f2');

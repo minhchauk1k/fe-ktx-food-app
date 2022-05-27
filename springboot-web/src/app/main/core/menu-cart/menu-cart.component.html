@@ -43,7 +43,7 @@
 
             <!-- footer -->
             <ng-template pTemplate="footer">
-                <tr *ngIf="getTotalMoney() > 0">
+                <tr *ngIf="getTotalMoney()">
                     <td>Thành tiền:</td>
                     <td>{{getTotalMoney() | vnd}}</td>
                     <td class="text-center">{{getTotalQty()}}</td>
@@ -54,10 +54,13 @@
 
     <div class="row">
         <div class="col text-center">
-            <button *ngIf="getTotalQty()" (click)="checkOut()" pButton type="button" label="Thanh toán"
+            <button *ngIf="getTotalQty() && controlName" (click)="buyAgain()" pButton type="button" label="Mua tiếp"
                 class="w-25 p-button-success p-button-sm mr-2"></button>
 
-            <button *ngIf="getTotalQty()" (click)="cartService.clearItems()" pButton type="button" label="Đặt lại"
+            <button *ngIf="getTotalQty() && !controlName" (click)="checkOut()" pButton type="button" label="Thanh toán"
+                class="w-25 p-button-success p-button-sm mr-2"></button>
+
+            <button *ngIf="getTotalQty()" (click)="clearItem()" pButton type="button" label="Đặt lại"
                 class="w-25 p-button-danger p-button-sm"></button>
         </div>
     </div>

@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <app-menu-dashboard></app-menu-dashboard>
+        </div>
+        <div class="col-9">
+            <div class="wrapper">
+                <div class="col">
+                    <div class="row">
+                        <h5>Quản lý địa chỉ</h5>
+                    </div>
+
+                    <div class="row">
+                        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label for="area" class="w-100">Khu vực</label>
+                                    <p-dropdown class="w-100 p-inputtext-sm" [options]="addressName"
+                                        formControlName="area" optionLabel="label" optionValue="value" [filter]="true"
+                                        [editable]="true" [showClear]="true">
+                                        <ng-template pTemplate="empty">
+                                            Không có dữ liệu
+                                        </ng-template>
+                                    </p-dropdown>
+                                </div>
+
+                                <div class="col-5">
+                                    <label for="zone" class="w-100">Số tầng/Dãy phòng</label>
+                                    <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="zone">
+                                </div>
+
+                                <div class="col-2">
+                                    <label class="w-100"></label>
+                                    <button pButton type="submit" [disabled]="checkoutForm.invalid" label="Thêm địa chỉ"
+                                        class="p-button-sm p-button-success"></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <p-table [columns]="columnsName" [value]="addressesList"
+                            styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true"
+                            scrollHeight="400px">
+
+                            <!-- header -->
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <ng-container *ngFor="let col of columns">
+                                        <th [ngClass]="col.headerClass">
+                                            {{col.header}}
+                                        </th>
+                                    </ng-container>
+                                </tr>
+                            </ng-template>
+
+                            <!-- body -->
+                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex"
+                                let-expanded="expanded">
+                                <tr>
+                                    <ng-container *ngFor="let col of columns">
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                            {{ rowIndex + 1 }}
+                                        </td>
+                                        <td [ngClass]="col.class" *ngIf="col.field != 'index'">
+                                            {{rowData[col.field]}}
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </ng-template>
+
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

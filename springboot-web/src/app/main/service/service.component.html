@@ -22,10 +22,13 @@
                             <p-dropdown [options]="sortOptions" optionLabel="label" optionValue="value"
                                 [(ngModel)]="sortKey" placeholder="Sắp xếp theo giá" styleClass="mb-2 md:mb-0"
                                 (onChange)="sortProductList()">
+                                <ng-template pTemplate="empty">
+                                    Không có dữ liệu
+                                </ng-template>
                             </p-dropdown>
                             <span class="p-input-icon-left mb-2 md:mb-0">
                                 <i class="pi pi-search"></i>
-                                <input type="search" pInputText placeholder="Tìm món" (input)="onSearch($event)">
+                                <input class="p-inputtext-sm" type="search" pInputText placeholder="Tìm món" (input)="onSearch($event)">
                             </span>
                             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
                         </div>

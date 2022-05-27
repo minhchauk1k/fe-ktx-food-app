@@ -23,20 +23,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.items = [
-      { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-      { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
-      { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
-      { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
-      { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] },
-      // { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] },
-      { label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin'] },
-      { label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
-        command: () => {
-          this.commonService.userLogout();
-        }
-      }
-    ];
 
     // this.items = [
     //   // { label: 'Căng Tin KTX UTC2', icon: 'pi pi-fw pi-home'},
@@ -46,5 +32,39 @@ export class HeaderComponent implements OnInit {
     //   { label: 'Đăng nhập', icon: 'pi pi-fw pi-cog'}
     // ];
     // this.activeItem = this.items[1];
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    this.commonService.isLogin.subscribe({
+      next: res => {
+        if (res) {
+          this.items = [
+            { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+            { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
+            { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
+            { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
+            // { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] },
+            // { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] },
+            { label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin'] },
+            {
+              label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
+              command: () => {
+                this.commonService.userLogout();
+              }
+            }
+          ];
+        } else {
+          this.items = [
+            { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+            { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
+            { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
+            { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
+            // { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] },
+            { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] },
+          ];
+        }
+      }
+    })
   }
 }

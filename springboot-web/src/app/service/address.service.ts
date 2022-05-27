@@ -7,7 +7,7 @@ import { CommonService } from "./common.service";
 @Injectable({
     providedIn: 'root'
 })
-export class RoleService {
+export class AddressService {
     private apiServerURL = environment.apiServerURL;
 
     constructor(
@@ -26,7 +26,11 @@ export class RoleService {
         return httpOptions;
     }
 
-    public getRoles(): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/role/all`, this.createAuthorization());
+    public getAddresses(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/address/all`);
+    }
+
+    public addAddress(address: any): Observable<any> {
+        return this.http.post<any>(`${this.apiServerURL}/common/address/add`, address, this.createAuthorization());
     }
 }

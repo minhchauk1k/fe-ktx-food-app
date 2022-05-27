@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { CommonService } from "./common.service";
 
 @Injectable({
     providedIn: 'root'
@@ -10,30 +11,25 @@ export class CategoryService {
     private apiServerURL = environment.apiServerURL;
     private FOOD = 'FOOD';
     private SERVICE = 'SERVICE';
-    private BEARER = 'Bearer ';
-    private _headers = new HttpHeaders();
 
-    private createAuthorization(): any {
-        this._headers = new HttpHeaders().set('Content-Type', 'application/json');
-        this._headers = this._headers.append("Authorization", this.BEARER + localStorage.getItem('access_token'));
+    constructor(
+        private http: HttpClient,
+        private commonService: CommonService,
+    ) { }
 
-        const httpOptions = {
-            headers: this._headers
-        }
-        return httpOptions;
+    public getCategories(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/category/all`);
     }
 
-    constructor(private http: HttpClient) { }
-
-    public getCategorys(): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/common/categorys`);
+    public getCategoriesFood(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/category/${this.FOOD}`);
     }
 
-    public getCategorysFood(): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.FOOD}`);
+    public getCategoriesService(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/category/${this.SERVICE}`);
     }
 
-    public getCategorysService(): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/common/categorys/${this.SERVICE}`);
+    public getAddresses(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/address/all`);
     }
 }

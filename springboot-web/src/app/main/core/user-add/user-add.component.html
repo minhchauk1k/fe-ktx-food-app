@@ -1,0 +1,52 @@
+<div class="container d-flex justify-content-center">
+    <div class="col-4 ">
+        <div class="wrapper">
+            <div class="col">
+                <div class="row">
+                    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                        <!-- row 1 -->
+                        <div class="row">
+                            <div class="col">
+                                <label for="productCode">Tên hiển thị của bạn</label>
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="displayName" />
+                            </div>
+                        </div>
+
+                        <!-- row 2 -->
+                        <div class="row">
+                            <div class="col">
+                                <label for="productCode">Tên đăng nhập</label>
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="userName" />
+                            </div>
+                        </div>
+
+                        <!-- row 3 -->
+                        <div class="row">
+                            <div class="col">
+                                <label for="productCode">Mật khẩu</label>
+                                <input class="w-100 p-inputtext-sm" type="password" pInputText
+                                    formControlName="password" />
+                            </div>
+                        </div>
+
+                        <!-- row 4 -->
+                        <div class="row">
+                            <div class="col">
+                                <label for="productCode">Địa chỉ giao hàng</label>
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="address"/>
+                            </div>
+                        </div>
+
+                        <!-- last row -->
+                        <div class="row">
+                            <div class="col text-center">
+                                <button pButton type="submit" [disabled]="checkoutForm.invalid" label="Đăng ký"
+                                    class="p-button-success p-button-sm mr-2"></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

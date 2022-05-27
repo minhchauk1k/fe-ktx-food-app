@@ -25,6 +25,8 @@ export class OrderManagementComponent implements OnInit {
 
   public isLotControl: boolean = false;
 
+  private myTimeOut:any;
+
   constructor(
     private orderService: OrderService,
     private messageService: MessageService,
@@ -48,13 +50,17 @@ export class OrderManagementComponent implements OnInit {
 
   ngOnInit(): void {
     // tạo request mỗi 1 phút
-    setInterval(() => {
+    this.myTimeOut = setInterval(() => {
       this.getOrdersJustPaid();
     }, 1000 * 60);
 
     this.getOrdersJustPaid();
     this.getOrdersJustRepaired();
     this.getIsLotControl();
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.myTimeOut);
   }
 
   private getIsLotControl(): void {
@@ -137,7 +143,6 @@ export class OrderManagementComponent implements OnInit {
     this.orderService.deliveryOrders(idList).subscribe({
       next: response => {
         if (this.isLotControl) {
-          console.log(response)
         }
         this.ordersListWait = [];
         this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đơn hàng đang được giao' });

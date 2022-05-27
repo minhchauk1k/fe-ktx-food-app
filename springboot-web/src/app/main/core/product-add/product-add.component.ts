@@ -31,17 +31,17 @@ export class ProductAddComponent implements OnInit {
   public checkoutForm = this.formBuilder.group({
     id: '',
     productCode: '',
-    productName: ['', Validators.required],
+    productName: ['', [Validators.required]],
     discountFromDate: '',
     discountToDate: '',
-    price: [null, Validators.required],
-    discount: [false, Validators.required],
+    price: [null, [Validators.required]],
+    discount: [false, [Validators.required]],
     discountPercent: null,
     discountNumber: null,
     urlAvatar: '',
     description: '',
-    category: ['', Validators.required],
-    type: ['', Validators.required],
+    category: ['', [Validators.required]],
+    type: ['', [Validators.required]],
     discountType: this.NUMBER,
   });
 
@@ -75,7 +75,7 @@ export class ProductAddComponent implements OnInit {
   }
 
   private getCategoryList(): void {
-    this.categoryService.getCategorys().subscribe({
+    this.categoryService.getCategories().subscribe({
       next: response => {
         // lấy ra tên của response
         let nameFromResponse: any[] = [];

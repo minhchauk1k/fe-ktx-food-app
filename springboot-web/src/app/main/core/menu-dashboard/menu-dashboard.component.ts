@@ -11,7 +11,7 @@ export class MenuDashboardComponent implements OnInit {
   public items: MenuItem[] = [];
 
   constructor(
-    private common: CommonService
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +44,9 @@ export class MenuDashboardComponent implements OnInit {
           { label: 'Đã hoàn thành', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
           { label: 'Đã hủy', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
         ]
+      }, 
+      {
+        label: 'Địa chỉ', icon: 'pi pi-home', routerLink: ['/address-add']
       },
       {
         label: 'Hệ thống', icon: 'pi pi-fw pi-cog',
@@ -55,7 +58,7 @@ export class MenuDashboardComponent implements OnInit {
       {
         label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
         command: () => {
-          this.common.userLogout();
+          this.commonService.userLogout();
         }
       }
     ];

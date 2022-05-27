@@ -21,11 +21,11 @@ export class UserListComponent implements OnInit {
     this.columns = [
       { field: 'userCode', header: 'Mã người dùng' },
       { field: 'displayName', header: 'Tên hiển thị' },
-      { field: 'username', header: 'Tên người dùng' },
+      { field: 'userName', header: 'Tên người dùng' },
       // { field: 'password', header: 'Mật khẩu' },
       // { field: 'phoneNumber', header: 'Số điện thoại' },
       // { field: 'email', header: 'Email' },
-      // { field: 'addresss', header: 'Địa chỉ' },
+      // { field: 'address', header: 'Địa chỉ' },
       // { field: 'urlAvatar', header: 'Đường dẫn Avatar' },
       // { field: 'deleted', header: 'Đã xóa' },
       // { field: 'active', header: 'Kích hoạt' },
