@@ -1,39 +1,67 @@
 <div class="container d-flex justify-content-center">
-    <div class="col-4 ">
+    <div class="col-6 ">
         <div class="wrapper">
             <div class="col">
                 <div class="row">
                     <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
                         <!-- row 1 -->
                         <div class="row">
+
                             <div class="col">
-                                <label for="productCode">Tên hiển thị của bạn</label>
-                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="displayName" />
+                                <label for="userName" class="w-100">Tên đăng nhập</label>
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="userName" />
+                            </div>
+
+                            <div class="col">
+                                <label for="displayName" class="w-100">Tên hiển thị của bạn</label>
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText
+                                    formControlName="displayName" />
                             </div>
                         </div>
 
                         <!-- row 2 -->
                         <div class="row">
                             <div class="col">
-                                <label for="productCode">Tên đăng nhập</label>
-                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="userName" />
+                                <label for="pw1" class="w-100">Mật khẩu</label>
+                                <input class="w-100 p-inputtext-sm" type="password" pInputText formControlName="pw1" />
+                            </div>
+
+                            <div class="col">
+                                <label for="pw2" class="w-100">Xác nhận mật khẩu</label>
+                                <input class="w-100 p-inputtext-sm" type="password" pInputText formControlName="pw2" />
                             </div>
                         </div>
 
                         <!-- row 3 -->
                         <div class="row">
                             <div class="col">
-                                <label for="productCode">Mật khẩu</label>
-                                <input class="w-100 p-inputtext-sm" type="password" pInputText
-                                    formControlName="password" />
+                                <label for="area" class="w-100">Khu vực</label>
+                                <p-dropdown class="w-100 p-inputtext-sm" [options]="addressAreaName"
+                                    formControlName="area" optionLabel="label" optionValue="value"
+                                    (onChange)="getAddressZoneName()" emptyMessage="Không có dữ liệu">
+                                </p-dropdown>
+                            </div>
+
+                            <div class="col">
+                                <label for="zone" class="w-100">Số tầng/Dãy phòng</label>
+                                <p-dropdown id="zone" class="w-100 p-inputtext-sm" [options]="addressZoneName"
+                                    [disabled]="!checkoutForm.value.area" formControlName="zone" optionLabel="label"
+                                    optionValue="value" emptyMessage="Không có dữ liệu" [autoDisplayFirst]="false">
+                                </p-dropdown>
                             </div>
                         </div>
 
                         <!-- row 4 -->
                         <div class="row">
                             <div class="col">
-                                <label for="productCode">Địa chỉ giao hàng</label>
-                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="address"/>
+                                <label for="room" class="w-100">Số phòng</label>
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="room" />
+                            </div>
+
+                            <div class="col">
+                                <label for="phoneNumber">Số điện thoại</label>
+                                <input (keypress)="checkNumber($event)" class="w-100 p-inputtext-sm" id="phoneNumber"
+                                    type="text" pInputText formControlName="phoneNumber" [maxlength]="13">
                             </div>
                         </div>
 

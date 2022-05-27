@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/service/cart.service';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-menu-cart',
@@ -8,12 +9,19 @@ import { CartService } from 'src/app/service/cart.service';
   styleUrls: ['./menu-cart.component.scss']
 })
 export class MenuCartComponent implements OnInit {
+
+  CHECKOUT = 'CHEKOUT';
+
   public columnsName: any[] = [];
 
+  isShowConfirm = false;
+
   @Input() controlName: any
+
   constructor(
     public cartService: CartService,
-    private router: Router
+    private router: Router,
+    private commonService: CommonService,
   ) {
     this.columnsName = [
       { field: 'name', header: 'Tên sản phẩm', headerClass: 'text-center', class: '' },
@@ -53,7 +61,22 @@ export class MenuCartComponent implements OnInit {
   }
 
   checkOut() {
-    this.router.navigate(["/checkout"]);
+    this.commonService.isLogin.subscribe({
+      next: response => {
+        if (!response) {
+          this.isShowConfirm = true;
+        } else {
+          this.router.navigate(["/checkout"]);
+        }
+      }
+    })
+  }
+
+  resultHandle(data: boolean) {
+    if (data) {
+      this.router.navigate(["/login"]);
+    }
+    this.isShowConfirm = false;
   }
 
   buyAgain() {

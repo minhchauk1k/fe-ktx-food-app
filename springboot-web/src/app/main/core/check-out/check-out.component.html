@@ -19,15 +19,16 @@
                         <div class="row">
                             <div class="col">
                                 <label for="phoneNumber">Số điện thoại người nhận</label>
-                                <input (keypress)="checkNumber($event)" class="w-100 p-inputtext-sm" id="phoneNumber" type="text"
-                                    pInputText formControlName="phoneNumber" [maxlength]="13">
+                                <input (keypress)="checkNumber($event)" class="w-100 p-inputtext-sm" id="phoneNumber"
+                                    type="text" pInputText formControlName="phoneNumber" [maxlength]="13">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col">
                                 <label for="address">Địa chỉ nhận hàng</label>
-                                <input class="w-100 p-inputtext-sm" id="address" type="text" pInputText formControlName="address">
+                                <input class="w-100 p-inputtext-sm" id="address" type="text" pInputText
+                                    formControlName="address">
                             </div>
                         </div>
 
@@ -44,10 +45,7 @@
                                 <label for="payType">Phương thức thanh toán</label>
                                 <p-dropdown class="w-100" [options]="paymentList" formControlName="payType"
                                     optionLabel="label" optionValue="value" [required]="true"
-                                    placeholder="Chọn loại sản phẩm">
-                                    <ng-template pTemplate="empty">
-                                        Không có dữ liệu
-                                    </ng-template>
+                                    placeholder="Chọn loại sản phẩm" emptyMessage="Không có dữ liệu">
                                 </p-dropdown>
                             </div>
                         </div>

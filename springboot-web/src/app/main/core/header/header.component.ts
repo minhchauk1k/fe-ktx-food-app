@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
+import { forkJoin } from 'rxjs';
 import { CommonService } from 'src/app/service/common.service';
 
 
@@ -12,59 +13,59 @@ import { CommonService } from 'src/app/service/common.service';
 export class HeaderComponent implements OnInit {
 
   public items: MenuItem[] = [];
+  private itemsDefault: MenuItem[] = [];
+
   public activeItem!: MenuItem;
+
+  private ANONYMOUS = 'ANONYMOUS';
+  private ROLE_ADMIN = 'ROLE_ADMIN';
+  private ROLE_USER = 'ROLE_USER';
+  private ROLE_MANAGER = 'ROLE_MANAGER';
+  private ROLE_OWNER = 'ROLE_OWNER';
+  private ROLE_STAFF = 'ROLE_STAFF';
 
   constructor(
     public translateService: TranslateService,
     private commonService: CommonService
   ) {
     translateService.use('vi');
-    // this.items.map(item => item.label = this.translateService.instant(item.label));
   }
-
+  
   ngOnInit(): void {
-
-    // this.items = [
-    //   // { label: 'Căng Tin KTX UTC2', icon: 'pi pi-fw pi-home'},
-    //   { label: 'Đặt đồ ăn', icon: 'pi pi-fw pi-calendar'},
-    //   { label: 'Các dịch vụ khác', icon: 'pi pi-fw pi-pencil'},
-    //   { label: 'Thông tin và liên hệ', icon: 'pi pi-fw pi-file'},
-    //   { label: 'Đăng nhập', icon: 'pi pi-fw pi-cog'}
-    // ];
-    // this.activeItem = this.items[1];
+    // default header
+    this.itemsDefault = [
+      { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+      { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
+      { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
+      { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
+    ];
     this.checkLogin();
   }
 
-  checkLogin() {
-    this.commonService.isLogin.subscribe({
-      next: res => {
-        if (res) {
-          this.items = [
-            { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-            { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
-            { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
-            { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
-            // { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] },
-            // { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] },
-            { label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin'] },
-            {
-              label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
-              command: () => {
-                this.commonService.userLogout();
-              }
-            }
-          ];
-        } else {
-          this.items = [
-            { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-            { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
-            { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
-            { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
-            // { label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] },
-            { label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] },
-          ];
-        }
+  public checkLogin() {
+    this.commonService.roleControl.subscribe(res => {
+      switch (res) {
+        case this.ANONYMOUS:
+          this.resetItem();
+          this.items.push({ label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] });
+          break;
+
+        case this.ROLE_USER:
+          this.resetItem();
+          this.items.push({ label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] });
+          this.items.push({ label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out', command: () => this.commonService.userLogout() });
+          break;
+
+        case this.ROLE_ADMIN:
+          this.resetItem();
+          this.items.push({ label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin'] });
+          this.items.push({ label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out', command: () => this.commonService.userLogout() });
+          break;
       }
-    })
+    });
+  }
+
+  resetItem() {
+    this.items = [...this.itemsDefault];
   }
 }

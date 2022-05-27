@@ -62,7 +62,7 @@ export class AddressAddComponent implements OnInit {
   onSubmit() {
     this.addressService.addAddress(this.checkoutForm.value).subscribe({
       next: response => {
-        this.messageService.add({ severity: 'success', summary: 'Thêm địa chỉ thành công', life: 1500 });
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm địa chỉ thành công' });
         // reset lại dãy phòng/tầng
         this.checkoutForm.reset();
         this.getAddresses();

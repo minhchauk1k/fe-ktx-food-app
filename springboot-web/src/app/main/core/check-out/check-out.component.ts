@@ -23,7 +23,6 @@ export class CheckOutComponent implements OnInit {
   public columns: any[] = [];
 
   public showConfirm = false;
-  isLogin = false;
   user: any;
 
   public checkoutForm = this.formBuilder.group({
@@ -63,12 +62,10 @@ export class CheckOutComponent implements OnInit {
   checkLogin() {
     this.commonService.isLogin.subscribe({
       next: response => {
-        this.isLogin = response;
         if (response) {
           this.getUserInfo()
         }
       },
-      error: this.commonService.erorrHandle()
     })
   }
 
@@ -115,7 +112,7 @@ export class CheckOutComponent implements OnInit {
 
       this.orderService.addOrder(value).subscribe({
         next: response => {
-          this.messageService.add({ severity: 'success', summary: 'Đặt hàng thành công', life: 1500 });
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đặt hàng thành công' });
           this.checkoutForm.reset();
           this.cartService.clearItems();
         },

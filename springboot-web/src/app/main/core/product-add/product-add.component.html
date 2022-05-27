@@ -30,15 +30,15 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="price">Giá bán</label>
-                                    <p-inputNumber class="w-100 p-inputtext-sm" formControlName="price" mode="currency" currency="VND"
-                                        [min]="0">
+                                    <p-inputNumber class="w-100 p-inputtext-sm" formControlName="price" mode="currency"
+                                        currency="VND" [min]="0">
                                     </p-inputNumber>
                                 </div>
 
                                 <div class="col">
                                     <label for="isDiscount">Có muốn áp dụng giảm giá không?</label>
-                                    <p-selectButton class="w-100 p-inputtext-sm" [options]="isDiscountList" formControlName="discount"
-                                        optionLabel="label" optionValue="value">
+                                    <p-selectButton class="w-100 p-inputtext-sm" [options]="isDiscountList"
+                                        formControlName="discount" optionLabel="label" optionValue="value">
                                     </p-selectButton>
                                 </div>
                             </div>
@@ -73,15 +73,15 @@
 
                                     <div class="col" *ngIf="checkoutForm.get('discountType')?.value == PERCENT">
                                         <label for="discountPercent">Giảm theo %</label>
-                                        <p-inputNumber class="w-100 p-inputtext-sm" formControlName="discountPercent" mode="decimal"
-                                            [showButtons]="true" [step]="0.25" [min]="0" [max]="100"
+                                        <p-inputNumber class="w-100 p-inputtext-sm" formControlName="discountPercent"
+                                            mode="decimal" [showButtons]="true" [step]="0.25" [min]="0" [max]="100"
                                             [minFractionDigits]="2" suffix="%"></p-inputNumber>
                                     </div>
 
                                     <div class="col" *ngIf="checkoutForm.get('discountType')?.value == NUMBER">
                                         <label for="discountNumber">Giảm theo giá gốc</label>
-                                        <p-inputNumber class="w-100 p-inputtext-sm" formControlName="discountNumber" mode="currency"
-                                            currency="VND" [min]="0">
+                                        <p-inputNumber class="w-100 p-inputtext-sm" formControlName="discountNumber"
+                                            mode="currency" currency="VND" [min]="0">
                                         </p-inputNumber>
                                     </div>
                                 </div>
@@ -92,37 +92,31 @@
                                 <div class="col">
                                     <div class="w-100">
                                         <label for="urlAvatar">Link của hình ảnh</label>
-                                        <input class="w-100 p-inputtext-sm" type="text" (change)="setUrlAvatar($event)" pInputText
-                                            formControlName="urlAvatar">
+                                        <input class="w-100 p-inputtext-sm" type="text" (change)="setUrlAvatar($event)"
+                                            pInputText formControlName="urlAvatar">
                                     </div>
 
                                     <div class="w-100 my-padding-top">
                                         <label for="category">Nhóm sản phẩm</label>
                                         <!-- trường hợp thêm mới -->
-                                        <p-dropdown *ngIf="!isDialog" class="w-100 p-inputtext-sm" [options]="categoryList"
-                                            formControlName="category" optionLabel="label" optionValue="value"
-                                            [filter]="true" [editable]="true" placeholder="Chọn nhóm sản phẩm">
-                                            <ng-template pTemplate="empty">
-                                                Không có dữ liệu
-                                            </ng-template>
+                                        <p-dropdown *ngIf="!isDialog" class="w-100 p-inputtext-sm"
+                                            [options]="categoryList" formControlName="category" optionLabel="label"
+                                            optionValue="value" [filter]="true" [editable]="true"
+                                            placeholder="Chọn nhóm sản phẩm" emptyMessage="Không có dữ liệu">
                                         </p-dropdown>
                                         <!-- trường hợp update -->
-                                        <p-dropdown *ngIf="isDialog" class="w-100 p-inputtext-sm" [options]="categoryList"
-                                            formControlName="category" optionLabel="label" optionValue="value"
-                                            [filter]="true" placeholder="Chọn nhóm sản phẩm">
-                                            <ng-template pTemplate="empty">
-                                                Không có dữ liệu
-                                            </ng-template>
+                                        <p-dropdown *ngIf="isDialog" class="w-100 p-inputtext-sm"
+                                            [options]="categoryList" formControlName="category" optionLabel="label"
+                                            optionValue="value" [filter]="true" placeholder="Chọn nhóm sản phẩm"
+                                            emptyMessage="Không có dữ liệu">
                                         </p-dropdown>
                                     </div>
 
                                     <div class="w-100 my-padding-top">
                                         <label for="type">Phân loại sản phẩm</label>
-                                        <p-dropdown class="w-100 p-inputtext-sm" [options]="typeList" formControlName="type"
-                                            optionLabel="label" optionValue="value" placeholder="Chọn loại sản phẩm">
-                                            <ng-template pTemplate="empty">
-                                                Không có dữ liệu
-                                            </ng-template>
+                                        <p-dropdown class="w-100 p-inputtext-sm" [options]="typeList"
+                                            formControlName="type" optionLabel="label" optionValue="value"
+                                            placeholder="Chọn loại sản phẩm" emptyMessage="Không có dữ liệu">
                                         </p-dropdown>
                                     </div>
                                 </div>
@@ -138,8 +132,8 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="description">Mô tả sản phẩm</label>
-                                    <textarea class="w-100 p-inputtext-sm" formControlName="description" [rows]="2" pInputTextarea
-                                        [autoResize]="false"></textarea>
+                                    <textarea class="w-100 p-inputtext-sm" formControlName="description" [rows]="2"
+                                        pInputTextarea [autoResize]="false"></textarea>
                                 </div>
                             </div>
 
@@ -147,7 +141,8 @@
                             <div class="row">
                                 <div class="col">
                                     <button pButton type="submit" *ngIf="stateOfDialog == UPDATE"
-                                        [disabled]="checkoutForm.invalid" label="Cập nhật sản phẩm" class="p-button-sm"></button>
+                                        [disabled]="checkoutForm.invalid" label="Cập nhật sản phẩm"
+                                        class="p-button-sm"></button>
                                     <button pButton type="submit" *ngIf="stateOfDialog != UPDATE"
                                         [disabled]="checkoutForm.invalid" label="Thêm sản phẩm"
                                         class="p-button-success p-button-sm"></button>

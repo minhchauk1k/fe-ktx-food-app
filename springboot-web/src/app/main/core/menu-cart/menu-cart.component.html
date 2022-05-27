@@ -54,14 +54,17 @@
 
     <div class="row">
         <div class="col text-center">
-            <button *ngIf="getTotalQty() && controlName" (click)="buyAgain()" pButton type="button" label="Mua tiếp"
-                class="w-25 p-button-success p-button-sm mr-2"></button>
+            <button *ngIf="getTotalQty() && controlName == CHECKOUT" (click)="buyAgain()" pButton type="button"
+                label="Mua tiếp" class="w-25 p-button-success p-button-sm mr-2"></button>
 
-            <button *ngIf="getTotalQty() && !controlName" (click)="checkOut()" pButton type="button" label="Thanh toán"
-                class="w-25 p-button-success p-button-sm mr-2"></button>
+            <button *ngIf="getTotalQty() && controlName != CHECKOUT" (click)="checkOut()" pButton type="button"
+                label="Thanh toán" class="w-25 p-button-success p-button-sm mr-2"></button>
 
             <button *ngIf="getTotalQty()" (click)="clearItem()" pButton type="button" label="Đặt lại"
                 class="w-25 p-button-danger p-button-sm"></button>
         </div>
     </div>
 </div>
+
+<app-custom-confirm-dialog [message]="'Vui lòng đăng nhập để tiếp tục'" *ngIf="isShowConfirm"
+    (result)="resultHandle($event)"></app-custom-confirm-dialog>

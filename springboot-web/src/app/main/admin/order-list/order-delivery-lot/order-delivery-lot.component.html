@@ -14,15 +14,12 @@
                 <div class="col-6">
                     <p-dropdown [options]="lotsList" [showClear]="true" [(ngModel)]="selectedLot" optionLabel="lotCode"
                         optionValue="details" [filter]="true" placeholder="Chọn Lô cần xử lý"
-                        (onChange)="selectOrderLot()" class="p-inputtext-sm">
-                        <ng-template pTemplate="empty">
-                            Không có dữ liệu
-                        </ng-template>
+                        (onChange)="selectOrderLot()" class="p-inputtext-sm" emptyMessage="Không có dữ liệu">
                     </p-dropdown>
                 </div>
                 <div class="col-6">
-                    <button type="button" pButton label="Đã giao"
-                    class="p-button-sm p-button-success" (click)="completeDeliveryLot()"></button>
+                    <button type="button" pButton label="Đã giao" class="p-button-sm p-button-success"
+                        (click)="completeDeliveryLot()"></button>
                 </div>
             </div>
 
