@@ -26,11 +26,23 @@ export class AddressService {
         return httpOptions;
     }
 
+    public groupBy = (items: any[], key: string) => {
+        return items.reduce((item, properties) => {
+            (item[properties[key]] = item[properties[key]] || []).push(properties);
+            return item;
+        }, {});
+    };
+
     public getAddresses(): Observable<any> {
         return this.http.get<any>(`${this.apiServerURL}/common/address/all`);
+    }
+
+    public getByType(type: string): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/address/all/type=${type}`);
     }
 
     public addAddress(address: any): Observable<any> {
         return this.http.post<any>(`${this.apiServerURL}/common/address/add`, address, this.createAuthorization());
     }
+
 }

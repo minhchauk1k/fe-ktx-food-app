@@ -1,9 +1,46 @@
 :host ::ng-deep {
-    .my-280 {
-        max-width: 280px !important;
-    }
 
     .my-bold {
         font-weight: 700;
     }
+
+    .my-w-45 {
+        max-width: 45px !important;
+        min-width: 45px !important;
+    }
+
+    .my-w-70 {
+        max-width: 70px !important;
+        min-width: 70px !important;
+    }
+
+    .my-w-110 {
+        max-width: 110px !important;
+        min-width: 110px !important;
+    }
+
+    .my-w-120 {
+        max-width: 120px !important;
+        min-width: 120px !important;
+    }
+
+    .my-w-130 {
+        max-width: 130px !important;
+        min-width: 130px !important;
+    }
+
+    .my-w-340 {
+        max-width: 340px !important;
+        min-width: 340px !important;
+    }
+
+    .p-dropdown {
+        width: 100%;
+    }
+
+    .my-button {
+        max-width: 110px;
+        min-width: 110px;
+    }
+
 }

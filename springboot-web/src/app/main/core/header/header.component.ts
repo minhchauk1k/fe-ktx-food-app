@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
 
   public activeItem!: MenuItem;
 
+  private user: any;
+
   private ANONYMOUS = 'ANONYMOUS';
   private ROLE_ADMIN = 'ROLE_ADMIN';
   private ROLE_USER = 'ROLE_USER';
@@ -30,14 +32,14 @@ export class HeaderComponent implements OnInit {
   ) {
     translateService.use('vi');
   }
-  
+
   ngOnInit(): void {
     // default header
     this.itemsDefault = [
-      { label: 'app.title', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-      { label: 'app.food', icon: 'pi pi-fw pi-calendar', routerLink: ['/product'] },
-      { label: 'app.service', icon: 'pi pi-fw pi-pencil', routerLink: ['/service'] },
-      { label: 'app.information', icon: 'pi pi-fw pi-file', routerLink: ['/about'] },
+      { label: 'app.title', routerLink: ['/'] },
+      { label: 'app.food', routerLink: ['/product'] },
+      { label: 'app.service', routerLink: ['/service'] },
+      { label: 'app.information', routerLink: ['/about'] },
     ];
     this.checkLogin();
   }
@@ -47,19 +49,19 @@ export class HeaderComponent implements OnInit {
       switch (res) {
         case this.ANONYMOUS:
           this.resetItem();
-          this.items.push({ label: 'app.login', icon: 'pi pi-fw pi-cog', routerLink: ['/login'] });
+          this.items.push({ label: 'app.login', routerLink: ['/login'] });
           break;
 
         case this.ROLE_USER:
           this.resetItem();
-          this.items.push({ label: 'app.your.order', icon: 'pi pi-fw pi-cog', routerLink: ['/order'] });
-          this.items.push({ label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out', command: () => this.commonService.userLogout() });
+          this.items.push({ label: 'app.your.info', routerLink: ['/user-info'] });
+          this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
           break;
 
         case this.ROLE_ADMIN:
           this.resetItem();
-          this.items.push({ label: 'app.admin', icon: 'pi pi-fw pi-cog', routerLink: ['/admin'] });
-          this.items.push({ label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out', command: () => this.commonService.userLogout() });
+          this.items.push({ label: 'app.admin', routerLink: ['/admin'] });
+          this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
           break;
       }
     });

@@ -20,7 +20,6 @@ export class MenuDashboardComponent implements OnInit {
       {
         label: 'Người dùng', icon: 'pi pi-fw pi-user',
         items: [
-          { label: 'Thêm người dùng', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product-add'] },
           { label: 'Danh sách người dùng', icon: 'pi pi-fw pi-search', routerLink: ['/user-list'] },
           { label: 'Danh sách phân quyền', icon: 'pi pi-fw pi-user', routerLink: ['/role-list'] },
         ]
@@ -38,15 +37,16 @@ export class MenuDashboardComponent implements OnInit {
         label: 'Đơn hàng', icon: 'pi pi-fw pi-shopping-cart',
         items: [
           { label: 'Danh sách đơn hàng', icon: 'pi pi-fw pi-search', routerLink: ['/order-list'] },
-          { label: 'Đang chuẩn bị', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management'] },
-          { label: 'Đang vận chuyển', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery'] },
-          { label: 'Đang vận chuyển (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery-lot'] },
-          { label: 'Đã hoàn thành', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
-          { label: 'Đã hủy', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
+          { label: 'Chuẩn bị đơn hàng', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management'] },
+          { label: 'Chuẩn bị đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management-lot'] },
+          { label: 'Vận chuyển đơn hàng', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery'] },
+          { label: 'Vận chuyển đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery-lot'] },
+          { label: 'Đơn hàng đã hoàn thành', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
+          { label: 'Đơn hàng bị hủy', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
         ]
       }, 
       {
-        label: 'Địa chỉ', icon: 'pi pi-home', routerLink: ['/address-add']
+        label: 'Địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list']
       },
       {
         label: 'Hệ thống', icon: 'pi pi-fw pi-cog',

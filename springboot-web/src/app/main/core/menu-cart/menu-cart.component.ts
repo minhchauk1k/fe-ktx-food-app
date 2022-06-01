@@ -10,7 +10,7 @@ import { CommonService } from 'src/app/service/common.service';
 })
 export class MenuCartComponent implements OnInit {
 
-  CHECKOUT = 'CHEKOUT';
+  CHECKOUT = 'CHECKOUT';
 
   public columnsName: any[] = [];
 

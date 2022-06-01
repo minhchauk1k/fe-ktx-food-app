@@ -10,6 +10,8 @@ import { CommonService } from 'src/app/service/common.service';
 })
 export class LoginComponent implements OnInit {
 
+  isShowPw= false;
+
   public checkoutForm = this.formBuilder.group({
     userName: ['', [Validators.required]],
     password: ['', [Validators.required]],
@@ -30,5 +32,9 @@ export class LoginComponent implements OnInit {
   
   signIn() {
     this.router.navigate(['/sign-in']);
+  }
+
+  changeIsShowPw() {
+    this.isShowPw = !this.isShowPw;
   }
 }

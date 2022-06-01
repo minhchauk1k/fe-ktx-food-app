@@ -1,0 +1,28 @@
+:host ::ng-deep {
+    .status_red {
+        // background-color: #FF5757;
+        background-color: #ef4444;
+        color: white;
+        font-weight: 600;
+        border-radius: 5px;
+        padding: 0.25rem 0;
+    }
+
+    .status_green {
+        // background-color: #1EA97C;
+        background-color:#22c55e;
+        color: white;
+        font-weight: 600;
+        border-radius: 5px;
+        padding: 0.25rem 0;
+    }
+
+    .status_orange {
+        // background-color: #CC8925;
+        background-color: #f59e0b;
+        color: white;
+        font-weight: 600;
+        border-radius: 5px;
+        padding: 0.25rem 0;
+    }
+}

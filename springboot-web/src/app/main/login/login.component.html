@@ -1,4 +1,4 @@
-<div class="container d-flex align-items-center justify-content-center">
+<div class="container-xxl d-flex align-items-center justify-content-center">
     <div class="col-4 ">
         <div class="wrapper">
             <div class="col">
@@ -7,7 +7,7 @@
                         <!-- row 1 -->
                         <div class="row">
                             <div class="col">
-                                <label for="productCode">Tên đăng nhập</label>
+                                <label for="userName">Tên đăng nhập</label>
                                 <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="userName" />
                             </div>
                         </div>
@@ -15,9 +15,13 @@
                         <!-- row 2 -->
                         <div class="row">
                             <div class="col">
-                                <label for="productCode">Mật khẩu</label>
-                                <input type="password" pInputText class="w-100 p-inputtext-sm"
-                                    formControlName="password" />
+                                <label for="password">Mật khẩu</label>
+                                <span class="p-input-icon-right w-100">
+                                    <i [class]="isShowPw ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                                        (click)="changeIsShowPw()"></i>
+                                    <input class="w-100 p-inputtext-sm" [type]="isShowPw ? 'text':'password'" pInputText
+                                        formControlName="password">
+                                </span>
                             </div>
                         </div>
 

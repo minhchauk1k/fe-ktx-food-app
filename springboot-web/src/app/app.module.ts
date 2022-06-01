@@ -32,13 +32,13 @@ import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { ChipModule } from 'primeng/chip';
-import {SlideMenuModule} from 'primeng/slidemenu';
-import {PanelMenuModule} from 'primeng/panelmenu';
-import {InputMaskModule} from 'primeng/inputmask';
-import {TreeTableModule} from 'primeng/treetable';
-import {PasswordModule} from 'primeng/password';
-import {OrganizationChartModule} from 'primeng/organizationchart';
-
+import { SlideMenuModule } from 'primeng/slidemenu';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { InputMaskModule } from 'primeng/inputmask';
+import { TreeTableModule } from 'primeng/treetable';
+import { PasswordModule } from 'primeng/password';
+import { OrganizationChartModule } from 'primeng/organizationchart';
+import { BadgeModule } from 'primeng/badge';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -68,7 +68,9 @@ import { VndPipe } from './pipe/vnd.pipe';
 import { DecimalPipe } from '@angular/common';
 import { CustomConfirmDialogComponent } from './main/core/custom-confirm-dialog/custom-confirm-dialog.component';
 import { UserAddComponent } from './main/core/user-add/user-add.component';
-import { AddressAddComponent } from './main/core/address-add/address-add.component';
+import { AddressListComponent } from './main/admin/address-list/address-list.component';
+import { UserInfoComponent } from './main/user-info/user-info.component';
+import { OrderManagementLotComponent } from './main/admin/order-list/order-management-lot/order-management-lot.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -103,7 +105,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     VndPipe,
     CustomConfirmDialogComponent,
     UserAddComponent,
-    AddressAddComponent
+    AddressListComponent,
+    UserInfoComponent,
+    OrderManagementLotComponent
   ],
   imports: [
     BrowserModule,
@@ -147,7 +151,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     InputMaskModule,
     TreeTableModule,
     PasswordModule,
-    OrganizationChartModule
+    OrganizationChartModule,
+    BadgeModule
   ],
   providers: [
     MessageService,

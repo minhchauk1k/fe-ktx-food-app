@@ -37,13 +37,73 @@ export class CommonService {
         private cartService: CartService,
         private messageService: MessageService,
         private userService: UserService,
-    ) { }
+    ) {
+        this.checkCurrentToken();
+    }
+
+    private checkCurrentToken() {
+        const access_token = localStorage.getItem('access_token');
+        const refresh_token = localStorage.getItem('refresh_token');
+        const helper = new JwtHelperService();
+        if (access_token && helper.isTokenExpired(access_token)) {
+            const BEARER = 'Bearer ';
+            let _headers = new HttpHeaders();
+            _headers = new HttpHeaders().set('Content-Type', 'application/json');
+            _headers = _headers.append("Authorization", BEARER + localStorage.getItem('refresh_token'));
+
+            const httpOptions = {
+                headers: _headers
+            }
+
+            this.http.get<any>(`${this.apiServerURL}/common/refresh_token`, httpOptions).subscribe({
+                next: response => {
+                    if (response.accessToken) {
+                        // reset
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('refresh_token');
+
+                        // set lại value
+                        this._isLogin.next(true);
+
+                        const access_token = response.accessToken;
+                        const refresh_token = response.refreshToken;
+                        localStorage.setItem('access_token', access_token);
+                        localStorage.setItem('refresh_token', refresh_token);
+
+                        this.getUserInfo();
+
+                        const decodedToken = helper.decodeToken(access_token);
+                        const roles: any[] = decodedToken.roles;
+
+                        this.sortRoleLogin(roles);
+
+                        if (roles.length && this._roleControl.value === this.ROLE_ADMIN) {
+                            this._isAdmin.next(true);
+                        }
+                    }
+                }
+            })
+        } else if (access_token && !helper.isTokenExpired(access_token)) {
+            this._isLogin.next(true);
+
+            this.getUserInfo();
+
+            const decodedToken = helper.decodeToken(access_token);
+            const roles: any[] = decodedToken.roles;
+
+            this.sortRoleLogin(roles);
+
+            if (roles.length && this._roleControl.value === this.ROLE_ADMIN) {
+                this._isAdmin.next(true);
+            }
+        }
+    }
 
     public erorrHandle(): any {
         return (error: any) => {
             if (error.status == 403) {
                 this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
-                this.router.navigate(['/login']);
+                this.userLogout();
             } else {
                 this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi', detail: 'Vui lòng liên hệ quản trị viên!', life: 5000 });
             }

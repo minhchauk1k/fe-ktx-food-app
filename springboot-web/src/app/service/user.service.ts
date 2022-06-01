@@ -46,6 +46,10 @@ export class UserService {
         return this.http.post<any>(`${this.apiServerURL}/user/add`, user);
     }
 
+    public updateUser(user: any): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/user/update`, user, this.createAuthorization());
+    }
+
     public checkExistByUserName(userName: any): Observable<any> {
         return this.http.post<any>(`${this.apiServerURL}/user/exist/userName`, userName);
     }

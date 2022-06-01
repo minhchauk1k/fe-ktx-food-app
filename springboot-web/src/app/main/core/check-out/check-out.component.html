@@ -1,6 +1,8 @@
-<div class="container">
+<div class="container-xxl">
     <div class="row">
-        <div class="col-6">
+        <div class="col-1"></div>
+        
+        <div class="col-5">
             <div class="row text-center">
                 <h5>Thông tin đơn hàng</h5>
             </div>
@@ -25,10 +27,15 @@
                         </div>
 
                         <div class="row">
-                            <div class="col">
+                            <div class="col-9">
                                 <label for="address">Địa chỉ nhận hàng</label>
                                 <input class="w-100 p-inputtext-sm" id="address" type="text" pInputText
-                                    formControlName="address">
+                                    formControlName="address" readonly>
+                            </div>
+                            <div class="col-3">
+                                <label class="w-100"></label>
+                                <button class="w-100 p-button-sm" pButton type="button" label="Đổi địa chỉ"
+                                    (click)="changeAddress()"></button>
                             </div>
                         </div>
 
@@ -64,11 +71,70 @@
 
         </div>
 
-        <div class="col-6">
+        <div class="col-5">
             <app-menu-cart [controlName]="CHECKOUT"></app-menu-cart>
         </div>
     </div>
 </div>
 
+<p-dialog header="Thay đổi địa chỉ" [modal]="true" [draggable]="false" [(visible)]="isShowAddressDialog"
+    [style]="{'width':'450px','height':'410px'}">
+    <ng-template pTemplate="content">
+        <div class="row">
+            <div class="col">
+                <label for="isDiscount">Bạn muốn sử dụng địa chỉ nào?</label>
+                <p-selectButton class="w-100 p-inputtext-sm" [options]="addressTypeList" [(ngModel)]="addressType"
+                    optionLabel="label" optionValue="value" (onChange)="clearCreateNew()">
+                </p-selectButton>
+            </div>
+        </div>
+
+        <div *ngIf="addressType">
+            <div class="row">
+                <div class="col">
+                    <label for="area" class="w-100">Danh sách địa chỉ</label>
+                    <p-dropdown class="w-100 p-inputtext-sm" [options]="addressUserNameList" [(ngModel)]="addressFull"
+                        optionLabel="label" optionValue="value" emptyMessage="Không có dữ liệu"
+                        [autoDisplayFirst]="false" appendTo="body">
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!addressType">
+            <div class="row">
+                <div class="col">
+                    <label for="area" class="w-100">Khu vực</label>
+                    <p-dropdown class="w-100 p-inputtext-sm" [options]="addressAreaName" [(ngModel)]="area"
+                        optionLabel="label" optionValue="value" (onChange)="getAddressZoneName()"
+                        emptyMessage="Không có dữ liệu" [autoDisplayFirst]="false" appendTo="body">
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label for="zone" class="w-100">Số tầng/Dãy phòng</label>
+                    <p-dropdown id="zone" class="w-100 p-inputtext-sm" [options]="addressZoneName" [disabled]="!area"
+                        [(ngModel)]="zone" optionLabel="label" optionValue="value" emptyMessage="Không có dữ liệu"
+                        [autoDisplayFirst]="false" appendTo="body">
+                    </p-dropdown>
+                </div>
+
+                <div class="col">
+                    <label for="room" class="w-100">Số phòng</label>
+                    <input class="w-100 p-inputtext-sm" type="text" pInputText [(ngModel)]="room" />
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="selectAddress()"></button>
+    </ng-template>
+</p-dialog>
+
 <app-custom-confirm-dialog *ngIf="showConfirm" (result)="resulthandle($event)"
     [message]="'Bạn có xác nhận đặt đơn hàng này không?'"></app-custom-confirm-dialog>
+
+<app-custom-confirm-dialog *ngIf="showConfirmAddress" (result)="resulthandleAddress($event)"
+    [message]="'Bạn có muốn đặt địa chỉ này làm địa chỉ giao hàng mặc định không?'"></app-custom-confirm-dialog>

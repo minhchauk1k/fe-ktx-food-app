@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-xxl">
     <div class="row">
         <div class="col-3">
             <app-menu-dashboard></app-menu-dashboard>
@@ -7,27 +7,81 @@
             <div class="wrapper">
                 <div class="col">
                     <div class="row">
-                        <h5>Quản lý đơn hàng</h5>
+                        <h5>Chuẩn bị đơn hàng</h5>
+                        <p-tabMenu [model]="items" [activeItem]="items[0]"></p-tabMenu>
                     </div>
-
                     <!-- table trên  -->
-                    <div class="row">
+                    <div class="row" *ngIf="activeItem == true">
                         <p-table [columns]="columnsName" [value]="ordersList" dataKey="orderCode"
                             styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true"
-                            scrollHeight="200px">
-                            <!-- caption -->
-                            <ng-template pTemplate="caption">
-                                Đơn khách đã đặt
-                            </ng-template>
+                            scrollHeight="430px">
 
                             <!-- header -->
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <ng-container *ngFor="let col of columns">
-                                        <th [ngClass]="col.headerClass">
+                                        <th [ngClass]="col.headerClass" *ngIf="col.field != 'button'">
                                             {{col.header}}
                                         </th>
+
+                                        <th [ngClass]="col.headerClass" *ngIf="col.field == 'button'">
+                                            <button type="button" pButton
+                                                class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                                [icon]="isShowFilterTable1 ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                                                (click)="changeShowFilterTable1()"></button>
+                                        </th>
                                     </ng-container>
+                                </tr>
+
+                                <tr *ngIf="isShowFilterTable1">
+                                    <th class="text-center my-w-45 pt-0 pb-0"></th>
+                                    <th class="text-center my-w-70 pt-0 pb-0"></th>
+                                    <th class="text-center my-w-110">
+                                        <input class="w-100 p-inputtext-sm" type="text" pInputText
+                                            [(ngModel)]="orderCode1">
+                                    </th>
+                                    <th class="text-center my-w-340 pt-0 pb-0">
+                                        <div class="row">
+
+                                            <div class="col-8">
+                                                <p-dropdown class="w-100 p-inputtext-sm" [options]="addressAreaName"
+                                                    [(ngModel)]="area1" optionLabel="label" optionValue="value"
+                                                    (onChange)="createZoneNameList1()" emptyMessage="Không có dữ liệu"
+                                                    [autoDisplayFirst]="false" appendTo="body"
+                                                    placeholder="Chọn khu vực">
+                                                </p-dropdown>
+                                            </div>
+
+                                            <div class="col-4 pl-0">
+                                                <p-dropdown class="w-100 p-inputtext-sm" [options]="addressZoneName1"
+                                                    [disabled]="!area1" [(ngModel)]="zone1" optionLabel="label"
+                                                    optionValue="value" emptyMessage="Không có dữ liệu"
+                                                    [autoDisplayFirst]="false" appendTo="body"
+                                                    placeholder="Tầng/Dãy phòng">
+                                                </p-dropdown>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="text-center my-w-130 pt-0 pb-0">
+                                        <input (keypress)="checkNumber($event)" class="w-100 p-inputtext-sm" type="text"
+                                            pInputText [(ngModel)]="phoneNumber1" [maxlength]="13">
+                                    </th>
+                                    <th class="text-center my-w-120 pt-0 pb-0">
+                                        <p-dropdown id="zone" class="w-100 p-inputtext-sm" [options]="statusOrderList"
+                                            [(ngModel)]="status1" optionLabel="label" optionValue="value"
+                                            emptyMessage="Không có dữ liệu" [autoDisplayFirst]="false" appendTo="body"
+                                            placeholder="Trạng thái">
+                                        </p-dropdown>
+                                    </th>
+                                    <th class="text-center my-w-120 pt-0 pb-0">
+                                        <button type="button" pButton
+                                            class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                            icon="pi pi-search" (click)="searchTable1()"></button>
+
+                                        <button type="button" pButton
+                                            class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                            icon="pi pi-times" (click)="clearSearchTable1()"></button>
+                                    </th>
                                 </tr>
                             </ng-template>
 
@@ -52,7 +106,7 @@
                                         </td>
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'button'">
-                                            <button type="button" pButton label="Đang chuẩn bị"
+                                            <button type="button" pButton label="Chuẩn bị"
                                                 class="p-button-sm p-button-success"
                                                 (click)="changeStatusOrder(rowData, ORDER)"></button>
                                         </td>
@@ -79,30 +133,85 @@
                         </p-table>
                     </div>
                     </td>
+                    <td></td>
                     </tr>
                     </ng-template>
                     <!-- phần setting mở rộng row -->
+                    <!-- emptymessage  -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="columns.length">
+                                Hiện không có đơn hàng nào
+                            </td>
+                        </tr>
+                    </ng-template>
                     </p-table>
                 </div>
 
 
                 <!-- table dưới  -->
-                <div class="row">
+                <div class="row" *ngIf="!activeItem">
                     <p-table [columns]="columnsName" [value]="ordersListWait" dataKey="orderCode"
-                        styleClass="p-datatable-sm p-datatable-striped" [resizableColumns]="true" scrollHeight="200px">
-                        <!-- caption -->
-                        <ng-template pTemplate="caption">
-                            Đơn đang chuẩn bị
-                        </ng-template>
+                        styleClass="p-datatable-sm p-datatable-striped" [resizableColumns]="true" scrollHeight="390px">
 
                         <!-- header -->
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <ng-container *ngFor="let col of columns">
-                                    <th [ngClass]="col.headerClass">
+                                    <th [ngClass]="col.headerClass" *ngIf="col.field != 'button'">
                                         {{col.header}}
                                     </th>
+
+                                    <th [ngClass]="col.headerClass" *ngIf="col.field == 'button'">
+                                        <button type="button" pButton
+                                            class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                            [icon]="isShowFilterTable2 ? 'pi pi-filter-slash' : 'pi pi-filter'"
+                                            (click)="changeShowFilterTable2()"></button>
+                                    </th>
                                 </ng-container>
+                            </tr>
+
+                            <tr *ngIf="isShowFilterTable2">
+                                <th class="text-center my-w-45 pt-0 pb-0"></th>
+                                <th class="text-center my-w-70 pt-0 pb-0"></th>
+                                <th class="text-center my-w-110">
+                                    <input class="w-100 p-inputtext-sm" type="text" pInputText [(ngModel)]="orderCode2">
+                                </th>
+                                <th class="text-center my-w-340 pt-0 pb-0">
+                                    <div class="row">
+
+                                        <div class="col-8">
+                                            <p-dropdown class="w-100 p-inputtext-sm" [options]="addressAreaName"
+                                                [(ngModel)]="area2" optionLabel="label" optionValue="value"
+                                                (onChange)="createZoneNameList2()" emptyMessage="Không có dữ liệu"
+                                                [autoDisplayFirst]="false" appendTo="body" placeholder="Chọn khu vực">
+                                            </p-dropdown>
+                                        </div>
+
+                                        <div class="col-4 pl-0">
+                                            <p-dropdown class="w-100 p-inputtext-sm" [options]="addressZoneName2"
+                                                [disabled]="!area2" [(ngModel)]="zone2" optionLabel="label"
+                                                optionValue="value" emptyMessage="Không có dữ liệu"
+                                                [autoDisplayFirst]="false" appendTo="body" placeholder="Tầng/Dãy phòng">
+                                            </p-dropdown>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="text-center my-w-130 pt-0 pb-0">
+                                    <input (keypress)="checkNumber($event)" class="w-100 p-inputtext-sm" type="text"
+                                        pInputText [(ngModel)]="phoneNumber2" [maxlength]="13">
+                                </th>
+                                <th class="text-center my-w-120 pt-0 pb-0">
+                                </th>
+                                <th class="text-center my-w-120 pt-0 pb-0">
+                                    <button type="button" pButton
+                                        class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                        icon="pi pi-search" (click)="searchTable2()"></button>
+
+                                    <button type="button" pButton
+                                        class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                        icon="pi pi-times" (click)="clearSearchTable2()"></button>
+                                </th>
                             </tr>
                         </ng-template>
 
@@ -157,9 +266,17 @@
                 </tr>
                 </ng-template>
                 <!-- phần setting mở rộng row -->
+                <!-- emptymessage  -->
+                <ng-template pTemplate="emptymessage" let-columns>
+                    <tr>
+                        <td [attr.colspan]="columns.length">
+                            Hiện không có đơn hàng nào
+                        </td>
+                    </tr>
+                </ng-template>
                 </p-table>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="!activeItem">
                 <div class="col">
                     <button class="p-button-sm" *ngIf="ordersListWait.length" pButton type="button" label="Giao hàng"
                         (click)="deliveryOrders()"></button>

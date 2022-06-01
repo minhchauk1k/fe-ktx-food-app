@@ -18,6 +18,10 @@ export class UserAddComponent implements OnInit {
   addressZoneName: any[] = [];
   groupName: any[] = [];
 
+  isShowPw = false;
+  USER = 'USER';
+  SYSTEM = 'SYSTEM';
+
   public checkoutForm = this.formBuilder.group({
     displayName: [null, [Validators.required]],
     userName: [null, [Validators.required]],
@@ -45,7 +49,8 @@ export class UserAddComponent implements OnInit {
   }
 
   private getAddresses(): void {
-    this.addressService.getAddresses().subscribe({
+    this.addressesList = [];
+    this.addressService.getByType(this.SYSTEM).subscribe({
       next: response => {
         this.addressesList = response;
         this.groupName = this.groupBy(this.addressesList, 'area');
@@ -62,7 +67,8 @@ export class UserAddComponent implements OnInit {
     }, {});
   };
 
-  createDropdownName() {
+  private createDropdownName() {
+    this.addressAreaName = [];
     for (let item in this.groupName) {
       this.addressAreaName.push({ label: item, value: item })
     }
@@ -81,10 +87,14 @@ export class UserAddComponent implements OnInit {
 
   onSubmit() {
     let value = this.checkoutForm.value;
-    value.address = value.area;
-    value.address += ', ' + value.zone;
-    value.address += (value.room) ? ', Phòng ' + value.room : '';
-    
+    value.addresses = [{
+      area: value.area,
+      zone: value.zone,
+      room: value.room,
+      type: this.USER,
+      default: true
+    }];
+
     this.userService.checkExistByUserName(value.userName).subscribe({
       next: res => {
         // check password
@@ -122,6 +132,10 @@ export class UserAddComponent implements OnInit {
     if (event.keyCode != 8 && !pattern.test(inputChar)) {
       event.preventDefault();
     }
+  }
+
+  changeIsShowPw() {
+    this.isShowPw = !this.isShowPw;
   }
 
 }

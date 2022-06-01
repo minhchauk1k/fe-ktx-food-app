@@ -5,15 +5,16 @@ import { AddressService } from 'src/app/service/address.service';
 import { CommonService } from 'src/app/service/common.service';
 
 @Component({
-  selector: 'app-address-add',
-  templateUrl: './address-add.component.html',
-  styleUrls: ['./address-add.component.scss']
+  selector: 'app-address-list',
+  templateUrl: './address-list.component.html',
+  styleUrls: ['./address-list.component.scss']
 })
-export class AddressAddComponent implements OnInit {
+export class AddressListComponent implements OnInit {
 
   columnsName: any[] = [];
   addressesList: any[] = [];
   addressName: any[] = [];
+  SYSTEM = 'SYSTEM';
 
   public checkoutForm = this.formBuilder.group({
     area: [null, [Validators.required]],
@@ -38,7 +39,8 @@ export class AddressAddComponent implements OnInit {
   }
 
   getAddresses() {
-    this.addressService.getAddresses().subscribe({
+    this.addressesList = [];
+    this.addressService.getByType(this.SYSTEM).subscribe({
       next: response => {
         this.addressesList = response;
         this.createDropdownName(response);
@@ -53,13 +55,16 @@ export class AddressAddComponent implements OnInit {
       temp.push(val.area);
     });
     temp = new Set(temp);
-
+    
+    this.addressName = [];
     temp.forEach((val: any) => {
       this.addressName.push({ label: val, value: val })
     })
   }
 
   onSubmit() {
+    let value = this.checkoutForm.value;
+    value.type = this.SYSTEM;
     this.addressService.addAddress(this.checkoutForm.value).subscribe({
       next: response => {
         this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm địa chỉ thành công' });

@@ -1,4 +1,4 @@
-<div class="container d-flex justify-content-center">
+<div class="container-xxl d-flex justify-content-center">
     <div class="col-6 ">
         <div class="wrapper">
             <div class="col">
@@ -9,13 +9,13 @@
 
                             <div class="col">
                                 <label for="userName" class="w-100">Tên đăng nhập</label>
-                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="userName" />
+                                <input class="w-100 p-inputtext-sm" type="text" pInputText formControlName="userName">
                             </div>
 
                             <div class="col">
                                 <label for="displayName" class="w-100">Tên hiển thị của bạn</label>
                                 <input class="w-100 p-inputtext-sm" type="text" pInputText
-                                    formControlName="displayName" />
+                                    formControlName="displayName">
                             </div>
                         </div>
 
@@ -23,12 +23,22 @@
                         <div class="row">
                             <div class="col">
                                 <label for="pw1" class="w-100">Mật khẩu</label>
-                                <input class="w-100 p-inputtext-sm" type="password" pInputText formControlName="pw1" />
+                                <span class="p-input-icon-right w-100">
+                                    <i [class]="isShowPw ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                                        (click)="changeIsShowPw()"></i>
+                                    <input class="w-100 p-inputtext-sm" [type]="isShowPw ? 'text':'password'" pInputText
+                                        formControlName="pw1">
+                                </span>
                             </div>
 
                             <div class="col">
                                 <label for="pw2" class="w-100">Xác nhận mật khẩu</label>
-                                <input class="w-100 p-inputtext-sm" type="password" pInputText formControlName="pw2" />
+                                <span class="p-input-icon-right w-100">
+                                    <i [class]="isShowPw ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                                        (click)="changeIsShowPw()"></i>
+                                    <input class="w-100 p-inputtext-sm" [type]="isShowPw ? 'text':'password'" pInputText
+                                        formControlName="pw2">
+                                </span>
                             </div>
                         </div>
 
@@ -38,7 +48,8 @@
                                 <label for="area" class="w-100">Khu vực</label>
                                 <p-dropdown class="w-100 p-inputtext-sm" [options]="addressAreaName"
                                     formControlName="area" optionLabel="label" optionValue="value"
-                                    (onChange)="getAddressZoneName()" emptyMessage="Không có dữ liệu">
+                                    (onChange)="getAddressZoneName()" emptyMessage="Không có dữ liệu"
+                                    [autoDisplayFirst]="false">
                                 </p-dropdown>
                             </div>
 
