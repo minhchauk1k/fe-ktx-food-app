@@ -20,7 +20,7 @@
                                 </div>
 
                                 <div class="col">
-                                    <label for="productName">Tên sản phẩm</label>
+                                    <label for="productName">Tên sản phẩm <span class="required">*</span></label>
                                     <input class="w-100 p-inputtext-sm" id="productName" type="text" pInputText
                                         formControlName="productName">
                                 </div>
@@ -29,14 +29,14 @@
                             <!-- row 2 -->
                             <div class="row">
                                 <div class="col">
-                                    <label for="price">Giá bán</label>
+                                    <label for="price">Giá bán <span class="required">*</span></label>
                                     <p-inputNumber class="w-100 p-inputtext-sm" formControlName="price" mode="currency"
                                         currency="VND" [min]="0">
                                     </p-inputNumber>
                                 </div>
 
                                 <div class="col">
-                                    <label for="isDiscount">Có muốn áp dụng giảm giá không?</label>
+                                    <label for="isDiscount">Có muốn áp dụng giảm giá không? <span class="required">*</span></label>
                                     <p-selectButton class="w-100 p-inputtext-sm" [options]="isDiscountList"
                                         formControlName="discount" optionLabel="label" optionValue="value">
                                     </p-selectButton>
@@ -47,24 +47,7 @@
                                 <!-- row 3 -->
                                 <div class="row">
                                     <div class="col">
-                                        <label for="discountFromDate">Ngày bắt đầu giảm giá</label>
-                                        <p-calendar class="w-100 p-inputtext-sm" formControlName="discountFromDate"
-                                            dateFormat="dd/mm/yy">
-                                        </p-calendar>
-                                    </div>
-
-                                    <div class="col">
-                                        <label for="discountToDate">Ngày ngày kết thúc giảm giá</label>
-                                        <p-calendar class="w-100 p-inputtext-sm" formControlName="discountToDate"
-                                            dateFormat="dd/mm/yy">
-                                        </p-calendar>
-                                    </div>
-                                </div>
-
-                                <!-- row 4 -->
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="isDiscount">Loại hình giảm giá?</label>
+                                        <label for="isDiscount">Loại hình giảm giá? <span class="required">*</span></label>
                                         <p-selectButton class="w-100 p-inputtext-sm" [options]="isDiscountTypeList"
                                             formControlName="discountType" optionLabel="label" optionValue="value">
                                         </p-selectButton>
@@ -72,14 +55,14 @@
                                     </div>
 
                                     <div class="col" *ngIf="checkoutForm.get('discountType')?.value == PERCENT">
-                                        <label for="discountPercent">Giảm theo %</label>
+                                        <label for="discountPercent">Giảm theo % <span class="required">*</span></label>
                                         <p-inputNumber class="w-100 p-inputtext-sm" formControlName="discountPercent"
                                             mode="decimal" [showButtons]="true" [step]="0.25" [min]="0" [max]="100"
                                             [minFractionDigits]="2" suffix="%"></p-inputNumber>
                                     </div>
 
                                     <div class="col" *ngIf="checkoutForm.get('discountType')?.value == NUMBER">
-                                        <label for="discountNumber">Giảm theo giá gốc</label>
+                                        <label for="discountNumber">Giảm theo giá gốc <span class="required">*</span></label>
                                         <p-inputNumber class="w-100 p-inputtext-sm" formControlName="discountNumber"
                                             mode="currency" currency="VND" [min]="0">
                                         </p-inputNumber>
@@ -87,7 +70,7 @@
                                 </div>
                             </div>
 
-                            <!-- row 5 -->
+                            <!-- row 4 -->
                             <div class="row">
                                 <div class="col">
                                     <div class="w-100">
@@ -97,7 +80,7 @@
                                     </div>
 
                                     <div class="w-100 my-padding-top">
-                                        <label for="category">Nhóm sản phẩm</label>
+                                        <label for="category">Nhóm sản phẩm <span class="required">*</span></label>
                                         <!-- trường hợp thêm mới -->
                                         <p-dropdown *ngIf="!isDialog" class="w-100 p-inputtext-sm"
                                             [options]="categoryList" formControlName="category" optionLabel="label"
@@ -113,7 +96,7 @@
                                     </div>
 
                                     <div class="w-100 my-padding-top">
-                                        <label for="type">Phân loại sản phẩm</label>
+                                        <label for="type">Phân loại sản phẩm <span class="required">*</span></label>
                                         <p-dropdown class="w-100 p-inputtext-sm" [options]="typeList"
                                             formControlName="type" optionLabel="label" optionValue="value"
                                             placeholder="Chọn loại sản phẩm" emptyMessage="Không có dữ liệu">
@@ -128,7 +111,7 @@
                                 </div>
                             </div>
 
-                            <!-- row 6 -->
+                            <!-- row 5 -->
                             <div class="row">
                                 <div class="col">
                                     <label for="description">Mô tả sản phẩm</label>
@@ -137,7 +120,7 @@
                                 </div>
                             </div>
 
-                            <!-- row 7 -->
+                            <!-- row 6 -->
                             <div class="row">
                                 <div class="col">
                                     <button pButton type="submit" *ngIf="stateOfDialog == UPDATE"

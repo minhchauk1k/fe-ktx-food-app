@@ -12,8 +12,8 @@
                         <p-tabMenu [model]="items" [activeItem]="items[0]"></p-tabMenu>
                     </div>
 
-                    <div class="row">
-                        <!-- table trên  -->
+                    <!-- table trên  -->
+                    <div class="row" *ngIf="activeItem == true">
                         <p-table [columns]="columnsName" [value]="lotList" dataKey="areaZone"
                             styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true"
                             scrollHeight="430px">
@@ -54,23 +54,170 @@
                                         </td>
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'timeColor'">
-                                            <div  [class]="changeColorByTime(rowData)">
+                                            <div [class]="changeColorByTime(rowData)">
                                                 {{rowData[col.field]}}
                                             </div>
                                         </td>
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'button'">
                                             <button type="button" pButton label="Chuẩn bị"
-                                                class="p-button-sm p-button-success"></button>
+                                                class="p-button-sm p-button-success" (click)="createLotAndDelivery(rowData)"></button>
                                         </td>
                                     </ng-container>
                                 </tr>
                             </ng-template>
 
+                            <!-- emptymessage  -->
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td [attr.colspan]="columns.length">
+                                        Hiện không có đơn hàng nào
+                                    </td>
+                                </tr>
+                            </ng-template>
+
+                            <!-- phần setting mở rộng row -->
+                            <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                                <tr>
+                                    <td></td>
+                                    <td colspan="5">
+                                        <div>
+                                            <p-table [value]="rowData.details" dataKey="id"
+                                                styleClass="p-datatable-striped p-datatable-sm">
+                                                <ng-template pTemplate="body" let-detail>
+                                <tr class="my-row-header">
+                                    <td>Mã đơn hàng:</td>
+                                    <td>{{detail.orderCode}}</td>
+                                    <td>Số phòng:</td>
+                                    <td>{{detail.address.room}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <ng-container *ngFor="let dtl of detail.details">
+                                    <tr>
+                                        <td></td>
+                                        <td>Sản phẩm:</td>
+                                        <td class="my-bold">{{dtl.product.productName}}</td>
+                                        <td>Số lượng:</td>
+                                        <td class="my-bold">{{dtl.qty}}</td>
+                                    </tr>
+                                </ng-container>
+
+                            </ng-template>
                         </p-table>
                     </div>
+                    </td>
+                    <td></td>
+                    </tr>
+                    </ng-template>
+                    <!-- phần setting mở rộng row -->
+
+                    </p-table>
                 </div>
+
+                <!-- table dưới  -->
+                <div class="row" *ngIf="activeItem == false">
+                    <p-table [columns]="columnsName" [value]="lotListWait" dataKey="id"
+                        styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true" scrollHeight="430px">
+
+                        <!-- header -->
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <ng-container *ngFor="let col of columns">
+                                    <th [ngClass]="col.headerClass">
+                                        {{col.header}}
+                                    </th>
+                                </ng-container>
+                            </tr>
+                        </ng-template>
+
+                        <!-- body -->
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex"
+                            let-expanded="expanded">
+                            <tr>
+                                <ng-container *ngFor="let col of columns">
+                                    <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                        {{ rowIndex + 1 }}
+                                    </td>
+
+                                    <td [ngClass]="col.class" *ngIf="col.field == 'showDetails'">
+                                        <button type="button" pButton pRipple [pRowToggler]="rowData"
+                                            class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                    </td>
+
+                                    <td [ngClass]="col.class"
+                                        *ngIf="col.field != 'index' && col.field != 'showDetails'  && col.field != 'button' && col.field != 'countDetails' && col.field != 'timeColor'">
+                                        {{rowData[col.field]}}
+                                    </td>
+
+                                    <td [ngClass]="col.class" *ngIf="col.field == 'countDetails'">
+                                        {{ rowData['details'].length }}
+                                    </td>
+
+                                    <td [ngClass]="col.class" *ngIf="col.field == 'timeColor'">
+                                        <div [class]="changeColorByTime(rowData)">
+                                            {{rowData[col.field]}}
+                                        </div>
+                                    </td>
+
+                                    <td [ngClass]="col.class" *ngIf="col.field == 'button'">
+                                        <button type="button" pButton label="Chuẩn bị"
+                                            class="p-button-sm p-button-success"></button>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </ng-template>
+
+                        <!-- emptymessage  -->
+                        <ng-template pTemplate="emptymessage" let-columns>
+                            <tr>
+                                <td [attr.colspan]="columns.length">
+                                    Hiện không có đơn hàng nào
+                                </td>
+                            </tr>
+                        </ng-template>
+
+                        <!-- phần setting mở rộng row -->
+                        <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                            <tr>
+                                <td></td>
+                                <td colspan="5">
+                                    <div>
+                                        <p-table [value]="rowData.details" dataKey="id"
+                                            styleClass="p-datatable-striped p-datatable-sm">
+                                            <ng-template pTemplate="body" let-detail>
+                            <tr class="my-row-header">
+                                <td>Mã đơn hàng:</td>
+                                <td>{{detail.orderCode}}</td>
+                                <td>Số phòng:</td>
+                                <td>{{detail.address.room}}</td>
+                                <td></td>
+                            </tr>
+
+                            <ng-container *ngFor="let dtl of detail.details">
+                                <tr>
+                                    <td></td>
+                                    <td>Sản phẩm:</td>
+                                    <td class="my-bold">{{dtl.product.productName}}</td>
+                                    <td>Số lượng:</td>
+                                    <td class="my-bold">{{dtl.qty}}</td>
+                                </tr>
+                            </ng-container>
+
+                        </ng-template>
+                    </p-table>
+                </div>
+                </td>
+                <td></td>
+                </tr>
+                </ng-template>
+                <!-- phần setting mở rộng row -->
+
+                </p-table>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>

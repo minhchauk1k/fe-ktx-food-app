@@ -145,7 +145,6 @@ export class CheckOutComponent implements OnInit {
       value.paid = value.payType == this.MONEY ? false : true;
       value.orderStatus = value.payType == this.MONEY ? this.WAITFORPAY : this.PAID;
 
-
       this.orderService.addOrder(value).subscribe({
         next: response => {
           this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đặt hàng thành công' });

@@ -39,6 +39,8 @@ import { TreeTableModule } from 'primeng/treetable';
 import { PasswordModule } from 'primeng/password';
 import { OrganizationChartModule } from 'primeng/organizationchart';
 import { BadgeModule } from 'primeng/badge';
+import { FieldsetModule } from 'primeng/fieldset';
+import {AccordionModule} from 'primeng/accordion';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -152,7 +154,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     TreeTableModule,
     PasswordModule,
     OrganizationChartModule,
-    BadgeModule
+    BadgeModule,
+    FieldsetModule,
+    AccordionModule
   ],
   providers: [
     MessageService,

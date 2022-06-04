@@ -1,1 +1,249 @@
-<p>user-info works!</p>
+<div class="container">
+    <div class="wrapper">
+        <div class="row">
+            <p-tabMenu [model]="items" [activeItem]="items[0]"></p-tabMenu>
+        </div>
+
+        <div class="row" *ngIf="activeItem == 0">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <label for="statusSelected" class="pr-2">Trạng thái</label>
+                    <p-dropdown class="p-inputtext-sm" [options]="statusNameList" [(ngModel)]="statusSelected"
+                        optionLabel="label" optionValue="value" emptyMessage="Không có dữ liệu" appendTo="body">
+                    </p-dropdown>
+                </div>
+
+                <div class="col-3">
+                    <label for="dateFrom" class="pr-2">Từ ngày</label>
+                    <p-calendar [(ngModel)]="dateFrom" class="p-inputtext-sm" dateFormat="dd/mm/yy"></p-calendar>
+                </div>
+
+                <div class="col-3">
+                    <label for="dateTo" class="pr-2">Đến ngày</label>
+                    <p-calendar [(ngModel)]="dateTo" class="p-inputtext-sm" dateFormat="dd/mm/yy"></p-calendar>
+                </div>
+
+                <div class="col-2">
+                    <button type="button" pButton label="Tìm kiếm" class="p-button-sm" (click)="search()"
+                        [disabled]="!dateFrom || !dateTo"></button>
+                </div>
+            </div>
+
+            <div class="row">
+                <p-table [columns]="columnNameHistory" [value]="ordersList.reverse()" dataKey="orderCode"
+                    styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true" scrollHeight="430px">
+
+                    <!-- header -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <ng-container *ngFor="let col of columns">
+                                <th [ngClass]="col.headerClass">
+                                    {{col.header}}
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+
+                    <!-- body -->
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex"
+                        let-expanded="expanded">
+                        <tr>
+                            <ng-container *ngFor="let col of columns">
+                                <td [ngClass]="col.class" *ngIf="col.field == 'index'" class="small">
+                                    {{ rowIndex + 1 }}
+                                </td>
+
+                                <td [ngClass]="col.class" *ngIf="col.field == 'showDetails'">
+                                    <button type="button" pButton pRipple [pRowToggler]="rowData"
+                                        class="p-button-text p-button-rounded p-button-plain p-button-sm"
+                                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                </td>
+
+                                <td [ngClass]="col.class" class="small"
+                                    *ngIf="col.field != 'index' && col.field != 'showDetails' && col.field != 'time' && col.field != 'totalAmount'">
+                                    {{rowData[col.field]}}
+                                </td>
+
+                                <td [ngClass]="col.class" *ngIf="col.field == 'totalAmount'" class="small">
+                                    {{ rowData[col.field] | vnd}}
+                                </td>
+
+                                <td [ngClass]="col.class" *ngIf="col.field == 'time'" class="small">
+                                    <div>
+                                        Thời gian đặt: {{rowData[col.field].orderTime}}
+                                    </div>
+                                    <div *ngIf="rowData.status == COMPLETED">
+                                        Thời gian giao: {{rowData[col.field].completeTime}}
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+
+                    <!-- emptymessage  -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="columns.length" class="text-center">
+                                Hiện không có đơn hàng nào
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- phần setting mở rộng row -->
+                    <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                        <tr>
+                            <td></td>
+                            <td colspan="7">
+                                <p-table [value]="rowData.details" dataKey="id"
+                                    styleClass="p-datatable-striped p-datatable-sm">
+                                    <ng-template pTemplate="body" let-detail>
+                        <tr>
+                            <td>Sản phẩm:</td>
+                            <td class="my-bold">{{detail.product.productName}}</td>
+                            <td>Số lượng:</td>
+                            <td class="my-bold">{{detail.qty}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                </td>
+                </tr>
+                </ng-template>
+                <!-- phần setting mở rộng row -->
+
+                </p-table>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="activeItem == 1">
+            <div class="row">
+                <div class="col-6">
+                    <div class="col">
+                        <label for="productCode">Mã người dùng</label>
+                        <input class="w-100 p-inputtext-sm" type="text" [(ngModel)]="user.userCode" pInputText disabled>
+                        <label for="productCode">Tên hiển thị</label>
+                        <input class="w-100 p-inputtext-sm" type="text" [(ngModel)]="user.displayName" pInputText>
+                        <label for="productCode">Email</label>
+                        <input class="w-100 p-inputtext-sm" type="text" [(ngModel)]="user.email" pInputText>
+
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="col">
+                        <label for="productCode">Tên đăng nhập</label>
+                        <input class="w-100 p-inputtext-sm" type="text" [(ngModel)]="user.userName" pInputText disabled>
+                        <label for="productCode">Số điện thoại</label>
+                        <input class="w-100 p-inputtext-sm" type="text" [(ngModel)]="user.phoneNumber" pInputText>
+                        <label for="productCode">Ảnh đại diện</label>
+                        <input class="w-100 p-inputtext-sm" type="text" [(ngModel)]="user.urlAvatar" pInputText>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <p-table [columns]="columnNameAddress" [value]="user.addresses"
+                    styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true" scrollHeight="220px">
+
+                    <!-- header -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <ng-container *ngFor="let col of columns">
+                                <th [ngClass]="col.headerClass" *ngIf="col.field != 'button'">
+                                    {{col.header}}
+                                </th>
+                                <th [ngClass]="col.headerClass" *ngIf="col.field == 'button'">
+                                    <button pButton type="button" icon="pi pi-plus" class="p-button-sm p-button-success"
+                                        (click)="openAddressDialog()"></button>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+
+                    <!-- emptymessage  -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="columns.length" class="text-center">
+                                Hiện không có địa chỉ nào
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- body -->
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                        <tr>
+                            <ng-container *ngFor="let col of columns">
+                                <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                    {{ rowIndex + 1 }}
+                                </td>
+
+                                <td [ngClass]="col.class"
+                                    *ngIf="col.field != 'index' && col.field != 'default' && col.field != 'button'">
+                                    {{rowData[col.field]}}
+                                </td>
+
+                                <td [ngClass]="col.class" *ngIf="col.field == 'default'" class="pt-0 pb-0">
+                                    <div *ngIf="rowData[col.field] == true">
+                                        (Địa chỉ mặc định)
+                                    </div>
+                                    <div *ngIf="rowData[col.field] == false">
+                                        <button pButton type="button" label="Đặt làm mặc định" class="p-button-sm"
+                                            (click)="changeDefaultAddress(rowData)"></button>
+                                    </div>
+                                </td>
+
+                                <td [ngClass]="col.class" *ngIf="col.field == 'button'" class="pt-0 pb-0">
+                                    <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm"
+                                        (click)="deleteAddress(rowData)"></button>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <button pButton type="button" label="Cập nhật thông tin" class="p-button-sm"
+                        (click)="updateUser()"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Thông tin địa chỉ" [modal]="true" [draggable]="false" [(visible)]="isShowAddressDialog"
+    [style]="{'width':'450px','height':'350px'}">
+    <ng-template pTemplate="content">
+
+        <div class="row">
+            <div class="col">
+                <label for="area" class="w-100">Khu vực</label>
+                <p-dropdown class="p-inputtext-sm" [options]="addressAreaName" [(ngModel)]="area" optionLabel="label"
+                    optionValue="value" (onChange)="getAddressZoneName()" emptyMessage="Không có dữ liệu"
+                    [autoDisplayFirst]="false" appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="zone" class="w-100">Số tầng/Dãy phòng</label>
+                <p-dropdown id="zone" class="p-inputtext-sm" [options]="addressZoneName" [disabled]="!area"
+                    [(ngModel)]="zone" optionLabel="label" optionValue="value" emptyMessage="Không có dữ liệu"
+                    [autoDisplayFirst]="false" appendTo="body">
+                </p-dropdown>
+            </div>
+
+            <div class="col">
+                <label for="room" class="w-100">Số phòng</label>
+                <input class="w-100 p-inputtext-sm" type="text" pInputText [(ngModel)]="room" />
+            </div>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="addAddress()"></button>
+    </ng-template>
+</p-dialog>

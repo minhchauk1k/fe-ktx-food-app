@@ -103,7 +103,13 @@ export class CommonService {
         return (error: any) => {
             if (error.status == 403) {
                 this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi truy cập', detail: 'Vui lòng đăng nhập và thử lại sau!', life: 5000 });
-                this.userLogout();
+                this._isLogin.next(false);
+                this._isAdmin.next(false);
+                this._user.next(null);
+                this._roleControl.next(this.ANONYMOUS)
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                this.router.navigate(['/login']);
             } else {
                 this.messageService.add({ severity: 'error', summary: 'Xảy ra lỗi', detail: 'Vui lòng liên hệ quản trị viên!', life: 5000 });
             }

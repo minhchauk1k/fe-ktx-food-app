@@ -1,0 +1,22 @@
+:host ::ng-deep {
+    .p-datepicker table td {
+        //adjust the padding
+        padding: 0;
+    }
+
+    .p-dropdown {
+        width: 175px;
+    }
+    
+    .small {
+        font-size: 0.8rem;
+    }
+
+    .my-bold {
+        font-weight: 700;
+    }
+
+    .p-dropdown {
+        width: 100%;
+    }
+}

@@ -25,7 +25,7 @@
                             </p-dropdown>
                             <span class="p-input-icon-left mb-2 md:mb-0">
                                 <i class="pi pi-search"></i>
-                                <input class="p-inputtext-sm" type="search" pInputText placeholder="Tìm món"
+                                <input class="p-inputtext-sm" type="search" pInputText placeholder="Tìm sản phẩm"
                                     (input)="onSearch($event)">
                             </span>
                             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <div class="product-list-item">
                                 <!-- ảnh sản phẩm  -->
-                                <img [src]="product.urlAvatar == '' ? urlDefault: product.urlAvatar"
+                                <img [src]="(!product.urlAvatar || product.urlAvatar == '') ? urlDefault: product.urlAvatar"
                                     [alt]="product.productName" />
 
                                 <!-- phần thông tin sản phẩm -->
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <!-- button mua  -->
-                                    <button pButton type="button" icon="pi pi-shopping-cart" label="Đặt món"
+                                    <button pButton type="button" icon="pi pi-shopping-cart" label="Đặt mua"
                                         class="p-button-success p-button-sm"
                                         [disabled]="product.inventoryStatus == 'OUTOFSTOCK'"
                                         (click)="buttonHandle(ORDER, product)"></button>
@@ -98,7 +98,7 @@
 
                                 <div class="product-grid-item-content">
                                     <!-- ảnh sản phẩm  -->
-                                    <img [src]="product.urlAvatar == '' ? urlDefault: product.urlAvatar"
+                                    <img [src]="(!product.urlAvatar || product.urlAvatar == '') ? urlDefault: product.urlAvatar"
                                         [alt]="product.productName" />
 
                                     <div class="product-name">{{product.productName}}</div>

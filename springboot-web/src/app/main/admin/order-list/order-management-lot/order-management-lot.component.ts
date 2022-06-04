@@ -13,18 +13,32 @@ import * as moment from 'moment'
 })
 export class OrderManagementLotComponent implements OnInit {
 
-  DAYS = ' ngày ';
-  HOURS = ' giờ ';
-  MINUTES = ' phút ';
+  private DAYS = ' ngày ';
+  private HOURS = ' giờ ';
+  private MINUTES = ' phút ';
+  private LOT_CONTROL = 'LOT_CONTROL';
+  private YES = 'YES';
+  private SYSTEM = 'SYSTEM';
 
   public items: MenuItem[] = [];
-  public activeItem: boolean = true;
 
   public columnsName: any[] = [];
   public lotList: any[] = [];
+  public lotListWait: any[] = [];
+  public lotListJustRepaired: any[] = [];
+  public lotListJustRepairedBk: any[] = [];
+  public areaZoneList1: any[] = [];
+  public areaZoneList2: any[] = [];
   public ordersList: any[] = [];
   public ordersListBk: any[] = [];
-  public areaZoneList: any[] = [];
+  public ordersListWait: any[] = [];
+  public ordersListWaitBk: any[] = [];
+  public addressesList: any[] = [];
+  public groupByAreaName: any[] = [];
+  public addressAreaName: any[] = [];
+
+  public activeItem: boolean = true;
+  public isLotControl: boolean = false;
 
   private myTimeOut: any;
 
@@ -41,12 +55,12 @@ export class OrderManagementLotComponent implements OnInit {
     ];
 
     this.columnsName = [
-      { field: 'index', header: 'STT', headerClass: 'text-center', class: 'text-center' },
-      { field: 'showDetails', header: 'Chi tiết', headerClass: 'text-center', class: 'text-center' },
-      { field: 'areaZone', header: 'Khu vực', headerClass: 'text-center', class: '' },
-      { field: 'countDetails', header: 'Số lượng đơn hàng', headerClass: 'text-center', class: 'text-center' },
-      { field: 'timeColor', header: 'Trạng thái', headerClass: 'text-center', class: 'text-center' },
-      { field: 'button', header: 'Xử lý', headerClass: 'text-center', class: 'text-center' },
+      { field: 'index', header: 'STT', headerClass: 'text-center my-w-45', class: 'text-center my-w-45' },
+      { field: 'showDetails', header: 'Chi tiết', headerClass: 'text-center my-w-70', class: 'text-center my-w-70' },
+      { field: 'areaZone', header: 'Khu vực', headerClass: 'text-center my-w-340', class: 'my-w-340' },
+      { field: 'countDetails', header: 'Số lượng đơn hàng', headerClass: 'text-center my-w-180', class: 'text-center my-w-180' },
+      { field: 'timeColor', header: 'Trạng thái', headerClass: 'text-center my-w-120', class: 'text-center my-w-120' },
+      { field: 'button', header: 'Xử lý', headerClass: 'text-center my-w-120', class: 'text-center my-w-120' },
     ];
   }
 
@@ -57,6 +71,9 @@ export class OrderManagementLotComponent implements OnInit {
     }, 1000 * 60);
 
     this.getOrdersJustPaid();
+    this.getOrderLotsJustRepaired();
+    this.getIsLotControl();
+    this.getAddresses();
   }
 
   ngOnDestroy(): void {
@@ -69,10 +86,67 @@ export class OrderManagementLotComponent implements OnInit {
         this.ordersList = response;
         this.ordersListBk = this.ordersList;
 
-        this.formatAddressOrder();
+        this.formatAddress(this.ordersList);
+        this.createAreaZone1(this.ordersList);
+        this.createLotList1(this.ordersList);
       },
       error: this.commonService.erorrHandle()
     });
+  }
+
+  private getOrderLotsJustRepaired() {
+    this.orderService.getOrderLotsJustRepaired().subscribe({
+      next: res => {
+        this.lotListJustRepaired = res;
+        this.lotListJustRepairedBk = this.lotListJustRepaired;
+
+        this.createLotListWait();
+      },
+      error: this.commonService.erorrHandle()
+    })
+  }
+
+  private createLotListWait() {
+    // reset 
+    this.lotListWait = [];
+
+    this.lotListJustRepaired.forEach(val => {
+      const details = val.details;
+      const timeColor = this.createTimeFromNow(details);
+      this.lotListWait.push({ areaZone: val.lotName, details: details, timeColor: timeColor })
+    })
+  }
+
+  private getIsLotControl(): void {
+    this.commonService.getParameter(this.LOT_CONTROL).subscribe({
+      next: response => {
+        this.isLotControl = (response.parameterValue === this.YES) ? true : false;
+      },
+      error: this.commonService.erorrHandle()
+    });
+  }
+
+  private getAddresses(): void {
+    // reset
+    this.addressesList = [];
+
+    this.addressService.getByType(this.SYSTEM).subscribe({
+      next: response => {
+        this.addressesList = response;
+        this.groupByAreaName = this.addressService.groupBy(this.addressesList, 'area');
+        this.createAreaNameList();
+      },
+      error: this.commonService.erorrHandle()
+    })
+  }
+
+  private createAreaNameList() {
+    // reset
+    this.addressAreaName = [];
+
+    for (let item in this.groupByAreaName) {
+      this.addressAreaName.push({ label: item, value: item });
+    }
   }
 
   private convertAddressToObject(data: string) {
@@ -84,41 +158,77 @@ export class OrderManagementLotComponent implements OnInit {
     }
   }
 
-  private formatAddressOrder() {
-    this.ordersList.forEach(val => {
+  private convertObjectToAddress(data: any) {
+    return data.area + ', ' + data.zone + ', ' + data.room;
+  }
+
+  private formatAddress(data: any[]) {
+    data.forEach(val => {
       val.address = this.convertAddressToObject(val.address);
     })
-    this.createAreaZone();
   }
 
-  private createAreaZone() {
-    // reset
-    this.areaZoneList = [];
+  private returnFormatAddress(data: any[]) {
+    data.forEach(val => {
+      val.address = this.convertObjectToAddress(val.address);
+    })
+  }
 
-    this.ordersList.forEach(val => {
+  private createAreaZone1(data: any[]) {
+    // reset
+    this.areaZoneList1 = [];
+
+    data.forEach(val => {
       const areaZone = val.address.area + ', ' + val.address.zone;
-      if (!this.areaZoneList.includes(areaZone)) {
-        this.areaZoneList.push(areaZone);
+      if (!this.areaZoneList1.includes(areaZone)) {
+        this.areaZoneList1.push(areaZone);
       }
     })
-
-    this.createLotList();
   }
 
-  private createLotList() {
+  private createAreaZone2(data: any[]) {
+    // reset
+    this.areaZoneList2 = [];
+
+    data.forEach(val => {
+      const areaZone = val.address.area + ', ' + val.address.zone;
+      if (!this.areaZoneList2.includes(areaZone)) {
+        this.areaZoneList2.push(areaZone);
+      }
+    })
+  }
+
+  private createLotList1(data: any[]) {
     // reset
     this.lotList = [];
 
-    this.areaZoneList.forEach(val => {
+    this.areaZoneList1.forEach(val => {
       // get details
       const address = val.split(', ');
-      const details = this.ordersList.filter(val => {
+      const details = data.filter(val => {
         return val.address.area == address[0] && val.address.zone == address[1];
       })
 
       const timeColor = this.createTimeFromNow(details);
 
       this.lotList.push({ areaZone: val, details: details, timeColor: timeColor })
+    })
+  }
+
+  private createLotList2(data: any[]) {
+    // reset
+    this.lotListWait = [];
+
+    this.areaZoneList2.forEach(val => {
+      // get details
+      const address = val.split(', ');
+      const details = data.filter(val => {
+        return val.address.area == address[0] && val.address.zone == address[1];
+      })
+
+      const timeColor = this.createTimeFromNow(details);
+
+      this.lotListWait.push({ areaZone: val, details: details, timeColor: timeColor })
     })
   }
 
@@ -163,6 +273,22 @@ export class OrderManagementLotComponent implements OnInit {
 
     // hơn 30 phút
     return 'status_red';
+  }
+
+  public createLotAndDelivery(data: any) {
+    this.returnFormatAddress(data.details);
+
+    const newLot = {
+      lotName: data.areaZone,
+      details: data.details
+    }
+
+    this.orderService.addOrderLot(newLot).subscribe({
+      next: res => {
+
+      },
+      error: this.commonService.erorrHandle()
+    })
   }
 
 }

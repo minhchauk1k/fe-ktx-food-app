@@ -26,11 +26,19 @@ export class DateService {
         return moment(date).format('DD/MM/YYYY');
     }
 
+    public formatToSv(date: Date) {
+        return moment(date).format('DD-MM-YYYY');
+    }
+
     public formatCustom(date: Date, format: string) {
         return moment(date).format(format);
     }
 
     public formatHours(date: Date) {
+        return moment(date).format('DD/MM/YYYY HH:mm');
+    }
+
+    public formatSecs(date: Date) {
         return moment(date).format('DD/MM/YYYY HH:mm:ss');
     }
 

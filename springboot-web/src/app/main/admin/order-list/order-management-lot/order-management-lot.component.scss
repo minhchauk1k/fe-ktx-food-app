@@ -25,4 +25,39 @@
         border-radius: 5px;
         padding: 0.25rem 0;
     }
+
+    .my-bold {
+        font-weight: 700;
+    }
+
+    .my-row-header {
+        background-color: gray !important;
+        color: white !important;
+        font-weight: 700 !important;
+    }
+
+    .my-w-45 {
+        max-width: 45px !important;
+        min-width: 45px !important;
+    }
+
+    .my-w-70 {
+        max-width: 70px !important;
+        min-width: 70px !important;
+    }
+
+    .my-w-120 {
+        max-width: 120px !important;
+        min-width: 120px !important;
+    }
+
+    .my-w-180 {
+        max-width: 180px !important;
+        min-width: 180px !important;
+    }
+
+    .my-w-340 {
+        max-width: 340px !important;
+        min-width: 340px !important;
+    }
 }

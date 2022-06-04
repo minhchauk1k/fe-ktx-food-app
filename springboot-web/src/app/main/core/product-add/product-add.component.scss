@@ -1,20 +1,5 @@
 :host ::ng-deep {
-    .p-datepicker table td {
-        //adjust the padding
-        padding: 0;
-    }
 
-    // .discountClass{
-    //     background-color: grey;
-    // }
-
-    // .p-datepicker table td>span {
-    //     //adjust the width and height
-    //     height: 30px;
-    //     width: 20px;
-    // }
-
-    .p-calendar,
     .p-dropdown,
     .p-inputnumber,
     .p-selectButton {
@@ -23,5 +8,10 @@
 
     .my-padding-top {
         padding-top: 16px;
+    }
+
+    .required {
+        color: red;
+        font-weight: 700;
     }
 }

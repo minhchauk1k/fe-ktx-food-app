@@ -32,8 +32,6 @@ export class ProductAddComponent implements OnInit {
     id: '',
     productCode: '',
     productName: ['', [Validators.required]],
-    discountFromDate: '',
-    discountToDate: '',
     price: [null, [Validators.required]],
     discount: [false, [Validators.required]],
     discountPercent: null,
@@ -120,14 +118,14 @@ export class ProductAddComponent implements OnInit {
       case this.UPDATE:
         this.setValueEntity();
         this.productSevice.updateProduct(value).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Cập nhật sản phẩm thành công', life: 1500 });
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật sản phẩm thành công', life: 1500 });
           this.resetForm();
           this.afterExecuted.emit(this.UPDATE);
         })
         break;
       default:
         this.productSevice.addProduct(value).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Thêm sản phẩm thành công', life: 1500 });
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm sản phẩm thành công', life: 1500 });
           this.resetForm();
         });
         break;
@@ -146,7 +144,7 @@ export class ProductAddComponent implements OnInit {
   }
 
   setUrlAvatarInput(url: any) {
-    this.urlAvatarDisplay = url;
+    this.urlAvatarDisplay = (!url || url.trim() == '') ? this.urlAvatarDisplay : url;
   }
 
   setUrlAvatar(event: any) {

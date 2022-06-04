@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <div class="product-list-item">
                                 <!-- ảnh sản phẩm  -->
-                                <img [src]="product.urlAvatar == '' ? urlDefault: product.urlAvatar"
+                                <img [src]="(!product.urlAvatar || product.urlAvatar == '') ? urlDefault: product.urlAvatar"
                                     [alt]="product.productName" />
 
                                 <!-- phần thông tin sản phẩm -->
@@ -98,7 +98,7 @@
 
                                 <div class="product-grid-item-content">
                                     <!-- ảnh sản phẩm  -->
-                                    <img [src]="product.urlAvatar == '' ? urlDefault: product.urlAvatar"
+                                    <img [src]="(!product.urlAvatar || product.urlAvatar == '') ? urlDefault: product.urlAvatar"
                                         [alt]="product.productName" />
 
                                     <div class="product-name">{{product.productName}}</div>

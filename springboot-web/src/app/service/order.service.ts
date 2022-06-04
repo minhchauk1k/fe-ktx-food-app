@@ -30,8 +30,19 @@ export class OrderService {
         return this.http.post<any>(`${this.apiServerURL}/order/add`, order, this.createAuthorization());
     }
 
+    public addOrderLot(orderLot: any): Observable<any> {
+        return this.http.post<any>(`${this.apiServerURL}/order/lot/add`, orderLot, this.createAuthorization());
+    }
+
     public getOrders(): Observable<any> {
         return this.http.get<any>(`${this.apiServerURL}/order/all`, this.createAuthorization());
+    }
+
+    public getOrdersOfUser(param: any): Observable<any> {
+        const status = param.status;
+        const dateFrom = param.dateFrom;
+        const dateTo = param.dateTo;
+        return this.http.get<any>(`${this.apiServerURL}/order/all/user/status=${status}&dateFrom=${dateFrom}&dateTo=${dateTo}`, this.createAuthorization());
     }
 
     public changeStatusOrder(id: number, status: string): Observable<any> {
@@ -64,6 +75,10 @@ export class OrderService {
 
     public getLotsInCompleted(): Observable<any> {
         return this.http.get<any>(`${this.apiServerURL}/order/lot/all/incompleted`, this.createAuthorization());
+    }
+
+    public getOrderLotsJustRepaired(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/lot/all/just/repaired`, this.createAuthorization());
     }
 
 }
