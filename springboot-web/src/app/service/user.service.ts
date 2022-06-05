@@ -39,7 +39,7 @@ export class UserService {
     }
 
     public getUserByUsername(userName: string): Observable<any> {
-        return this.http.get<any>(`${this.apiServerURL}/user/userName=${userName}`, this.createAuthorization());
+        return this.http.get<any>(`${this.apiServerURL}/user/find/userName=${userName}`);
     }
 
     public getUserFullNameByUsername(userName: string): Observable<any> {

@@ -11,21 +11,22 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class OrderListComponent implements OnInit {
   public ordersList: any[] = [];
-  public columns: any[] = [];
+  public columnsName: any[] = [];
   public selectedOrder: any;
 
   constructor(
     private orderService: OrderService,
     private commonService: CommonService,
   ) {
-    this.columns = [
-      { field: 'orderCode', header: 'Mã đơn hàng' },
-      { field: 'address', header: 'Địa chỉ giao hàng' },
-      { field: 'totalAmount', header: 'Tổng tiền' },
+    this.columnsName = [
+      { field: 'index', header: 'STT', headerClass: 'text-center', class: 'text-center' },
+      { field: 'orderCode', header: 'Mã đơn hàng', headerClass: 'text-center', class: 'text-center' },
+      { field: 'address', header: 'Địa chỉ giao hàng', headerClass: 'text-center', class: '' },
+      { field: 'totalAmount', header: 'Tổng tiền', headerClass: 'text-center', class: 'text-center' },
       // { field: 'totalQty', header: 'Tổng số lượng' },
       // { field: 'paid', header: 'Thanh toán' },
-      { field: 'orderStatus', header: 'Trạng thái' },
-      { field: 'completed', header: 'Hoàn tất' },
+      { field: 'orderStatus', header: 'Trạng thái', headerClass: 'text-center', class: 'text-center' },
+      { field: 'completed', header: 'Hoàn tất', headerClass: 'text-center', class: 'text-center' },
     ];
   }
 

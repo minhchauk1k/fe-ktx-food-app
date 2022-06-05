@@ -24,7 +24,7 @@ export class MenuDashboardComponent implements OnInit {
           { label: 'Danh sách phân quyền', icon: 'pi pi-fw pi-user', routerLink: ['/role-list'] },
         ]
       },
-      { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
+      // { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
       {
         label: 'Sản phẩm', icon: 'pi pi-fw pi-shopping-bag',
         items: [
@@ -38,20 +38,17 @@ export class MenuDashboardComponent implements OnInit {
         items: [
           { label: 'Danh sách đơn hàng', icon: 'pi pi-fw pi-search', routerLink: ['/order-list'] },
           { label: 'Chuẩn bị đơn hàng', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management'] },
-          { label: 'Chuẩn bị đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management-lot'] },
           { label: 'Vận chuyển đơn hàng', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery'] },
+          { label: 'Chuẩn bị đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management-lot'] },
           { label: 'Vận chuyển đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery-lot'] },
-          { label: 'Đơn hàng đã hoàn thành', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
-          { label: 'Đơn hàng bị hủy', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-list'] },
         ]
-      }, 
-      {
-        label: 'Địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list']
       },
+
       {
         label: 'Hệ thống', icon: 'pi pi-fw pi-cog',
         items: [
           { label: 'Danh sách cài đặt', icon: 'pi pi-fw pi-search' },
+          { label: 'Địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list']},
         ]
       }
       ,

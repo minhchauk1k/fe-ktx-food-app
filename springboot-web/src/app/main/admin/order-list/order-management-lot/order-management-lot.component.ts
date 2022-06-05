@@ -111,10 +111,12 @@ export class OrderManagementLotComponent implements OnInit {
     this.lotListWait = [];
 
     this.lotListJustRepaired.forEach(val => {
+      this.formatAddress(val.details);
       const details = val.details;
       const timeColor = this.createTimeFromNow(details);
-      this.lotListWait.push({ areaZone: val.lotName, details: details, timeColor: timeColor })
+      this.lotListWait.push({ id: val.id, areaZone: val.lotName, details: details, timeColor: timeColor })
     })
+
   }
 
   private getIsLotControl(): void {
@@ -186,18 +188,6 @@ export class OrderManagementLotComponent implements OnInit {
     })
   }
 
-  private createAreaZone2(data: any[]) {
-    // reset
-    this.areaZoneList2 = [];
-
-    data.forEach(val => {
-      const areaZone = val.address.area + ', ' + val.address.zone;
-      if (!this.areaZoneList2.includes(areaZone)) {
-        this.areaZoneList2.push(areaZone);
-      }
-    })
-  }
-
   private createLotList1(data: any[]) {
     // reset
     this.lotList = [];
@@ -212,23 +202,6 @@ export class OrderManagementLotComponent implements OnInit {
       const timeColor = this.createTimeFromNow(details);
 
       this.lotList.push({ areaZone: val, details: details, timeColor: timeColor })
-    })
-  }
-
-  private createLotList2(data: any[]) {
-    // reset
-    this.lotListWait = [];
-
-    this.areaZoneList2.forEach(val => {
-      // get details
-      const address = val.split(', ');
-      const details = data.filter(val => {
-        return val.address.area == address[0] && val.address.zone == address[1];
-      })
-
-      const timeColor = this.createTimeFromNow(details);
-
-      this.lotListWait.push({ areaZone: val, details: details, timeColor: timeColor })
     })
   }
 
@@ -285,10 +258,22 @@ export class OrderManagementLotComponent implements OnInit {
 
     this.orderService.addOrderLot(newLot).subscribe({
       next: res => {
-
+        this.getOrdersJustPaid();
+        this.getOrderLotsJustRepaired();
+        this.messageService.add({ severity: 'info', summary: 'Thành công', detail: 'Lô ' + res.lotCode + ' đang chuẩn bị' });
       },
       error: this.commonService.erorrHandle()
-    })
+    });
+  }
+
+  deliveryLot(data: any) {
+    this.orderService.deliveryLot(data.id).subscribe({
+      next: res => {
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Lô ' + res.lotCode + ' đang được giao' });
+        this.getOrderLotsJustRepaired();
+      },
+      error: this.commonService.erorrHandle()
+    });
   }
 
 }

@@ -11,41 +11,62 @@
                     <div class="row">
                         <div class="d-flex justify-content-between">
                             <h5>Danh sách người dùng</h5>
-                            <div class="d-flex">
-                                <button pButton type="button" label="Thêm người dùng" class="p-button-sm"></button>
-                                <button *ngIf="selectedUser" pButton type="button" label="Xem chi tiết"
-                                    class="p-button-sm"></button>
-                            </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <p-table [value]="usersList" selectionMode="single" [(selection)]="selectedUser"
-                            styleClass="p-datatable-sm" [resizableColumns]="true" scrollHeight="500px">
-                            <ng-template pTemplate="header">
+                        <p-table [value]="usersList" styleClass="p-datatable-striped p-datatable-sm"
+                            [resizableColumns]="true" scrollHeight="480px" [columns]="columnsName">
+                            <!-- header -->
+                            <ng-template pTemplate="header" let-columns>
                                 <tr>
-                                    <th>STT</th>
-                                    <th *ngFor="let col of columns">
-                                        {{col.header}}
-                                    </th>
+                                    <ng-container *ngFor="let col of columns">
+                                        <th [ngClass]="col.headerClass">
+                                            {{col.header}}
+                                        </th>
+                                    </ng-container>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                                <tr [pSelectableRow]="rowData">
-                                    <td>
-                                        <div>{{ rowIndex + 1 }}</div>
-                                    </td>
-                                    <td *ngFor="let col of columns">
-                                        <div *ngIf="col.field != 'roles'">
-                                            {{rowData[col.field]}}
-                                        </div>
 
-                                        <div *ngIf="col.field == 'roles'">
-                                            <div *ngFor="let val of rowData['roles']">
+                            <!-- body -->
+                            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-columns="columns">
+                                <tr>
+                                    <ng-container *ngFor="let col of columns">
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                            {{ rowIndex + 1 }}
+                                        </td>
+
+                                        <td [ngClass]="col.class"
+                                            *ngIf="col.field != 'index' && col.field != 'roles'  && col.field != 'button'">
+                                            {{rowData[col.field]}}
+                                        </td>
+
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'roles'">
+                                            <div *ngFor="let val of rowData[col.field]">
                                                 {{val.roleName}}
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'button'">
+                                            <span class="pr-1" *ngIf="rowData['userName'] != 'admin'">
+                                                <button type="button" pButton label="Role" class="p-button-sm"
+                                                    (click)="roleUser(rowData)"></button>
+                                            </span>
+
+                                            <span
+                                                *ngIf="rowData['blocked'] ==  false && rowData['userName'] != 'admin'">
+                                                <button type="button" pButton label="Block"
+                                                    class="p-button-sm p-button-danger"
+                                                    (click)="blockUser(rowData)"></button>
+                                            </span>
+
+                                            <span *ngIf="rowData['blocked'] ==  true && rowData['userName'] != 'admin'">
+                                                <button type="button" pButton label="Unblock"
+                                                    class="p-button-sm p-button-success"
+                                                    (click)="blockUser(rowData)"></button>
+                                            </span>
+                                        </td>
+                                    </ng-container>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -56,3 +77,35 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Thông tin phân quyền" [modal]="true" [draggable]="false" [(visible)]="isShowRoleDialog"
+    [style]="{'width':'500px','height':'480px'}">
+    <ng-template pTemplate="content">
+        <div class="row">
+            <p-table [value]="rolesList" styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true">
+                <!-- header -->
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-center">Tên Role</th>
+                        <th class="text-center">Xử lý</th>
+                    </tr>
+                </ng-template>
+
+                <!-- body -->
+                <ng-template pTemplate="body" let-rowData>
+                    <tr>
+                        <td>
+                            {{rowData['roleName']}}
+                        </td>
+                        <td class="text-center">
+                            <p-inputSwitch [(ngModel)]="rowData.value"></p-inputSwitch>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="addRole()"></button>
+    </ng-template>
+</p-dialog>

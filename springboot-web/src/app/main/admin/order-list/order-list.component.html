@@ -18,32 +18,39 @@
                     </div>
 
                     <div class="row">
-                        <p-table [value]="ordersList" selectionMode="single" [(selection)]="selectedOrder"
-                            styleClass="p-datatable-sm" [resizableColumns]="true" scrollHeight="500px">
-                            <ng-template pTemplate="header">
+                        <p-table [value]="ordersList" styleClass="p-datatable-sm" [resizableColumns]="true"
+                            scrollHeight="480px" [columns]="columnsName">
+                            <!-- header -->
+                            <ng-template pTemplate="header" let-columns>
                                 <tr>
-                                    <th>STT</th>
-                                    <th *ngFor="let col of columns">
-                                        {{col.header}}
-                                    </th>
+                                    <ng-container *ngFor="let col of columns">
+                                        <th [ngClass]="col.headerClass">
+                                            {{col.header}}
+                                        </th>
+                                    </ng-container>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                                <tr [pSelectableRow]="rowData">
-                                    <td>
-                                        <div>{{ rowIndex + 1 }}</div>
-                                    </td>
-                                    <td *ngFor="let col of columns">
-                                        <div *ngIf="col.field != 'roles'">
-                                            {{rowData[col.field]}}
-                                        </div>
+                            <!-- body  -->
+                            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-columns="columns">
+                                <tr>
+                                    <ng-container *ngFor="let col of columns">
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                                            {{ rowIndex + 1 }}
+                                        </td>
 
-                                        <div *ngIf="col.field == 'roles'">
-                                            <div *ngFor="let val of rowData['roles']">
-                                                {{val.roleName}}
-                                            </div>
-                                        </div>
-                                    </td>
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'totalAmount'">
+                                            {{rowData[col.field] | vnd}}
+                                        </td>
+
+                                        <td [ngClass]="col.class" *ngIf="col.field != 'index' && col.field != 'totalAmount' && col.field != 'completed'">
+                                            {{rowData[col.field]}}
+                                        </td>
+
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'completed'">
+                                            <span *ngIf="rowData[col.field] == true">YES</span>
+                                            <span *ngIf="rowData[col.field] == false">NO</span>
+                                        </td>
+                                    </ng-container>
                                 </tr>
                             </ng-template>
                         </p-table>

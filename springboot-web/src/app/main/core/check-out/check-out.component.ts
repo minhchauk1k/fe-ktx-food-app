@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AddressService } from 'src/app/service/address.service';
 import { CartService } from 'src/app/service/cart.service';
 import { CommonService } from 'src/app/service/common.service';
+import { MomoService } from 'src/app/service/momo.service';
 import { OrderService } from 'src/app/service/order.service';
 import { UserService } from 'src/app/service/user.service';
 
@@ -62,10 +64,12 @@ export class CheckOutComponent implements OnInit {
     private commonService: CommonService,
     private addressService: AddressService,
     private userService: UserService,
+    private momoService: MomoService,
+    private router: Router,
   ) {
     this.paymentList = [
       { label: 'Bằng tiền mặt', value: this.MONEY },
-      { label: 'Ví điện tử Momo', value: this.MOMO }
+      // { label: 'Ví điện tử Momo', value: this.MOMO }
     ];
 
     this.columns = [
@@ -79,6 +83,13 @@ export class CheckOutComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkLogin();
+    this.checkCart();
+  }
+
+  checkCart() {
+    if (this.cartService.getItemsList().length == 0) {
+      this.router.navigate(['/product'])
+    }
   }
 
   checkLogin() {

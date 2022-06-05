@@ -121,29 +121,35 @@ export class CommonService {
         const password: string = data.password;
         this.login(userName, password).subscribe({
             next: response => {
-                if (response.accessToken) {
-                    this._isLogin.next(true);
-
-                    const access_token = response.accessToken;
-                    const refresh_token = response.refreshToken;
-                    localStorage.setItem('access_token', access_token);
-                    localStorage.setItem('refresh_token', refresh_token);
-
-                    this.getUserInfo();
-
-                    const helper = new JwtHelperService();
-                    const decodedToken = helper.decodeToken(access_token);
-                    const roles: any[] = decodedToken.roles;
-
-                    this.sortRoleLogin(roles);
-
-                    if (roles.length && this._roleControl.value === this.ROLE_ADMIN) {
-                        this.router.navigate(['/admin']);
-                        this._isAdmin.next(true);
+                this.userService.getUserByUsername(userName).subscribe(res => {
+                    if (res.blocked == true) {
+                        this.messageService.add({ severity: 'error', summary: 'Thông báo', detail: 'Tài khoản đã bị khóa, vui lòng liên hệ quản trị viên để được hỗ trợ' });
                     } else {
-                        this.router.navigate(['/']);
+                        if (response.accessToken) {
+                            this._isLogin.next(true);
+
+                            const access_token = response.accessToken;
+                            const refresh_token = response.refreshToken;
+                            localStorage.setItem('access_token', access_token);
+                            localStorage.setItem('refresh_token', refresh_token);
+
+                            this.getUserInfo();
+
+                            const helper = new JwtHelperService();
+                            const decodedToken = helper.decodeToken(access_token);
+                            const roles: any[] = decodedToken.roles;
+
+                            this.sortRoleLogin(roles);
+
+                            if (roles.length && this._roleControl.value === this.ROLE_ADMIN) {
+                                this.router.navigate(['/admin']);
+                                this._isAdmin.next(true);
+                            } else {
+                                this.router.navigate(['/']);
+                            }
+                        }
                     }
-                }
+                });
             }, error: error => {
                 this.messageService.add({ severity: 'error', summary: 'Thông báo', detail: 'Sai tên đăng nhập hoặc mật khẩu' });
             }
@@ -172,7 +178,7 @@ export class CommonService {
         this._isLogin.next(false);
         this._isAdmin.next(false);
         this._user.next(null);
-        this._roleControl.next(this.ANONYMOUS)
+        this._roleControl.next(this.ANONYMOUS);
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         this.cartService.clearItems();

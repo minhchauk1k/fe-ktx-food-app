@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CommonService } from 'src/app/service/common.service';
+import { RoleService } from 'src/app/service/role.service';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -10,36 +12,45 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class UserListComponent implements OnInit {
   public usersList: any[] = [];
-  public columns: any[] = [];
+  public columnsName: any[] = [];
   public selectedUser: any;
+  isShowRoleDialog = false;
+  rolesList: any[] = [];
+  currentUser: any;
 
   constructor(
     private userService: UserService,
     private messageService: MessageService,
     private router: Router,
+    private roleService: RoleService,
+    private commonService: CommonService,
   ) {
-    this.columns = [
-      { field: 'userCode', header: 'Mã người dùng' },
-      { field: 'displayName', header: 'Tên hiển thị' },
-      { field: 'userName', header: 'Tên người dùng' },
-      // { field: 'password', header: 'Mật khẩu' },
-      // { field: 'phoneNumber', header: 'Số điện thoại' },
-      // { field: 'email', header: 'Email' },
-      // { field: 'address', header: 'Địa chỉ' },
-      // { field: 'urlAvatar', header: 'Đường dẫn Avatar' },
-      // { field: 'deleted', header: 'Đã xóa' },
-      // { field: 'active', header: 'Kích hoạt' },
-      // { field: 'lastLoginDate', header: 'Lần đăng nhập cuối cùng' },
-      { field: 'roles', header: 'Danh sách quyền hạng' },
-      // { field: 'createUser', header: 'Người tạo' },
-      // { field: 'createDate', header: 'Ngày tạo' },
-      // { field: 'updateUser', header: 'Người chỉnh sửa' },
-      // { field: 'updateDate', header: 'Ngày chỉnh sửa' },
+    this.columnsName = [
+      { field: 'index', header: 'STT', headerClass: 'text-center', class: 'text-center' },
+      { field: 'userCode', header: 'Mã người dùng', headerClass: 'text-center', class: 'text-center' },
+      { field: 'displayName', header: 'Tên hiển thị', headerClass: 'text-center', class: 'text-center' },
+      { field: 'userName', header: 'Tên người dùng', headerClass: 'text-center', class: 'text-center' },
+      { field: 'roles', header: 'Danh sách quyền hạng', headerClass: 'text-center', class: 'text-center' },
+      { field: 'blocked', header: 'Bị khóa', headerClass: 'text-center', class: 'text-center' },
+      { field: 'button', header: 'Xử lý', headerClass: 'text-center', class: 'text-center' },
     ];
   }
 
   ngOnInit(): void {
     this.getUsers();
+  }
+
+  getRoles(data: any): void {
+    // reset 
+    this.rolesList = [];
+
+    this.roleService.getRoles().subscribe({
+      next: response => {
+        this.rolesList = response;
+        this.createValueRole(data);
+      },
+      error: this.commonService.erorrHandle()
+    })
   }
 
   private getUsers(): void {
@@ -54,6 +65,59 @@ export class UserListComponent implements OnInit {
         }
       }
     });
+  }
+
+  roleUser(data: any) {
+    this.getRoles(data);
+    this.currentUser = data;
+    this.isShowRoleDialog = true;
+  }
+
+  createValueRole(data: any) {
+    this.rolesList.forEach(val => {
+      val.value = data.roles.filter((x: any) => x.roleName == val.roleName).length ? true : false;
+    })
+  }
+
+  addRole() {
+    this.currentUser.roles = [];
+    this.rolesList.forEach(val => {
+      if (val.value) {
+        this.currentUser.roles.push(val);
+      }
+    })
+    this.userService.updateUser(this.currentUser).subscribe({
+      next: res => {
+        this.currentUser = null;
+        this.getUsers();
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật role thành công' });
+      },
+      error: this.commonService.erorrHandle()
+    })
+    this.isShowRoleDialog = false;
+  }
+
+  blockUser(data: any) {
+    if (data.blocked) {
+      data.blocked = false;
+      this.userService.updateUser(data).subscribe({
+        next: res => {
+          this.getUsers();
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Unblock thành công' });
+        },
+        error: this.commonService.erorrHandle()
+      })
+    } else {
+      data.blocked = true;
+      this.userService.updateUser(data).subscribe({
+        next: res => {
+          this.getUsers();
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Block thành công' });
+        },
+        error: this.commonService.erorrHandle()
+      })
+    }
+
   }
 
 }

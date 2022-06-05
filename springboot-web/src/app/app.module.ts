@@ -40,7 +40,8 @@ import { PasswordModule } from 'primeng/password';
 import { OrganizationChartModule } from 'primeng/organizationchart';
 import { BadgeModule } from 'primeng/badge';
 import { FieldsetModule } from 'primeng/fieldset';
-import {AccordionModule} from 'primeng/accordion';
+import { AccordionModule } from 'primeng/accordion';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -156,7 +157,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrganizationChartModule,
     BadgeModule,
     FieldsetModule,
-    AccordionModule
+    AccordionModule,
+    InputSwitchModule
   ],
   providers: [
     MessageService,

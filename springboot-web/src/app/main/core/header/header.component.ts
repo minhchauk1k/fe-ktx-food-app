@@ -58,6 +58,24 @@ export class HeaderComponent implements OnInit {
           this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
           break;
 
+        case this.ROLE_STAFF:
+          this.resetItem();
+          this.items.push({ label: 'app.admin', routerLink: ['/admin'] });
+          this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
+          break;
+
+        case this.ROLE_MANAGER:
+          this.resetItem();
+          this.items.push({ label: 'app.admin', routerLink: ['/admin'] });
+          this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
+          break;
+
+        case this.ROLE_OWNER:
+          this.resetItem();
+          this.items.push({ label: 'app.admin', routerLink: ['/admin'] });
+          this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
+          break;
+
         case this.ROLE_ADMIN:
           this.resetItem();
           this.items.push({ label: 'app.admin', routerLink: ['/admin'] });

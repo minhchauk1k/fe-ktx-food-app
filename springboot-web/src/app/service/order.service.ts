@@ -81,4 +81,8 @@ export class OrderService {
         return this.http.get<any>(`${this.apiServerURL}/order/lot/all/just/repaired`, this.createAuthorization());
     }
 
+    public deliveryLot(id: number): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/order/lot/update/delivery`, id, this.createAuthorization());
+    }
+
 }

@@ -117,7 +117,7 @@
 
                 <!-- table dưới  -->
                 <div class="row" *ngIf="activeItem == false">
-                    <p-table [columns]="columnsName" [value]="lotListWait" dataKey="id"
+                    <p-table [columns]="columnsName" [value]="lotListWait" dataKey="areaZone"
                         styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true" scrollHeight="430px">
 
                         <!-- header -->
@@ -162,8 +162,8 @@
                                     </td>
 
                                     <td [ngClass]="col.class" *ngIf="col.field == 'button'">
-                                        <button type="button" pButton label="Chuẩn bị"
-                                            class="p-button-sm p-button-success"></button>
+                                        <button type="button" pButton label="Giao hàng"
+                                            class="p-button-sm" (click)="deliveryLot(rowData)"></button>
                                     </td>
                                 </ng-container>
                             </tr>
