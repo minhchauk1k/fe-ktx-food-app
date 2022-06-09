@@ -71,9 +71,10 @@ import { VndPipe } from './pipe/vnd.pipe';
 import { DecimalPipe } from '@angular/common';
 import { CustomConfirmDialogComponent } from './main/core/custom-confirm-dialog/custom-confirm-dialog.component';
 import { UserAddComponent } from './main/core/user-add/user-add.component';
-import { AddressListComponent } from './main/admin/address-list/address-list.component';
+import { AddressListComponent } from './main/admin/system-list/address-list/address-list.component';
 import { UserInfoComponent } from './main/user-info/user-info.component';
 import { OrderManagementLotComponent } from './main/admin/order-list/order-management-lot/order-management-lot.component';
+import { ParameterListComponent } from './main/admin/system-list/parameter-list/parameter-list.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -110,7 +111,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserAddComponent,
     AddressListComponent,
     UserInfoComponent,
-    OrderManagementLotComponent
+    OrderManagementLotComponent,
+    ParameterListComponent
   ],
   imports: [
     BrowserModule,

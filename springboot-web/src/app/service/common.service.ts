@@ -198,6 +198,10 @@ export class CommonService {
         return this.http.get<any>(`${this.apiServerURL}/common/parameter/${key}`);
     }
 
+    public getParameters(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/common/parameters`);
+    }
+
     public fixTiengViet(str: string) {
         if (str === null || str === undefined) return str;
         str = str.toLowerCase();

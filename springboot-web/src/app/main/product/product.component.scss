@@ -1,5 +1,12 @@
 :host ::ng-deep {
 
+    .out-stock {
+        background-color: #948d8d;
+        color: white;
+        border-radius: 3px;
+        padding: 0.25rem;
+    }
+
     .p-dataview-header {
         position: sticky;
         top: 57px;

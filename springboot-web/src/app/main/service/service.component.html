@@ -61,10 +61,12 @@
                                             vnd}}</span>
                                     </div>
 
+                                    <span *ngIf="!product.inventory && !(commonService.isAdmin | async)"
+                                        class="out-stock text-center">Hết hàng</span>
+
                                     <!-- button mua  -->
-                                    <button pButton type="button" icon="pi pi-shopping-cart" label="Đặt mua"
-                                        class="p-button-success p-button-sm"
-                                        [disabled]="product.inventoryStatus == 'OUTOFSTOCK'"
+                                    <button pButton *ngIf="product.inventory" type="button" icon="pi pi-shopping-cart"
+                                        label="Đặt mua" class="p-button-success p-button-sm"
                                         (click)="buttonHandle(ORDER, product)"></button>
 
                                     <!-- button sửa xóa  -->
@@ -115,10 +117,13 @@
 
                                     <!-- các button -->
                                     <div class="d-flex">
+                                        <span *ngIf="!product.inventory && !(commonService.isAdmin | async)"
+                                            class="out-stock text-center">Hết hàng</span>
+
                                         <!-- button mua  -->
-                                        <button pButton type="button" icon="pi pi-shopping-cart"
-                                            class="p-button-sm p-button-success" (click)="buttonHandle(ORDER, product)"
-                                            [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></button>
+                                        <button pButton *ngIf="product.inventory" type="button"
+                                            icon="pi pi-shopping-cart" class="p-button-sm p-button-success"
+                                            (click)="buttonHandle(ORDER, product)"></button>
 
                                         <!-- button sửa xóa  -->
                                         <div class="d-flex" *ngIf="commonService.isAdmin | async">

@@ -47,8 +47,8 @@ export class MenuDashboardComponent implements OnInit {
       {
         label: 'Hệ thống', icon: 'pi pi-fw pi-cog',
         items: [
-          { label: 'Danh sách cài đặt', icon: 'pi pi-fw pi-search' },
-          { label: 'Địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list']},
+          { label: 'Biến hệ thống', icon: 'pi pi-fw pi-cog', routerLink: ['/parameter-list'] },
+          { label: 'Sổ địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list'] },
         ]
       }
       ,

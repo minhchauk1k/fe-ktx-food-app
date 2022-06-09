@@ -17,9 +17,10 @@ import { OrderManagementComponent } from './main/admin/order-list/order-manageme
 import { OrderDeliveryComponent } from './main/admin/order-list/order-delivery/order-delivery.component';
 import { OrderDeliveryLotComponent } from './main/admin/order-list/order-delivery-lot/order-delivery-lot.component';
 import { UserAddComponent } from './main/core/user-add/user-add.component';
-import { AddressListComponent } from './main/admin/address-list/address-list.component';
+import { AddressListComponent } from './main/admin/system-list/address-list/address-list.component';
 import { UserInfoComponent } from './main/user-info/user-info.component';
 import { OrderManagementLotComponent } from './main/admin/order-list/order-management-lot/order-management-lot.component';
+import { ParameterListComponent } from './main/admin/system-list/parameter-list/parameter-list.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '', pathMatch: 'full' },
@@ -35,15 +36,16 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'product-list', component: ProductListComponent },
   { path: 'service-list', component: ServiceListComponent },
-  { path: 'user-list', component:  UserListComponent},
-  { path: 'order-list', component:  OrderListComponent},
-  { path: 'order-management', component:  OrderManagementComponent},
-  { path: 'order-management-lot', component:  OrderManagementLotComponent},
-  { path: 'order-delivery', component:  OrderDeliveryComponent},
-  { path: 'order-delivery-lot', component:  OrderDeliveryLotComponent},
-  { path: 'role-list', component:  RoleListComponent},
+  { path: 'user-list', component: UserListComponent },
+  { path: 'order-list', component: OrderListComponent },
+  { path: 'order-management', component: OrderManagementComponent },
+  { path: 'order-management-lot', component: OrderManagementLotComponent },
+  { path: 'order-delivery', component: OrderDeliveryComponent },
+  { path: 'order-delivery-lot', component: OrderDeliveryLotComponent },
+  { path: 'role-list', component: RoleListComponent },
   { path: 'address-list', component: AddressListComponent },
   { path: 'user-info', component: UserInfoComponent },
+  { path: 'parameter-list', component: ParameterListComponent },
   // { path: '**', component: PageNotFoundComponent }
 ];
 

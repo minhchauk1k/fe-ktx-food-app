@@ -52,8 +52,7 @@
                             </ng-template>
 
                             <!-- body -->
-                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex"
-                                let-expanded="expanded">
+                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
                                 <tr>
                                     <ng-container *ngFor="let col of columns">
                                         <td [ngClass]="col.class" *ngIf="col.field == 'index'">
@@ -63,6 +62,15 @@
                                             {{rowData[col.field]}}
                                         </td>
                                     </ng-container>
+                                </tr>
+                            </ng-template>
+
+                            <!-- emptymessage  -->
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td [attr.colspan]="columns.length">
+                                        Hiện không có địa chỉ nào
+                                    </td>
                                 </tr>
                             </ng-template>
 
