@@ -85,4 +85,12 @@ export class OrderService {
         return this.http.put<any>(`${this.apiServerURL}/order/lot/update/delivery`, id, this.createAuthorization());
     }
 
+    public getOrderOfThisWeek(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/report/week`, this.createAuthorization());
+    }
+
+    public getOrderOfLastWeek(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/report/last/week`, this.createAuthorization());
+    }
+
 }

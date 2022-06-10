@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from 'src/app/service/common.service';
+import { OrderService } from 'src/app/service/order.service';
 
 @Component({
   selector: 'app-chart-view-sales',
@@ -7,54 +9,110 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChartViewSalesComponent implements OnInit {
 
-  public basicData: any;
-  public basicOptions: any;
+  data: any;
+  orderListWeek: any[] = [];
+  orderListLastWeek: any[] = [];
+  nameDayWeek: any[] = [];
+  days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
-  constructor() { }
+  constructor(
+    private orderService: OrderService,
+    private commonService: CommonService,
+  ) { }
 
   ngOnInit(): void {
-    this.basicData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    this.getOrderListThisWeek();
+  }
+
+  getOrderListThisWeek() {
+    this.orderService.getOrderOfThisWeek().subscribe({
+      next: res => {
+        this.orderListWeek = res;
+        this.getOrderListLastWeek();
+      },
+      error: this.commonService.erorrHandle()
+    })
+  }
+
+  getOrderListLastWeek() {
+    this.orderService.getOrderOfLastWeek().subscribe({
+      next: res => {
+        this.orderListLastWeek = res;
+        this.createNameOfWeek();
+        this.createDateReport();
+      },
+      error: this.commonService.erorrHandle()
+    })
+  }
+
+  createNameOfWeek() {
+    const today = new Date();
+    let temp = new Date()
+    this.nameDayWeek = [];
+    temp.setDate(today.getDate() - 6);
+    this.nameDayWeek.push(this.days[temp.getDay()]);
+
+    temp.setDate(today.getDate() - 5);
+    this.nameDayWeek.push(this.days[temp.getDay()]);
+
+    temp.setDate(today.getDate() - 4);
+    this.nameDayWeek.push(this.days[temp.getDay()]);
+
+    temp.setDate(today.getDate() - 3);
+    this.nameDayWeek.push(this.days[temp.getDay()]);
+
+    temp.setDate(today.getDate() - 2);
+    this.nameDayWeek.push(this.days[temp.getDay()]);
+
+    temp.setDate(today.getDate() - 1);
+    this.nameDayWeek.push(this.days[temp.getDay()]);
+
+    this.nameDayWeek.push(this.days[today.getDay()]);
+  }
+
+  createDataThisWeek() {
+    let thisWeek: any[] = [];
+
+    this.orderListWeek.forEach((data: any[]) => {
+      let sum = 0;
+      data.forEach((val: any) => {
+        sum += val.totalAmount;
+      });
+      thisWeek.push(sum);
+    });
+
+    return thisWeek;
+  }
+
+  createDataLastWeek() {
+    let lastWeek: any[] = [];
+
+    this.orderListLastWeek.forEach((data: any[]) => {
+      let sum = 0;
+      data.forEach((val: any) => {
+        sum += val.totalAmount;
+      });
+      lastWeek.push(sum);
+    });
+
+    return lastWeek;
+  }
+
+  createDateReport() {
+    this.data = {
+      labels: this.nameDayWeek,
       datasets: [
         {
-          label: 'My First dataset',
+          label: 'Tuần này',
           backgroundColor: '#42A5F5',
-          data: [65, 59, 80, 81, 56, 55, 40]
+          data: this.createDataThisWeek()
         },
         {
-          label: 'My Second dataset',
+          label: 'Tuần trước',
           backgroundColor: '#FFA726',
-          data: [28, 48, 40, 19, 86, 27, 90]
+          data: this.createDataLastWeek()
         }
       ]
-    };
-
-    this.basicOptions = {
-      plugins: {
-        legend: {
-          labels: {
-            color: '#495057'
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: '#495057'
-          },
-          grid: {
-            color: '#ebedef'
-          }
-        },
-        y: {
-          ticks: {
-            color: '#495057'
-          },
-          grid: {
-            color: '#ebedef'
-          }
-        }
-      }
     };
   }
 

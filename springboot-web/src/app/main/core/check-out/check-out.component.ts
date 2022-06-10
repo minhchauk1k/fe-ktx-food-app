@@ -161,6 +161,7 @@ export class CheckOutComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đặt hàng thành công' });
           this.checkoutForm.reset();
           this.cartService.clearItems();
+          this.router.navigate(['/product']);
         },
         error: this.commonService.erorrHandle()
       });

@@ -1,1 +1,42 @@
-<p>chart-view-product works!</p>
+<div class="shadow border p-2">
+    <h6 class="text-center pt-1">Top 5 sản phẩm bán chạy của tuần</h6>
+    <p-table [columns]="columnsName" dataKey="orderCode" [value]="productList"
+        styleClass="p-datatable-sm p-datatable-striped" [resizableColumns]="true">
+
+        <!-- header -->
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <ng-container *ngFor="let col of columns">
+                    <th [ngClass]="col.headerClass">
+                        {{col.header}}
+                    </th>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <!-- body -->
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+            <tr>
+                <ng-container *ngFor="let col of columns">
+                    <td [ngClass]="col.class" *ngIf="col.field == 'index'">
+                        {{ rowIndex + 1 }}
+                    </td>
+
+                    <td [ngClass]="col.class"
+                        *ngIf="col.field != 'index' && col.field != 'showDetails'  && col.field != 'totalAmount' && col.field != 'button'">
+                        {{rowData[col.field]}}
+                    </td>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <!-- emptymessage  -->
+        <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+                <td [attr.colspan]="columns.length">
+                    Hiện không có dữ liệu
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
