@@ -14,11 +14,16 @@ export class CustomConfirmDialogComponent implements OnInit {
 
   @Input() message: any;
   @Input() header: any;
+  @Input() showYes: any;
   @Input() yes: any;
+  @Input() showNo: any;
   @Input() no: any;
   @Output() result = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {
+    this.showYes = true;
+    this.showNo = true;
+  }
 
   ngOnInit(): void {
     this.headerDisplay = this.header ? this.header : 'Thông báo';

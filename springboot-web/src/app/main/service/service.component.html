@@ -67,7 +67,8 @@
                                     <!-- button mua  -->
                                     <button pButton *ngIf="product.inventory" type="button" icon="pi pi-shopping-cart"
                                         label="Đặt mua" class="p-button-success p-button-sm"
-                                        (click)="buttonHandle(ORDER, product)"></button>
+                                        (click)="buttonHandle(ORDER, product)"
+                                        [disabled]="!isStoreOpen && !(commonService.isAdmin | async)"></button>
 
                                     <!-- button sửa xóa  -->
                                     <div class="d-flex flex-column" *ngIf="commonService.isAdmin | async">
@@ -123,7 +124,8 @@
                                         <!-- button mua  -->
                                         <button pButton *ngIf="product.inventory" type="button"
                                             icon="pi pi-shopping-cart" class="p-button-sm p-button-success"
-                                            (click)="buttonHandle(ORDER, product)"></button>
+                                            (click)="buttonHandle(ORDER, product)"
+                                            [disabled]="!isStoreOpen && !(commonService.isAdmin | async)"></button>
 
                                         <!-- button sửa xóa  -->
                                         <div class="d-flex" *ngIf="commonService.isAdmin | async">
@@ -156,3 +158,8 @@
 </p-dialog>
 
 <app-custom-confirm-dialog *ngIf="isShowConfirm" (result)="resultIsDelete($event)"></app-custom-confirm-dialog>
+
+<app-custom-confirm-dialog
+    [message]="'Hiện tại đã ngoài giờ phục vụ của cửa hàng, thời gian mở cửa [Từ ' + openTime + ' giờ đến ' + closeTime + ' giờ]'"
+    *ngIf="isShowConfirmOpenTime && !(commonService.isAdmin | async)" [showNo]="false" [yes]="'OK'">
+</app-custom-confirm-dialog>

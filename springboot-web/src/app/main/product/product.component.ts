@@ -22,6 +22,8 @@ export class ProductComponent implements OnInit {
   public SERVICE = 'SERVICE';
   public ALL = 'ALL';
   public DISCOUNT = 'DISCOUNT';
+  private OPEN_TIME = 'OPEN_TIME';
+  private CLOSE_TIME = 'CLOSE_TIME';
 
   public productsList: any[] = [];
   public productsListBk: any[] = [];
@@ -34,9 +36,13 @@ export class ProductComponent implements OnInit {
 
   public isShowConfirm = false;
   public isShowDialog = false;
+  public isShowConfirmOpenTime = false;
+  public isStoreOpen = true;
   public stateOfDialog: any;
 
   public urlDefault = '';
+  public openTime = 0;
+  public closeTime = 0;
 
   constructor(
     public commonService: CommonService,
@@ -53,8 +59,33 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkOpenTime();
     this.getProducts();
     this.getCategories();
+  }
+
+  private checkOpenTime() {
+    this.commonService.getParameters().subscribe({
+      next: res => {
+        res.filter((val: any) => {
+          if (val.parameterKey == this.OPEN_TIME) {
+            this.openTime = val.parameterValue;
+          }
+
+          if (val.parameterKey == this.CLOSE_TIME) {
+            this.closeTime = val.parameterValue;
+          }
+        });
+
+        const today = new Date();
+        const hour = today.getHours();
+
+        if (hour < this.openTime || hour > this.closeTime) {
+          this.isShowConfirmOpenTime = true;
+          this.isStoreOpen = false;
+        }
+      }
+    })
   }
 
   private getProducts(): void {

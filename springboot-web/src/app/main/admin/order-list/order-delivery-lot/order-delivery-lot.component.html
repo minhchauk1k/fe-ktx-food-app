@@ -7,8 +7,6 @@
             <div class="wrapper">
                 <div class="col">
 
-
-
                     <div class="row">
                         <div class="d-flex justify-content-between">
                             <h5>Đơn hàng đang vận chuyển theo lô</h5>
@@ -25,7 +23,7 @@
                         </div>
                         <div class="col-6">
                             <button type="button" pButton label="Đã giao" class="p-button-sm p-button-success"
-                                (click)="completeDeliveryLot()"></button>
+                                [disabled]="selectedLot == null" (click)="completeDeliveryLot()"></button>
                         </div>
                     </div>
 
@@ -107,7 +105,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 </div>

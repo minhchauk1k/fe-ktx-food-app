@@ -5,7 +5,7 @@ import { OrderService } from 'src/app/service/order.service';
 @Component({
   selector: 'app-chart-view-order',
   templateUrl: './chart-view-order.component.html',
-  styleUrls: ['./chart-view-order.component.css']
+  styleUrls: ['./chart-view-order.component.scss']
 })
 export class ChartViewOrderComponent implements OnInit {
   data: any;
@@ -13,6 +13,10 @@ export class ChartViewOrderComponent implements OnInit {
   orderListLastWeek: any[] = [];
   nameDayWeek: any[] = [];
   days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+  sumThisWeek: any;
+  sumLastWeek: any;
+  isMinus = false;
+  percent: any;
 
   constructor(
     private orderService: OrderService,
@@ -80,6 +84,7 @@ export class ChartViewOrderComponent implements OnInit {
       this.orderListWeek[1].length,
       this.orderListWeek[0].length,
     ];
+    this.sumThisWeek = this.sumTotal(thisWeek);
 
     const lastWeek = [
       this.orderListLastWeek[6].length,
@@ -90,6 +95,7 @@ export class ChartViewOrderComponent implements OnInit {
       this.orderListLastWeek[1].length,
       this.orderListLastWeek[0].length,
     ];
+    this.sumLastWeek = this.sumTotal(lastWeek);
 
     this.data = {
       labels: this.nameDayWeek,
@@ -105,12 +111,28 @@ export class ChartViewOrderComponent implements OnInit {
           label: 'Tuần trước',
           data: lastWeek,
           fill: false,
-          borderDash: [5, 5],
+          // borderDash: [5, 5],
           tension: .4,
-          borderColor: '#66BB6A'
+          borderColor: '#FFA726'
         },
       ]
     }
+  }
+
+  sumTotal(data: any) {
+    let sum = 0;
+    data.forEach((val: number) => sum += val);
+    return sum;
+  }
+
+  calcPercentWeek() {
+    this.isMinus = this.sumThisWeek >= this.sumLastWeek ? false : true;
+    if (!this.isMinus) {
+      this.percent = (this.sumThisWeek - this.sumLastWeek) / this.sumLastWeek;
+    } else {
+      this.percent = (this.sumLastWeek - this.sumThisWeek) / this.sumThisWeek;
+    }
+    return this.percent;
   }
 
 }

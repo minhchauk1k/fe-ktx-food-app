@@ -1,4 +1,22 @@
 <div class="shadow border p-2">
-    <h6 class="text-center pt-1">Thống kê số đơn hàng giữa 2 tuần</h6>
+    <h6 class="text-center pt-2">Thống kê số đơn hàng giữa 2 tuần</h6>
+    <div class="d-flex justify-content-between align-items-center  pt-1" *ngIf="sumThisWeek">
+        <div>
+            <span>Tổng đơn trong tuần</span>
+            <div class="d-flex justify-content-center align-items-center">
+                <h6>{{sumThisWeek | number}}</h6>
+            </div>
+        </div>
+
+        <div>
+            <span>So với tuần trước</span>
+            <div class="d-flex justify-content-center align-items-center"
+                [ngClass]="{'text-success': !isMinus, 'text-danger': isMinus}">
+                <i class="pi pi-arrow-up" *ngIf="isMinus == false"></i>
+                <i class="pi pi-arrow-down" *ngIf="isMinus == true"></i>
+                <h6 class="pl-1">{{calcPercentWeek() | percent}}</h6>
+            </div>
+        </div>
+    </div>
     <p-chart type="line" [data]="data"></p-chart>
 </div>

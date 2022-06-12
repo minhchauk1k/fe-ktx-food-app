@@ -1,0 +1,15 @@
+:host ::ng-deep {
+    .required {
+        color: red;
+        font-weight: 700;
+    }
+
+    .my-max-350 {
+        max-width:  350px !important;
+        white-space: normal !important;
+    }
+
+    .p-dropdown {
+        width: 100%;
+    }
+}

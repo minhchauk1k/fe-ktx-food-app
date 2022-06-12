@@ -33,8 +33,12 @@
                                         <td [ngClass]="col.class" *ngIf="col.field == 'index'">
                                             {{ rowIndex + 1 }}
                                         </td>
-                                        <td [ngClass]="col.class" *ngIf="col.field != 'index'">
+                                        <td [ngClass]="col.class" *ngIf="col.field != 'index' && col.field != 'button'">
                                             {{rowData[col.field]}}
+                                        </td>
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'button'">
+                                            <button type="button" pButton icon="pi pi-pencil" class="p-button-sm mr-1"
+                                                (click)="selectParam(rowData)"></button>
                                         </td>
                                     </ng-container>
                                 </tr>
@@ -56,3 +60,45 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Cập nhật biến hệ thống" [modal]="true" [draggable]="false" [(visible)]="isShowParameterDialog"
+    [style]="{'width':'500px','height':'400px'}">
+    <ng-template pTemplate="content">
+        <div class="row">
+            <div class="col">
+                <label for="productCode">Tên biến</label>
+                <input class="w-100 p-inputtext-sm" id="productCode" type="text" pInputText
+                    [ngModel]="currentParam.parameterKey" disabled>
+            </div>
+
+            <div class="col">
+                <label for="productName">Giá trị <span class="required">*</span></label>
+
+                <input *ngIf="currentParam.parameterKey != LOT_CONTROL && currentParam.parameterKey != AUTO_INVENTORY"
+                    class="w-100 p-inputtext-sm" id="productName" type="text" pInputText
+                    [(ngModel)]="parameterValueInput">
+
+                <p-dropdown *ngIf="currentParam.parameterKey == LOT_CONTROL" class="p-inputtext-sm"
+                    [options]="LOT_CONTROL_LIST" [(ngModel)]="parameterValueInput" emptyMessage="Không có dữ liệu"
+                    [autoDisplayFirst]="false">
+                </p-dropdown>
+
+                <p-dropdown *ngIf="currentParam.parameterKey == AUTO_INVENTORY" class="p-inputtext-sm"
+                    [options]="AUTO_INVENTORY_LIST" [(ngModel)]="parameterValueInput" emptyMessage="Không có dữ liệu"
+                    [autoDisplayFirst]="false">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="description">Mô tả sản phẩm</label>
+                <textarea class="w-100 p-inputtext-sm" [rows]="4" pInputTextarea [autoResize]="false"
+                    [(ngModel)]="descriptionInput"></textarea>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="updateParameter()"></button>
+    </ng-template>
+</p-dialog>

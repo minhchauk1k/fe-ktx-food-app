@@ -202,6 +202,22 @@ export class CommonService {
         return this.http.get<any>(`${this.apiServerURL}/common/parameters`);
     }
 
+    public updateParameter(param: any): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/common/parameter/update`, param, this.createAuthorization());
+    }
+
+    private createAuthorization(): any {
+        const BEARER = 'Bearer ';
+        let _headers = new HttpHeaders();
+        _headers = new HttpHeaders().set('Content-Type', 'application/json');
+        _headers = _headers.append("Authorization", BEARER + localStorage.getItem('access_token'));
+
+        const httpOptions = {
+            headers: _headers
+        }
+        return httpOptions;
+    }
+
     public fixTiengViet(str: string) {
         if (str === null || str === undefined) return str;
         str = str.toLowerCase();

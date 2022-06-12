@@ -9,10 +9,10 @@
 
     <ng-template pTemplate="footer">
         <div class="d-flex flex-row justify-content-end">
-            <button class="p-button-sm p-button-danger" pButton [label]="buttonNo" type="button"
+            <button *ngIf="showNo == true" class="p-button-sm p-button-danger" pButton [label]="buttonNo" type="button"
                 icon="pi pi-times" (click)="buttonClick(false)"></button>
-            <button class="p-button-sm p-button-success" pButton [label]="buttonYes" type="button" icon="pi pi-check"
-                [autofocus]="true" (click)="buttonClick(true)"></button>
+            <button *ngIf="showYes == true" class="p-button-sm p-button-success" pButton [label]="buttonYes"
+                type="button" icon="pi pi-check" [autofocus]="true" (click)="buttonClick(true)"></button>
         </div>
     </ng-template>
 </p-dialog>
