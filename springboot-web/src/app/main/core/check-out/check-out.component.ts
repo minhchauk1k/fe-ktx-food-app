@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AddressService } from 'src/app/service/address.service';
 import { CartService } from 'src/app/service/cart.service';
@@ -38,6 +38,7 @@ export class CheckOutComponent implements OnInit {
   public isShowAddressDialog = false;
   public addressType = true;
   public showConfirmAddress = false;
+  public isShowMomoPayDialog = false;
 
   public user: any;
   public area: any;
@@ -66,10 +67,11 @@ export class CheckOutComponent implements OnInit {
     private userService: UserService,
     private momoService: MomoService,
     private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.paymentList = [
       { label: 'Bằng tiền mặt', value: this.MONEY },
-      // { label: 'Ví điện tử Momo', value: this.MOMO }
+      { label: 'Ví điện tử Momo', value: this.MOMO }
     ];
 
     this.columns = [
@@ -82,8 +84,28 @@ export class CheckOutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkOrderIsPaid();
     this.checkLogin();
-    this.checkCart();
+  }
+
+  checkOrderIsPaid() {
+    this.activatedRoute.queryParams.subscribe({
+      next: (res: any) => {
+        if (Object.keys(res).length != 0) {
+          if (this.momoService.verifyIPNSignatureTest(res) && res.resultCode == 0) {
+            this.orderService.updateOrderMomoStatusForUser().subscribe({
+              next: res => {
+                this.checkCart();
+              }
+            })
+          } else {
+            this.checkCart();
+          }
+        } else {
+          this.checkCart();
+        }
+      }
+    })
   }
 
   checkCart() {
@@ -153,15 +175,26 @@ export class CheckOutComponent implements OnInit {
       value.details = this.createDetailsList();
       value.totalAmount = this.getTotalMoney();
       value.totalQty = this.getTotalQty();
-      value.paid = value.payType == this.MONEY ? false : true;
-      value.orderStatus = value.payType == this.MONEY ? this.WAITFORPAY : this.PAID;
+      value.paid = false;
+      value.orderStatus = this.WAITFORPAY;
 
       this.orderService.addOrder(value).subscribe({
         next: response => {
           this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đặt hàng thành công' });
           this.checkoutForm.reset();
           this.cartService.clearItems();
-          this.router.navigate(['/product']);
+
+          // check yêu cầu thanh toán momo
+          if (value.payType == this.MOMO) {
+            this.momoService.momoPaymentTest(value.totalAmount).subscribe({
+              next: res => {
+                window.open(res.payUrl, '_self');
+              },
+              error: this.commonService.erorrHandle()
+            });
+          } else {
+            this.router.navigate(['/product']);
+          }
         },
         error: this.commonService.erorrHandle()
       });

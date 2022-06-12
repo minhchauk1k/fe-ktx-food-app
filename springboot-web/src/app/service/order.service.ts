@@ -93,4 +93,8 @@ export class OrderService {
         return this.http.get<any>(`${this.apiServerURL}/order/report/last/week`, this.createAuthorization());
     }
 
+    public updateOrderMomoStatusForUser(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/update/momo` ,this.createAuthorization());
+    }
+
 }

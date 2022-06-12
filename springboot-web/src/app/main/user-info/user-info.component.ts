@@ -119,27 +119,29 @@ export class UserInfoComponent implements OnInit {
     this.ordersList = [];
 
     data.forEach(val => {
-      this.userService.getUserFullNameByUsername(val.updateUser).subscribe({
-        next: res => {
-          const orderTime = this.dateService.formatHours(val.createDate);
-          const completeTime = this.dateService.formatHours(val.updateDate);
-          const time = {
-            orderTime: orderTime,
-            completeTime: completeTime
-          }
-          const shipper = res.displayName;
+      if (val.updateUser != null) {
+        this.userService.getUserFullNameByUsername(val.updateUser).subscribe({
+          next: res => {
+            const orderTime = this.dateService.formatHours(val.createDate);
+            const completeTime = this.dateService.formatHours(val.updateDate);
+            const time = {
+              orderTime: orderTime,
+              completeTime: completeTime
+            }
+            const shipper = res.displayName;
 
-          this.ordersList.push({
-            orderCode: val.orderCode,
-            time: time,
-            address: val.address,
-            shipper: shipper,
-            totalAmount: val.totalAmount,
-            status: val.orderStatus,
-            details: val.details
-          });
-        }
-      })
+            this.ordersList.push({
+              orderCode: val.orderCode,
+              time: time,
+              address: val.address,
+              shipper: shipper,
+              totalAmount: val.totalAmount,
+              status: val.orderStatus,
+              details: val.details
+            });
+          }
+        })
+      }
     })
   }
 

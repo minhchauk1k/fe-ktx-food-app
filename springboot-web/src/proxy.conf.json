@@ -1,0 +1,20 @@
+{
+    "/api/test/momo": {
+      "target": "https://test-payment.momo.vn/v2/gateway/api/create",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api/test/momo": ""
+      }
+    },
+    "/api/momo": {
+      "target": "https://payment.momo.vn/v2/gateway/api/create",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api/momo": ""
+      }
+    }
+}
