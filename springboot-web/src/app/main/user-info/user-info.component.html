@@ -9,8 +9,9 @@
                 <div class="col-1"></div>
                 <div class="col-3">
                     <label for="statusSelected" class="pr-2">Trạng thái</label>
-                    <p-dropdown class="p-inputtext-sm my-dropdown" [options]="statusNameList" [(ngModel)]="statusSelected"
-                        optionLabel="label" optionValue="value" emptyMessage="Không có dữ liệu" appendTo="body">
+                    <p-dropdown class="p-inputtext-sm my-dropdown" [options]="statusNameList"
+                        [(ngModel)]="statusSelected" optionLabel="label" optionValue="value"
+                        emptyMessage="Không có dữ liệu" appendTo="body">
                     </p-dropdown>
                 </div>
 
@@ -188,13 +189,13 @@
                                     </div>
                                     <div *ngIf="rowData[col.field] == false">
                                         <button pButton type="button" label="Đặt làm mặc định" class="p-button-sm"
-                                            (click)="changeDefaultAddress(rowData)"></button>
+                                            (click)="changeDefaultAddress(rowData, rowIndex)"></button>
                                     </div>
                                 </td>
 
                                 <td [ngClass]="col.class" *ngIf="col.field == 'button'" class="pt-0 pb-0">
                                     <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm"
-                                        (click)="deleteAddress(rowData)"></button>
+                                        (click)="deleteAddress(rowIndex)"></button>
                                 </td>
                             </ng-container>
                         </tr>

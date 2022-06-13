@@ -205,4 +205,9 @@ export class ProductComponent implements OnInit {
     this.getProducts();
     this.getCategories();
   }
+
+  public afterHide() {
+    this.productInput = null;
+    this.isShowDialog = false;
+  }
 }

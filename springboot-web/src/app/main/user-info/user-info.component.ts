@@ -13,7 +13,9 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class UserInfoComponent implements OnInit {
 
+  ALL = 'ALL';
   COMPLETED = 'COMPLETED';
+  NOT_COMPLETED = 'NOT_COMPLETED';
   CANCEL = 'CANCEL';
   SYSTEM = 'SYSTEM';
   USER_CONST = 'USER';
@@ -30,7 +32,7 @@ export class UserInfoComponent implements OnInit {
 
   activeItem: number = 0;
 
-  statusSelected: any = '';
+  statusSelected: any = this.ALL;
   dateFrom: any;
   dateTo: any;
   user: any;
@@ -74,9 +76,10 @@ export class UserInfoComponent implements OnInit {
     ];
 
     this.statusNameList = [
-      { label: 'Tất cả', value: '' },
+      { label: 'Tất cả', value: this.ALL },
+      { label: 'Đang xử lý', value: this.NOT_COMPLETED },
       { label: 'Hoàn thành', value: this.COMPLETED },
-      { label: 'Đã hủy', value: this.CANCEL },
+      // { label: 'Đã hủy', value: this.CANCEL },
     ];
 
     let temp = new Date();
@@ -105,9 +108,11 @@ export class UserInfoComponent implements OnInit {
       dateFrom: this.dateService.formatToSv(this.dateFrom),
       dateTo: this.dateService.formatToSv(this.dateTo)
     }
-
+    // reset 
+    this.ordersList = [];
     this.orderSevice.getOrdersOfUser(param).subscribe({
       next: res => {
+        this.createUsernameOrderList(res);
         this.createOrderList(res);
       },
       error: this.commonService.erorrHandle()
@@ -115,30 +120,35 @@ export class UserInfoComponent implements OnInit {
   }
 
   createOrderList(data: any[]) {
-    // reset 
-    this.ordersList = [];
+    data.forEach(val => {
+      const orderTime = this.dateService.formatHours(val.createDate);
+      const completeTime = this.dateService.formatHours(val.updateDate);
+      const time = {
+        orderTime: orderTime,
+        completeTime: completeTime
+      }
+      const shipper = val.updateUser;
 
+      this.ordersList.push({
+        orderCode: val.orderCode,
+        time: time,
+        address: val.address,
+        shipper: shipper,
+        totalAmount: val.totalAmount,
+        status: val.orderStatus,
+        details: val.details
+      });
+    })
+
+    this.ordersList.sort((a: any, b: any) => a.orderCode - b.orderCode);
+  }
+
+  createUsernameOrderList(data: any[]) {
     data.forEach(val => {
       if (val.updateUser != null) {
         this.userService.getUserFullNameByUsername(val.updateUser).subscribe({
           next: res => {
-            const orderTime = this.dateService.formatHours(val.createDate);
-            const completeTime = this.dateService.formatHours(val.updateDate);
-            const time = {
-              orderTime: orderTime,
-              completeTime: completeTime
-            }
-            const shipper = res.displayName;
-
-            this.ordersList.push({
-              orderCode: val.orderCode,
-              time: time,
-              address: val.address,
-              shipper: shipper,
-              totalAmount: val.totalAmount,
-              status: val.orderStatus,
-              details: val.details
-            });
+            val.updateUser = res.displayName;
           }
         })
       }
@@ -155,13 +165,16 @@ export class UserInfoComponent implements OnInit {
     })
   }
 
-  changeDefaultAddress(data: any) {
+  changeDefaultAddress(data: any, rowIndex: number) {
+    let i = 0;
     this.user.addresses.forEach((val: any) => {
-      if (val.id != data.id) {
+      console.log(i, rowIndex)
+      if (val.id != data.id || i != rowIndex) {
         val.default = false;
       } else {
         val.default = true;
       }
+      i++;
     })
   }
 
@@ -213,15 +226,8 @@ export class UserInfoComponent implements OnInit {
     this.isShowAddressDialog = false;
   }
 
-  deleteAddress(data: any) {
-    let temp: any[] = [];
-    this.user.addresses.forEach((val: any) => {
-      if (val.id && val.id != data.id) {
-        temp.push(val)
-      }
-    })
-
-    this.user.addresses = temp;
+  deleteAddress(rowIndex: number) {
+    this.user.addresses.splice(rowIndex, 1);
   }
 
 }

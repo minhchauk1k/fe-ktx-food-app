@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CategoryService } from 'src/app/service/category.service';
 import { CommonService } from 'src/app/service/common.service';
@@ -141,6 +141,7 @@ export class ProductAddComponent implements OnInit {
     this.urlAvatarDisplay = '/assets/img/no-image.jpg';
     this.categoryList = [];
     this.getCategoryList();
+    this.productInput = null;
   }
 
   setUrlAvatarInput(url: any) {
