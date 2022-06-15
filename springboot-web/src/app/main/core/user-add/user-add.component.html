@@ -49,15 +49,16 @@
                                 <p-dropdown class="w-100 p-inputtext-sm" [options]="addressAreaName"
                                     formControlName="area" optionLabel="label" optionValue="value"
                                     (onChange)="getAddressZoneName()" emptyMessage="Không có dữ liệu"
-                                    [autoDisplayFirst]="false">
+                                    [autoDisplayFirst]="false" appendTo="body">
                                 </p-dropdown>
                             </div>
 
                             <div class="col">
                                 <label for="zone" class="w-100">Số tầng/Dãy phòng</label>
                                 <p-dropdown id="zone" class="w-100 p-inputtext-sm" [options]="addressZoneName"
-                                    [disabled]="!checkoutForm.value.area" formControlName="zone" optionLabel="label"
-                                    optionValue="value" emptyMessage="Không có dữ liệu" [autoDisplayFirst]="false">
+                                    appendTo="body" [disabled]="!checkoutForm.value.area" formControlName="zone"
+                                    optionLabel="label" optionValue="value" emptyMessage="Không có dữ liệu"
+                                    [autoDisplayFirst]="false">
                                 </p-dropdown>
                             </div>
                         </div>

@@ -87,13 +87,13 @@
                                         <p-dropdown class="w-100 p-inputtext-sm" [options]="categoryList"
                                             formControlName="category" optionLabel="label" optionValue="value"
                                             [filter]="true" [editable]="true" placeholder="Chọn nhóm sản phẩm"
-                                            emptyMessage="Không có dữ liệu">
+                                            emptyMessage="Không có dữ liệu" appendTo="body">
                                         </p-dropdown>
                                     </div>
 
                                     <div class="w-100 my-padding-top">
                                         <label for="type">Phân loại sản phẩm <span class="required">*</span></label>
-                                        <p-dropdown class="w-100 p-inputtext-sm" [options]="typeList"
+                                        <p-dropdown class="w-100 p-inputtext-sm" [options]="typeList" appendTo="body"
                                             formControlName="type" optionLabel="label" optionValue="value"
                                             placeholder="Chọn loại sản phẩm" emptyMessage="Không có dữ liệu">
                                         </p-dropdown>

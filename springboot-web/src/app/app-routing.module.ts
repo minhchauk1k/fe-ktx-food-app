@@ -21,6 +21,7 @@ import { AddressListComponent } from './main/admin/system-list/address-list/addr
 import { UserInfoComponent } from './main/user-info/user-info.component';
 import { OrderManagementLotComponent } from './main/admin/order-list/order-management-lot/order-management-lot.component';
 import { ParameterListComponent } from './main/admin/system-list/parameter-list/parameter-list.component';
+import { CategoryListComponent } from './main/admin/category-list/category-list.component';
 
 const routes: Routes = [
   // { path: '',   redirectTo: '', pathMatch: 'full' },
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'address-list', component: AddressListComponent },
   { path: 'user-info', component: UserInfoComponent },
   { path: 'parameter-list', component: ParameterListComponent },
+  { path: 'category-list', component: CategoryListComponent },
   // { path: '**', component: PageNotFoundComponent }
 ];
 

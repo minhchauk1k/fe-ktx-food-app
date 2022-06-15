@@ -84,7 +84,7 @@
 
                     <!-- emptymessage  -->
                     <ng-template pTemplate="emptymessage" let-columns>
-                        <tr>
+                        <tr class="small">
                             <td [attr.colspan]="columns.length" class="text-center">
                                 Hiện không có đơn hàng nào
                             </td>
@@ -93,13 +93,13 @@
 
                     <!-- phần setting mở rộng row -->
                     <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
-                        <tr>
+                        <tr >
                             <td></td>
                             <td colspan="7">
                                 <p-table [value]="rowData.details" dataKey="id"
                                     styleClass="p-datatable-striped p-datatable-sm">
                                     <ng-template pTemplate="body" let-detail>
-                        <tr>
+                        <tr class="small">
                             <td>Sản phẩm:</td>
                             <td class="my-bold">{{detail.product.productName}}</td>
                             <td>Số lượng:</td>

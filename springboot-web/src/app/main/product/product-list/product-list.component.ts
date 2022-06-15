@@ -26,7 +26,7 @@ export class ProductListComponent implements OnInit {
       { field: 'productCode', header: 'Mã món', headerClass: 'text-center', class: 'text-center' },
       { field: 'productName', header: 'Tên món', headerClass: 'text-center', class: '' },
       { field: 'finalPrice', header: 'Giá bán', headerClass: 'text-center', class: 'text-center' },
-      { field: 'discount', header: 'Giảm giá', headerClass: 'text-center', class: 'text-center' },
+      { field: 'discount', header: 'Đang giảm giá', headerClass: 'text-center', class: 'text-center' },
       { field: 'inventory', header: 'Còn hàng', headerClass: 'text-center', class: 'text-center' },
       // { field: 'button', header: 'Xử lý', headerClass: 'text-center', class: 'text-center' },
     ];

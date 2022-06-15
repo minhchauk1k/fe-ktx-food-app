@@ -5,6 +5,7 @@ import { CommonService } from 'src/app/service/common.service';
 import { DateService } from 'src/app/service/date.service';
 import { OrderService } from 'src/app/service/order.service';
 import { UserService } from 'src/app/service/user.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-user-info',
@@ -24,6 +25,7 @@ export class UserInfoComponent implements OnInit {
   columnNameHistory: any[] = [];
   columnNameAddress: any[] = [];
   ordersList: any[] = [];
+  ordersListTemp: any[] = [];
   statusNameList: any[] = [];
   addressesList: any[] = [];
   addressAreaName: any[] = [];
@@ -108,51 +110,53 @@ export class UserInfoComponent implements OnInit {
       dateFrom: this.dateService.formatToSv(this.dateFrom),
       dateTo: this.dateService.formatToSv(this.dateTo)
     }
+
     // reset 
     this.ordersList = [];
     this.orderSevice.getOrdersOfUser(param).subscribe({
       next: res => {
-        this.createUsernameOrderList(res);
-        this.createOrderList(res);
+        this.ordersListTemp = res;
+        let listRequest: any[] = [];
+        let listName: any[] = [];
+
+        res.forEach((val: any) => {
+          if (val.updateUser != null && !listName.includes(val.updateUser)) {
+            listName.push(val.updateUser);
+            listRequest.push(this.userService.getUserFullNameByUsername(val.updateUser));
+          }
+        })
+
+        forkJoin(listRequest).subscribe(vals => {
+          this.createOrderList(vals);
+        });
       },
       error: this.commonService.erorrHandle()
-    })
+    });
   }
 
-  createOrderList(data: any[]) {
-    data.forEach(val => {
+  createOrderList(listName: any[]) {
+    this.ordersListTemp.forEach(val => {
       const orderTime = this.dateService.formatHours(val.createDate);
       const completeTime = this.dateService.formatHours(val.updateDate);
       const time = {
         orderTime: orderTime,
         completeTime: completeTime
       }
-      const shipper = val.updateUser;
+      const shipper = listName.find(element => element.userName == val.updateUser);
 
       this.ordersList.push({
         orderCode: val.orderCode,
         time: time,
         address: val.address,
-        shipper: shipper,
+        shipper: shipper != undefined ? shipper.displayName : '',
         totalAmount: val.totalAmount,
         status: val.orderStatus,
         details: val.details
       });
     })
 
+    this.ordersListTemp = [];
     this.ordersList.sort((a: any, b: any) => a.orderCode - b.orderCode);
-  }
-
-  createUsernameOrderList(data: any[]) {
-    data.forEach(val => {
-      if (val.updateUser != null) {
-        this.userService.getUserFullNameByUsername(val.updateUser).subscribe({
-          next: res => {
-            val.updateUser = res.displayName;
-          }
-        })
-      }
-    })
   }
 
   updateUser() {

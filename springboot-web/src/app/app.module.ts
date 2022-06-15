@@ -75,6 +75,8 @@ import { AddressListComponent } from './main/admin/system-list/address-list/addr
 import { UserInfoComponent } from './main/user-info/user-info.component';
 import { OrderManagementLotComponent } from './main/admin/order-list/order-management-lot/order-management-lot.component';
 import { ParameterListComponent } from './main/admin/system-list/parameter-list/parameter-list.component';
+import { CategoryListComponent } from './main/admin/category-list/category-list.component';
+import { YesNoPipe } from './pipe/yesno.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -112,7 +114,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddressListComponent,
     UserInfoComponent,
     OrderManagementLotComponent,
-    ParameterListComponent
+    ParameterListComponent,
+    CategoryListComponent,
+    YesNoPipe
   ],
   imports: [
     BrowserModule,

@@ -17,7 +17,8 @@
                                     <label for="area" class="w-100">Khu vực</label>
                                     <p-dropdown class="w-100 p-inputtext-sm" [options]="addressName"
                                         formControlName="area" optionLabel="label" optionValue="value" [filter]="true"
-                                        [editable]="true" [showClear]="true" emptyMessage="Không có dữ liệu">
+                                        [editable]="true" [showClear]="true" emptyMessage="Không có dữ liệu"
+                                        appendTo="body">
                                     </p-dropdown>
                                 </div>
 
@@ -58,8 +59,15 @@
                                         <td [ngClass]="col.class" *ngIf="col.field == 'index'">
                                             {{ rowIndex + 1 }}
                                         </td>
-                                        <td [ngClass]="col.class" *ngIf="col.field != 'index'">
+                                        <td [ngClass]="col.class" *ngIf="col.field != 'index' && col.field != 'button'">
                                             {{rowData[col.field]}}
+                                        </td>
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'button'">
+                                            <button type="button" pButton icon="pi pi-pencil" class="p-button-sm mr-1"
+                                                (click)="updateAddress(rowData)"></button>
+                                            <button type="button" pButton icon="pi pi-times"
+                                                class="p-button-sm p-button-danger"
+                                                (click)="deleteAddress(rowData)"></button>
                                         </td>
                                     </ng-container>
                                 </tr>
@@ -81,3 +89,31 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Địa chỉ giao hàng của hệ thống" [modal]="true" [draggable]="false" [(visible)]="isShowDialog"
+    [style]="{'width':'400px','height':'330px'}" (onHide)="closeDialog()">
+    <ng-template pTemplate="content">
+        <div class="row">
+            <div class="col">
+                <label>Khu vực <span class="required">*</span></label>
+                <p-dropdown class="p-inputtext-sm" [options]="addressName" [(ngModel)]="area"
+                    emptyMessage="Không có dữ liệu" [autoDisplayFirst]="false" appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Số tầng/Dãy phòng <span class="required">*</span></label>
+                <input class="w-100 p-inputtext-sm" type="text" pInputText [(ngModel)]="zone">
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="saveData()"
+            [disabled]="!area || !zone"></button>
+    </ng-template>
+</p-dialog>
+
+<app-custom-confirm-dialog [message]="'Bạn có muốn xóa địa chỉ này không?'" *ngIf="isShowConfirm"
+    (result)="resultIsDelete($event)"></app-custom-confirm-dialog>

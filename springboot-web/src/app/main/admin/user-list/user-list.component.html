@@ -37,8 +37,12 @@
                                         </td>
 
                                         <td [ngClass]="col.class"
-                                            *ngIf="col.field != 'index' && col.field != 'roles'  && col.field != 'button'">
+                                            *ngIf="col.field != 'index' && col.field != 'roles' && col.field != 'blocked'  && col.field != 'button'">
                                             {{rowData[col.field]}}
+                                        </td>
+
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'blocked'">
+                                            {{rowData[col.field] | yesno}}
                                         </td>
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'roles'">

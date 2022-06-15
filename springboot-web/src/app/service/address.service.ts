@@ -45,4 +45,12 @@ export class AddressService {
         return this.http.post<any>(`${this.apiServerURL}/common/address/add`, address, this.createAuthorization());
     }
 
+    public updateAddress(data: any): Observable<any> {
+        return this.http.put<any>(`${this.apiServerURL}/common/address/update`, data, this.createAuthorization());
+    }
+
+    public deleteAddress(id: number): Observable<any> {
+        return this.http.delete<void>(`${this.apiServerURL}/common/address/delete/${id}`, this.createAuthorization());
+    }
+
 }

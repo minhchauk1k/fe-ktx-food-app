@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="row">
-                        <p-table [value]="ordersList" styleClass="p-datatable-sm" [resizableColumns]="true"
+                        <p-table [value]="ordersList.reverse()" styleClass="p-datatable-sm" [resizableColumns]="true"
                             scrollHeight="480px" [columns]="columnsName">
                             <!-- header -->
                             <ng-template pTemplate="header" let-columns>
@@ -47,8 +47,7 @@
                                         </td>
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'completed'">
-                                            <span *ngIf="rowData[col.field] == true">YES</span>
-                                            <span *ngIf="rowData[col.field] == false">NO</span>
+                                            {{rowData[col.field] | yesno}}
                                         </td>
                                     </ng-container>
                                 </tr>

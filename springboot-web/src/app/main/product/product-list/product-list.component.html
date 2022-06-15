@@ -37,7 +37,7 @@
                                         </td>
 
                                         <td [ngClass]="col.class"
-                                            *ngIf="col.field != 'index' && col.field != 'button' && col.field != 'inventory' && col.field != 'finalPrice'">
+                                            *ngIf="col.field != 'index' && col.field != 'button' && col.field != 'discount' && col.field != 'inventory' && col.field != 'finalPrice'">
                                             {{rowData[col.field]}}
                                         </td>
 
@@ -48,6 +48,10 @@
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'finalPrice'">
                                             {{rowData[col.field] | vnd}}
+                                        </td>
+
+                                        <td [ngClass]="col.class" *ngIf="col.field == 'discount'">
+                                            {{rowData[col.field] | yesno}}
                                         </td>
 
                                         <td [ngClass]="col.class" *ngIf="col.field == 'button'">

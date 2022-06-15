@@ -31,6 +31,7 @@ export class MenuDashboardComponent implements OnInit {
           { label: 'Thêm sản phẩm', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product-add'] },
           { label: 'Danh sách món ăn', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/product-list'] },
           { label: 'Danh sách dịch vụ', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/service-list'] },
+          { label: 'Phân loại sản phẩm', icon: 'pi pi-fw pi-tag', routerLink: ['/category-list'] },
         ]
       },
       {

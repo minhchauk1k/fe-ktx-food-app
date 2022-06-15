@@ -11,10 +11,17 @@ import { CommonService } from 'src/app/service/common.service';
 })
 export class AddressListComponent implements OnInit {
 
+  SYSTEM = 'SYSTEM';
+
   columnsName: any[] = [];
   addressesList: any[] = [];
   addressName: any[] = [];
-  SYSTEM = 'SYSTEM';
+
+  currentAddress: any;
+  area: any;
+  zone: any;
+  isShowDialog = false;
+  isShowConfirm = false;
 
   public checkoutForm = this.formBuilder.group({
     area: [null, [Validators.required]],
@@ -31,6 +38,7 @@ export class AddressListComponent implements OnInit {
       { field: 'index', header: 'STT', headerClass: 'text-center', class: 'text-center' },
       { field: 'area', header: 'Khu vực', headerClass: 'text-center', class: 'text-center' },
       { field: 'zone', header: 'Số tầng/Dãy phòng', headerClass: 'text-center', class: 'text-center' },
+      { field: 'button', header: 'Xử lý', headerClass: 'text-center', class: 'text-center' },
     ];
   }
 
@@ -55,7 +63,7 @@ export class AddressListComponent implements OnInit {
       temp.push(val.area);
     });
     temp = new Set(temp);
-    
+
     this.addressName = [];
     temp.forEach((val: any) => {
       this.addressName.push({ label: val, value: val })
@@ -74,6 +82,70 @@ export class AddressListComponent implements OnInit {
       },
       error: this.commonService.erorrHandle()
     })
+  }
+
+  updateAddress(data: any) {
+    this.currentAddress = data;
+    this.area = data.area;
+    this.zone = data.zone;
+    this.isShowDialog = true;
+  }
+
+  deleteAddress(data: any) {
+    this.isShowConfirm = true;
+    this.currentAddress = data;
+  }
+
+  resultIsDelete(data: any) {
+    if (data) {
+      this.addressService.deleteAddress(this.currentAddress.id).subscribe({
+        next: res => {
+          this.getAddresses();
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xóa thành công' });
+        },
+        error: this.commonService.erorrHandle()
+      });
+    }
+
+    this.closeDialog();
+  }
+
+  closeDialog() {
+    // reset
+    this.isShowConfirm = false;
+    this.isShowDialog = false;
+    this.currentAddress = null;
+    this.area = null;
+    this.zone = null;
+  }
+
+  saveData() {
+    if (this.currentAddress != null) {
+      this.currentAddress.area = this.area;
+      this.currentAddress.zone = this.zone;
+      this.addressService.updateAddress(this.currentAddress).subscribe({
+        next: res => {
+          this.getAddresses();
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công' });
+        },
+        error: this.commonService.erorrHandle()
+      })
+    } else {
+      this.currentAddress = {
+        area: this.area,
+        zone: this.zone,
+        type: this.SYSTEM
+      };
+      this.addressService.addAddress(this.currentAddress).subscribe({
+        next: res => {
+          this.getAddresses();
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm thành công' });
+        },
+        error: this.commonService.erorrHandle()
+      })
+    }
+
+    this.closeDialog();
   }
 
 }

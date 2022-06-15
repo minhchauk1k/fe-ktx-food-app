@@ -6,12 +6,13 @@
         <div class="col-9">
             <div class="wrapper">
                 <div class="col">
+
                     <div class="row">
-                        <h5>Dánh sách biến quản lý hệ thống</h5>
+                        <h5>Danh sách phân loại sản phẩm</h5>
                     </div>
 
                     <div class="row">
-                        <p-table [columns]="columnsName" [value]="systemList"
+                        <p-table [columns]="columnsName" [value]="categoriesList"
                             styleClass="p-datatable-striped p-datatable-sm" [resizableColumns]="true"
                             scrollHeight="480px">
 
@@ -19,8 +20,12 @@
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <ng-container *ngFor="let col of columns">
-                                        <th [ngClass]="col.headerClass">
+                                        <th [ngClass]="col.headerClass" *ngIf="col.field != 'button'">
                                             {{col.header}}
+                                        </th>
+                                        <th [ngClass]="col.headerClass" *ngIf="col.field == 'button'">
+                                            <button type="button" pButton icon="pi pi-plus"
+                                                class="p-button-sm p-button-success" (click)="addCategory()"></button>
                                         </th>
                                     </ng-container>
                                 </tr>
@@ -33,12 +38,17 @@
                                         <td [ngClass]="col.class" *ngIf="col.field == 'index'">
                                             {{ rowIndex + 1 }}
                                         </td>
+
                                         <td [ngClass]="col.class" *ngIf="col.field != 'index' && col.field != 'button'">
                                             {{rowData[col.field]}}
                                         </td>
+
                                         <td [ngClass]="col.class" *ngIf="col.field == 'button'">
                                             <button type="button" pButton icon="pi pi-pencil" class="p-button-sm mr-1"
-                                                (click)="selectParam(rowData)"></button>
+                                                (click)="updateCategory(rowData)"></button>
+                                            <button type="button" pButton icon="pi pi-times"
+                                                class="p-button-sm p-button-danger"
+                                                (click)="deleteCategory(rowData)"></button>
                                         </td>
                                     </ng-container>
                                 </tr>
@@ -48,7 +58,7 @@
                             <ng-template pTemplate="emptymessage" let-columns>
                                 <tr>
                                     <td [attr.colspan]="columns.length">
-                                        Hiện không có biến hệ thống nào
+                                        Hiện không có dữ liệu
                                     </td>
                                 </tr>
                             </ng-template>
@@ -61,44 +71,30 @@
     </div>
 </div>
 
-<p-dialog header="Cập nhật biến hệ thống" [modal]="true" [draggable]="false" [(visible)]="isShowParameterDialog"
-    [style]="{'width':'500px','height':'400px'}">
+<p-dialog header="Phân loại sản phẩm" [modal]="true" [draggable]="false" [(visible)]="isShowDialog"
+    [style]="{'width':'400px','height':'330px'}" (onHide)="closeDialog()">
     <ng-template pTemplate="content">
         <div class="row">
             <div class="col">
-                <label for="productCode">Tên biến</label>
-                <input class="w-100 p-inputtext-sm" id="productCode" type="text" pInputText
-                    [ngModel]="currentParam.parameterKey" disabled>
-            </div>
-
-            <div class="col">
-                <label for="productName">Giá trị <span class="required">*</span></label>
-
-                <input *ngIf="currentParam.parameterKey != LOT_CONTROL && currentParam.parameterKey != AUTO_INVENTORY"
-                    class="w-100 p-inputtext-sm" id="productName" type="text" pInputText
-                    [(ngModel)]="parameterValueInput">
-
-                <p-dropdown *ngIf="currentParam.parameterKey == LOT_CONTROL" class="p-inputtext-sm"
-                    [options]="LOT_CONTROL_LIST" [(ngModel)]="parameterValueInput" emptyMessage="Không có dữ liệu"
-                    [autoDisplayFirst]="false" appendTo="body">
-                </p-dropdown>
-
-                <p-dropdown *ngIf="currentParam.parameterKey == AUTO_INVENTORY" class="p-inputtext-sm"
-                    [options]="AUTO_INVENTORY_LIST" [(ngModel)]="parameterValueInput" emptyMessage="Không có dữ liệu"
-                    [autoDisplayFirst]="false" appendTo="body">
-                </p-dropdown>
+                <label>Giá trị hiển thị <span class="required">*</span></label>
+                <input class="w-100 p-inputtext-sm" type="text" pInputText [(ngModel)]="categoryValue">
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <label for="description">Mô tả sản phẩm</label>
-                <textarea class="w-100 p-inputtext-sm" [rows]="4" pInputTextarea [autoResize]="false"
-                    [(ngModel)]="descriptionInput"></textarea>
+                <label>Phân loại để hiển thị cho <span class="required">*</span></label>
+                <p-dropdown class="p-inputtext-sm" [options]="dropdownList" [(ngModel)]="type"
+                    emptyMessage="Không có dữ liệu" [autoDisplayFirst]="false" appendTo="body">
+                </p-dropdown>
             </div>
         </div>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="updateParameter()"></button>
+        <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="saveData()"
+            [disabled]="!categoryValue || !type"></button>
     </ng-template>
 </p-dialog>
+
+<app-custom-confirm-dialog [message]="'Bạn có muốn xóa phân loại này không?'" *ngIf="isShowConfirm"
+    (result)="resultIsDelete($event)"></app-custom-confirm-dialog>

@@ -51,7 +51,7 @@
                             <div class="col">
                                 <label for="payType">Phương thức thanh toán <span class="required">*</span></label>
                                 <p-dropdown class="w-100" [options]="paymentList" formControlName="payType"
-                                    optionLabel="label" optionValue="value" [required]="true"
+                                    optionLabel="label" optionValue="value" [required]="true" appendTo="body"
                                     placeholder="Chọn loại sản phẩm" emptyMessage="Không có dữ liệu">
                                 </p-dropdown>
                             </div>
