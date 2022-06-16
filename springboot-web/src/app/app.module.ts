@@ -42,6 +42,8 @@ import { BadgeModule } from 'primeng/badge';
 import { FieldsetModule } from 'primeng/fieldset';
 import { AccordionModule } from 'primeng/accordion';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { ProductComponent } from './main/product/product.component';
 import { LoginComponent } from './main/login/login.component';
@@ -77,6 +79,7 @@ import { OrderManagementLotComponent } from './main/admin/order-list/order-manag
 import { ParameterListComponent } from './main/admin/system-list/parameter-list/parameter-list.component';
 import { CategoryListComponent } from './main/admin/category-list/category-list.component';
 import { YesNoPipe } from './pipe/yesno.pipe';
+import { ChartSummaryTodayComponent } from './main/admin/chart-summary-today/chart-summary-today.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -116,7 +119,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrderManagementLotComponent,
     ParameterListComponent,
     CategoryListComponent,
-    YesNoPipe
+    YesNoPipe,
+    ChartSummaryTodayComponent
   ],
   imports: [
     BrowserModule,
@@ -164,7 +168,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BadgeModule,
     FieldsetModule,
     AccordionModule,
-    InputSwitchModule
+    InputSwitchModule,
+    BlockUIModule,
+    ProgressSpinnerModule
   ],
   providers: [
     MessageService,

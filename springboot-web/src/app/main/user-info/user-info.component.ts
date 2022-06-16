@@ -43,6 +43,7 @@ export class UserInfoComponent implements OnInit {
   room: any;
 
   isShowAddressDialog = false;
+  blocked = false;
 
   constructor(
     private orderSevice: OrderService,
@@ -105,6 +106,8 @@ export class UserInfoComponent implements OnInit {
   }
 
   search() {
+    this.blocked = true;
+
     const param = {
       status: this.statusSelected,
       dateFrom: this.dateService.formatToSv(this.dateFrom),
@@ -135,6 +138,9 @@ export class UserInfoComponent implements OnInit {
   }
 
   createOrderList(listName: any[]) {
+    // loc ra khong phai nguoi dung
+    listName = listName.filter(val => val.userName != this.user.userName);
+
     this.ordersListTemp.forEach(val => {
       const orderTime = this.dateService.formatHours(val.createDate);
       const completeTime = this.dateService.formatHours(val.updateDate);
@@ -148,7 +154,7 @@ export class UserInfoComponent implements OnInit {
         orderCode: val.orderCode,
         time: time,
         address: val.address,
-        shipper: shipper != undefined ? shipper.displayName : '',
+        shipper: (shipper != undefined && val.orderStatus == this.COMPLETED) ? shipper.displayName : '',
         totalAmount: val.totalAmount,
         status: val.orderStatus,
         details: val.details
@@ -157,6 +163,7 @@ export class UserInfoComponent implements OnInit {
 
     this.ordersListTemp = [];
     this.ordersList.sort((a: any, b: any) => a.orderCode - b.orderCode);
+    this.blocked = false;
   }
 
   updateUser() {

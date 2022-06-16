@@ -248,3 +248,7 @@
         <button class="p-button-sm" pButton type="button" label="Xác nhận" (click)="addAddress()"></button>
     </ng-template>
 </p-dialog>
+
+<p-blockUI [blocked]="blocked">
+    <p-progressSpinner></p-progressSpinner>
+</p-blockUI>

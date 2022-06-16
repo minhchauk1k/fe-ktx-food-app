@@ -141,9 +141,13 @@ export class CommonService {
 
                             this.sortRoleLogin(roles);
 
-                            if (roles.length && this._roleControl.value === this.ROLE_ADMIN) {
-                                this.router.navigate(['/admin']);
-                                this._isAdmin.next(true);
+                            if (roles.length && (this._roleControl.value !== this.ANONYMOUS && this._roleControl.value !== this.ROLE_USER)) {
+                                if (this._roleControl.value !== this.ROLE_STAFF) {
+                                    this._isAdmin.next(true);
+                                    this.router.navigate(['/admin']);
+                                } else {
+                                    this.router.navigate(['/order-delivery']);
+                                }
                             } else {
                                 this.router.navigate(['/']);
                             }

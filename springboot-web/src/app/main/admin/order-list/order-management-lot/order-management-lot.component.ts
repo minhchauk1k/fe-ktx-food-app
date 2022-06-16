@@ -33,6 +33,7 @@ export class OrderManagementLotComponent implements OnInit {
   public ordersListBk: any[] = [];
   public ordersListWait: any[] = [];
   public ordersListWaitBk: any[] = [];
+  public ordersListCheck: any[] = [];
   public addressesList: any[] = [];
   public groupByAreaName: any[] = [];
   public addressAreaName: any[] = [];
@@ -65,15 +66,17 @@ export class OrderManagementLotComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // tạo request mỗi 1 phút
-    this.myTimeOut = setInterval(() => {
-      this.getOrdersJustPaid();
-    }, 1000 * 60);
-
     this.getOrdersJustPaid();
     this.getOrderLotsJustRepaired();
     this.getIsLotControl();
     this.getAddresses();
+  }
+
+  ngAfterViewInit(): void {
+    // tạo request mỗi 1 phút
+    this.myTimeOut = setInterval(() => {
+      this.getOrdersJustPaidLoop();
+    }, 1000 * 60);
   }
 
   ngOnDestroy(): void {
@@ -92,6 +95,31 @@ export class OrderManagementLotComponent implements OnInit {
       },
       error: this.commonService.erorrHandle()
     });
+  }
+
+  private getOrdersJustPaidLoop(): void {
+    this.orderService.getOrdersJustPaid().subscribe({
+      next: response => {
+        this.ordersListCheck = this.ordersList;
+
+        this.ordersList = response;
+        this.ordersListBk = this.ordersList;
+
+        this.checkOrders();
+
+        this.formatAddress(this.ordersList);
+        this.createAreaZone1(this.ordersList);
+        this.createLotList1(this.ordersList);
+      },
+      error: this.commonService.erorrHandle()
+    });
+  }
+
+  private checkOrders() {
+    const diff = JSON.stringify(this.ordersListCheck) === JSON.stringify(this.ordersList);
+    if (!diff) {
+      this.messageService.add({ severity: 'success', summary: 'Thông báo', detail: 'Đã cập nhật danh sách đơn hàng' });
+    }
   }
 
   private getOrderLotsJustRepaired() {

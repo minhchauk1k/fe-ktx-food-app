@@ -9,8 +9,12 @@ import { OrderService } from 'src/app/service/order.service';
   styleUrls: ['./order-delivery.component.scss']
 })
 export class OrderDeliveryComponent implements OnInit {
+
+  private myTimeOut: any;
+
   public columnsName: any[] = [];
   public deliveryList: any[] = [];
+  public listCheck: any[] = [];
 
   constructor(
     private orderService: OrderService,
@@ -32,6 +36,17 @@ export class OrderDeliveryComponent implements OnInit {
     this.getOrdersJustDelivered();
   }
 
+  ngAfterViewInit(): void {
+    // tạo request mỗi 1 phút
+    this.myTimeOut = setInterval(() => {
+      this.getOrdersJustDeliveredLoop();
+    }, 1000 * 60);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.myTimeOut);
+  }
+
   private getOrdersJustDelivered(): void {
     this.orderService.getOrdersJustDelivered().subscribe({
       next: response => {
@@ -39,6 +54,24 @@ export class OrderDeliveryComponent implements OnInit {
       },
       error: this.commonService.erorrHandle()
     });
+  }
+
+  private getOrdersJustDeliveredLoop(): void {
+    this.orderService.getOrdersJustDelivered().subscribe({
+      next: response => {
+        this.listCheck = this.deliveryList;
+        this.deliveryList = response;
+        this.checkLoop();
+      },
+      error: this.commonService.erorrHandle()
+    });
+  }
+
+  private checkLoop() {
+    const diff = JSON.stringify(this.listCheck) === JSON.stringify(this.deliveryList);
+    if (!diff) {
+      this.messageService.add({ severity: 'success', summary: 'Thông báo', detail: 'Đã cập nhật danh sách đơn hàng' });
+    }
   }
 
   public completeDelivery(data: any) {

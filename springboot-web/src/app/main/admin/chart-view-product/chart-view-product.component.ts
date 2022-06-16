@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonService } from 'src/app/service/common.service';
-import { OrderService } from 'src/app/service/order.service';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-chart-view-product',
@@ -9,14 +7,12 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class ChartViewProductComponent implements OnInit {
 
-  orderListWeek: any[] = [];
   productList: any[] = [];
   columnsName: any[] = [];
 
-  constructor(
-    private orderService: OrderService,
-    private commonService: CommonService,
-  ) {
+  @Input() orderListWeek: any[] = [];
+
+  constructor() {
     this.columnsName = [
       { field: 'index', header: 'STT', headerClass: 'text-center', class: 'text-center' },
       { field: 'productName', header: 'Tên sản phẩm', headerClass: 'text-center', class: '' },
@@ -25,17 +21,7 @@ export class ChartViewProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOrderListThisWeek();
-  }
-
-  getOrderListThisWeek() {
-    this.orderService.getOrderOfThisWeek().subscribe({
-      next: res => {
-        this.orderListWeek = res;
-        this.createProductData();
-      },
-      error: this.commonService.erorrHandle()
-    })
+    this.createProductData();
   }
 
   createProductData() {

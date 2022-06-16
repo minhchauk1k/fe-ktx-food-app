@@ -8,15 +8,25 @@ import { CommonService } from 'src/app/service/common.service';
   styleUrls: ['./menu-dashboard.component.scss']
 })
 export class MenuDashboardComponent implements OnInit {
+
+  private ANONYMOUS = 'ANONYMOUS';
+  private ROLE_ADMIN = 'ROLE_ADMIN';
+  private ROLE_USER = 'ROLE_USER';
+  private ROLE_MANAGER = 'ROLE_MANAGER';
+  private ROLE_OWNER = 'ROLE_OWNER';
+  private ROLE_STAFF = 'ROLE_STAFF';
+
   public items: MenuItem[] = [];
+  public items_STAFF: MenuItem[] = [];
+  public items_ADMIN: MenuItem[] = [];
 
   constructor(
-    private commonService: CommonService
+    private commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
-    this.items = [
-      // { label: 'Trang tổng quan', icon: 'pi pi-fw pi-key', routerLink: ['/admin'] },
+    this.items_ADMIN = [
+      { label: 'Trang tổng quan', icon: 'pi pi-fw pi-key', routerLink: ['/admin'] },
       {
         label: 'Người dùng', icon: 'pi pi-fw pi-user',
         items: [
@@ -24,14 +34,12 @@ export class MenuDashboardComponent implements OnInit {
           { label: 'Danh sách phân quyền', icon: 'pi pi-fw pi-user', routerLink: ['/role-list'] },
         ]
       },
-      // { label: 'Menu bán hàng', icon: 'pi pi-fw pi-list' },
       {
         label: 'Sản phẩm', icon: 'pi pi-fw pi-shopping-bag',
         items: [
           { label: 'Thêm sản phẩm', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/product-add'] },
           { label: 'Danh sách món ăn', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/product-list'] },
           { label: 'Danh sách dịch vụ', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/service-list'] },
-          { label: 'Phân loại sản phẩm', icon: 'pi pi-fw pi-tag', routerLink: ['/category-list'] },
         ]
       },
       {
@@ -39,27 +47,65 @@ export class MenuDashboardComponent implements OnInit {
         items: [
           { label: 'Danh sách đơn hàng', icon: 'pi pi-fw pi-search', routerLink: ['/order-list'] },
           { label: 'Chuẩn bị đơn hàng', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management'] },
-          { label: 'Vận chuyển đơn hàng', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery'] },
           { label: 'Chuẩn bị đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-management-lot'] },
-          { label: 'Vận chuyển đơn hàng (LOT)', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/order-delivery-lot'] },
         ]
       },
-
       {
-        label: 'Hệ thống', icon: 'pi pi-fw pi-cog',
+        label: 'Vận chuyển', icon: 'pi pi-fw pi-sign-out',
         items: [
-          { label: 'Biến hệ thống', icon: 'pi pi-fw pi-cog', routerLink: ['/parameter-list'] },
-          { label: 'Sổ địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list'] },
+          { label: 'Vận chuyển đơn hàng', icon: 'pi pi-fw pi-sign-out', routerLink: ['/order-delivery'] },
+          { label: 'Vận chuyển đơn hàng (LOT)', icon: 'pi pi-fw pi-sign-out', routerLink: ['/order-delivery-lot'] },
         ]
-      }
-      ,
-      {
-        label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
-        command: () => {
-          this.commonService.userLogout();
-        }
-      }
+      },
+      { label: 'Phân loại sản phẩm', icon: 'pi pi-fw pi-tag', routerLink: ['/category-list'] },
+      { label: 'Sổ địa chỉ', icon: 'pi pi-home', routerLink: ['/address-list'] },
+      { label: 'Biến hệ thống', icon: 'pi pi-fw pi-cog', routerLink: ['/parameter-list'] },
+      // {
+      //   label: 'Hệ thống', icon: 'pi pi-fw pi-cog',
+      //   items: [
+      //   ]
+      // },
+      // {
+      //   label: 'Đăng xuất', icon: 'pi pi-fw pi-sign-out',
+      //   command: () => {
+      //     this.commonService.userLogout();
+      //   }
+      // }
     ];
+
+    this.items_STAFF = [
+      {
+        label: 'Đơn hàng', icon: 'pi pi-fw pi-shopping-cart',
+        items: [
+          { label: 'Danh sách đơn hàng', icon: 'pi pi-fw pi-search', routerLink: ['/order-list'] },
+        ]
+      },
+      {
+        label: 'Vận chuyển', icon: 'pi pi-fw pi-sign-out',
+        items: [
+          { label: 'Vận chuyển đơn hàng', icon: 'pi pi-fw pi-sign-out', routerLink: ['/order-delivery'] },
+          { label: 'Vận chuyển đơn hàng (LOT)', icon: 'pi pi-fw pi-sign-out', routerLink: ['/order-delivery-lot'] },
+        ]
+      },
+    ];
+
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    this.commonService.roleControl.subscribe(res => {
+      switch (res) {
+        case this.ROLE_STAFF:
+          this.items = this.items_STAFF;
+          break;
+
+        case this.ROLE_MANAGER:
+        case this.ROLE_OWNER:
+        case this.ROLE_ADMIN:
+          this.items = this.items_ADMIN;
+          break;
+      }
+    });
   }
 
 }

@@ -12,28 +12,25 @@
 
                     <div class="row">
                         <div class="col-6">
-                            <app-chart-view-order></app-chart-view-order>
+                            <app-chart-view-order *ngIf="isGetAllData" [orderListWeek]="orderListWeek"
+                                [orderListLastWeek]="orderListLastWeek"></app-chart-view-order>
                         </div>
                         <div class="col-6">
-                            <app-chart-view-sales></app-chart-view-sales>
+                            <app-chart-view-sales *ngIf="isGetAllData" [orderListWeek]="orderListWeek"
+                                [orderListLastWeek]="orderListLastWeek"></app-chart-view-sales>
                         </div>
                     </div>
-
-                    <!-- <div class="row">
-                        <div class="col-6">
-                            <app-chart-view-sales></app-chart-view-sales>
-                        </div>
-                        <div class="col-6">
-                            <app-chart-view-order></app-chart-view-order>
-                        </div>
-                    </div> -->
 
                     <div class="row">
                         <div class="col-6">
-                            <app-chart-view-product></app-chart-view-product>
+                            <app-chart-summary-today *ngIf="isGetAllData" [orderLisToday]="orderLisToday">
+                            </app-chart-summary-today>
+                        </div>
+                        <div class="col-6">
+                            <app-chart-view-product *ngIf="isGetAllData" [orderListWeek]="orderListWeek">
+                            </app-chart-view-product>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

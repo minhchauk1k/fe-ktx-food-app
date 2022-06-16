@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
         case this.ROLE_STAFF:
           this.resetItem();
           this.items.push({ label: 'app.your.info', routerLink: ['/user-info'] });
-          this.items.push({ label: 'app.admin', routerLink: ['/admin'] });
+          this.items.push({ label: 'app.admin', routerLink: ['/order-delivery'] });
           this.items.push({ label: 'app.logout', command: () => this.commonService.userLogout() });
           break;
 

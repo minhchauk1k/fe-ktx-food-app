@@ -11,10 +11,13 @@ import { OrderService } from 'src/app/service/order.service';
 export class OrderDeliveryLotComponent implements OnInit {
 
   public lotsList: any[] = [];
+  public listCheck: any[] = [];
   public ordersList: any[] = [];
   public columnsName: any[] = [];
 
   public selectedLot: any;
+
+  private myTimeOut: any;
 
   constructor(
     private orderService: OrderService,
@@ -36,6 +39,17 @@ export class OrderDeliveryLotComponent implements OnInit {
     this.getLotsInCompleted();
   }
 
+  ngAfterViewInit(): void {
+    // tạo request mỗi 1 phút
+    this.myTimeOut = setInterval(() => {
+      this.getLotsInCompletedLoop();
+    }, 1000 * 60);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.myTimeOut);
+  }
+
   private getLotsInCompleted(): void {
     this.orderService.getLotsInCompleted().subscribe({
       next: response => {
@@ -43,6 +57,24 @@ export class OrderDeliveryLotComponent implements OnInit {
       },
       error: this.commonService.erorrHandle()
     });
+  }
+
+  private getLotsInCompletedLoop(): void {
+    this.orderService.getLotsInCompleted().subscribe({
+      next: response => {
+        this.listCheck = this.lotsList;
+        this.lotsList = response;
+        this.checkLoop();
+      },
+      error: this.commonService.erorrHandle()
+    });
+  }
+
+  private checkLoop() {
+    const diff = JSON.stringify(this.listCheck) === JSON.stringify(this.lotsList);
+    if (!diff) {
+      this.messageService.add({ severity: 'success', summary: 'Thông báo', detail: 'Đã cập nhật danh sách đơn hàng' });
+    }
   }
 
   public selectOrderLot(): void {

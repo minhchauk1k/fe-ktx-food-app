@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/service/common.service';
 import { OrderService } from 'src/app/service/order.service';
 
@@ -9,8 +9,6 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class ChartViewOrderComponent implements OnInit {
   data: any;
-  orderListWeek: any[] = [];
-  orderListLastWeek: any[] = [];
   nameDayWeek: any[] = [];
   days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
   sumThisWeek: any;
@@ -18,35 +16,15 @@ export class ChartViewOrderComponent implements OnInit {
   isMinus = false;
   percent: any;
 
-  constructor(
-    private orderService: OrderService,
-    private commonService: CommonService,
-  ) {
+  @Input() orderListWeek: any;
+  @Input() orderListLastWeek: any;
+
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.getOrderListThisWeek();
-  }
-
-  getOrderListThisWeek() {
-    this.orderService.getOrderOfThisWeek().subscribe({
-      next: res => {
-        this.orderListWeek = res;
-        this.getOrderListLastWeek();
-      },
-      error: this.commonService.erorrHandle()
-    })
-  }
-
-  getOrderListLastWeek() {
-    this.orderService.getOrderOfLastWeek().subscribe({
-      next: res => {
-        this.orderListLastWeek = res;
-        this.createNameOfWeek();
-        this.createDateReport();
-      },
-      error: this.commonService.erorrHandle()
-    })
+    this.createNameOfWeek();
+    this.createDateReport();
   }
 
   createNameOfWeek() {

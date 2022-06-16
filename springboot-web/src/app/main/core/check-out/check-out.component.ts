@@ -39,6 +39,7 @@ export class CheckOutComponent implements OnInit {
   public addressType = true;
   public showConfirmAddress = false;
   public isShowMomoPayDialog = false;
+  public blocked = true;
 
   public user: any;
   public area: any;
@@ -95,13 +96,18 @@ export class CheckOutComponent implements OnInit {
           if (this.momoService.verifyIPNSignatureTest(res) && res.resultCode == 0) {
             this.orderService.updateOrderMomoStatusForUser().subscribe({
               next: res => {
+                this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thanh toán đơn hàng thành công' });
+                this.blocked = false;
                 this.checkCart();
               }
             })
           } else {
+            this.messageService.add({ severity: 'info', summary: 'Thông báo', detail: 'Thanh toán không thành công. Đơn hàng sẽ được thanh toán bằng tiền mặt', life: 5000 });
+            this.blocked = false;
             this.checkCart();
           }
         } else {
+          this.blocked = false;
           this.checkCart();
         }
       }
@@ -177,6 +183,7 @@ export class CheckOutComponent implements OnInit {
       value.totalQty = this.getTotalQty();
       value.paid = false;
       value.orderStatus = this.WAITFORPAY;
+      this.blocked = true;
 
       this.orderService.addOrder(value).subscribe({
         next: response => {

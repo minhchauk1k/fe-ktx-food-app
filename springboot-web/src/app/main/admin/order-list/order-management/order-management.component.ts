@@ -80,15 +80,17 @@ export class OrderManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // tạo request mỗi 1 phút
-    this.myTimeOut = setInterval(() => {
-      this.getOrdersJustPaidLoop();
-    }, 1000 * 60);
-
     this.getOrdersJustPaid();
     this.getOrdersJustRepaired();
     this.getIsLotControl();
     this.getAddresses();
+  }
+
+  ngAfterViewInit(): void {
+    // tạo request mỗi 1 phút
+    this.myTimeOut = setInterval(() => {
+      this.getOrdersJustPaidLoop();
+    }, 1000 * 60);
   }
 
   ngOnDestroy(): void {

@@ -97,4 +97,8 @@ export class OrderService {
         return this.http.get<any>(`${this.apiServerURL}/order/update/momo` ,this.createAuthorization());
     }
 
+    public getOrderOfToday(): Observable<any> {
+        return this.http.get<any>(`${this.apiServerURL}/order/report/today`, this.createAuthorization());
+    }
+
 }
