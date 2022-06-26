@@ -41,6 +41,7 @@ export class ProductAddComponent implements OnInit {
     category: ['', [Validators.required]],
     type: ['', [Validators.required]],
     discountType: this.NUMBER,
+    planQty: [null, [Validators.required]],
   });
 
   @Input() isDialog: any;

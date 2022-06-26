@@ -5,7 +5,24 @@ import { Injectable } from "@angular/core";
 })
 export class CartService {
     private itemsList: any[] = [];
-    constructor() { }
+    constructor() { 
+        this.checkCartInLocalStored();
+    }
+
+    private resetCartLocalStored() {
+        localStorage.removeItem('cart');
+        localStorage.setItem('cart', JSON.stringify(this.itemsList));
+    }
+
+    private checkCartInLocalStored() {
+        const localCartStr = localStorage.getItem('cart');
+        if (localCartStr != null) {
+            const localCart = JSON.parse(localCartStr);
+            this.itemsList = localCart;
+        } else {
+            this.resetCartLocalStored();
+        }
+    }
 
     public addItem(item: any) {
         let myFlag = false;
@@ -22,10 +39,12 @@ export class CartService {
         if (myFlag == false) {
             this.itemsList.push(item);
         }
+        this.resetCartLocalStored();
     }
 
     public clearItems() {
         this.itemsList = [];
+        this.resetCartLocalStored();
     }
 
     public getItemsList() {
@@ -36,6 +55,7 @@ export class CartService {
         this.itemsList = this.itemsList.filter(val => {
             return val.id != id;
         });
+        this.resetCartLocalStored();
     }
 
     public changeQtyById(id: string, value: number) {
@@ -45,5 +65,6 @@ export class CartService {
                 return;
             }
         });
+        this.resetCartLocalStored();
     }
 }

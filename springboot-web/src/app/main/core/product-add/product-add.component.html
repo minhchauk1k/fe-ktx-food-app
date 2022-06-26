@@ -29,10 +29,22 @@
                             <!-- row 2 -->
                             <div class="row">
                                 <div class="col">
-                                    <label for="price">Giá bán <span class="required">*</span></label>
-                                    <p-inputNumber class="w-100 p-inputtext-sm" formControlName="price" mode="currency"
-                                        currency="VND" [min]="0">
-                                    </p-inputNumber>
+                                    <div class="d-flex">
+                                        <div class="w-50">
+                                            <label for="price" class="w-100 pr-1">Giá bán <span
+                                                    class="required">*</span></label>
+                                            <p-inputNumber class="w-100 p-inputtext-sm" formControlName="price"
+                                                mode="currency" currency="VND" [min]="0">
+                                            </p-inputNumber>
+                                        </div>
+                                        <div class="w-50 pl-1">
+                                            <label for="price" class="w-100">Số lượng dự định bán <span
+                                                    class="required">*</span></label>
+                                            <p-inputNumber class="w-100 p-inputtext-sm" formControlName="planQty"
+                                                [min]="0">
+                                            </p-inputNumber>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col">
